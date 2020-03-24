@@ -1,0 +1,73 @@
+.home-bg {
+  background: url("../../assets/images/home-bg.jpg") no-repeat;
+  background-size: cover;
+  position: fixed;
+  min-width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.home-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  min-width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.home-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.btn {
+  box-shadow: none;
+}
+
+h2 {
+  font-size: 45px;
+  color: #f0a868;
+  text-shadow: 1px 1px 4px #f0a868;
+  margin-bottom: 10px;
+}
+
+h4 {
+  font-size: 35px;
+  color: #ffe8c2;
+  text-shadow: 1px 1px 4px #f0a868;
+}
+
+.btn-start {
+  color: #f0a868;
+  border: solid 2px #f0a868;
+  margin: 20px 10px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 200ms ease-in-out;
+}
+
+.btn-start:hover {
+  background-color: #ffe8c2;
+  transform: scale(1.1);
+}
+
+.btn-read {
+  color: #ffe8c2;
+  border: solid 2px #ffe8c2;
+  padding: 10px 15px;
+  font-weight: 500;
+  transition: all 300ms ease-in-out;
+}
+
+.btn-read:hover {
+  background-color: #f0a868;
+  transform: scale(1.1);
+}
+
+.home-content {
+  display: none;
+}
