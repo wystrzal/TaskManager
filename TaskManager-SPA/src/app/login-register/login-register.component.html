@@ -1,9 +1,46 @@
-<div class="login-bg">
-  <div class="login-content ">
-    <h4 class="pt-5">Login</h4>
-    <div class="form-group text-center d-inline-block mt-5">
-      <input type="text" placeholder="Login" class="form-control mb-4" />
-      <input type="text" placeholder="Password" class="form-control" />
+<div class="log-reg-bg">
+  <div class="log-reg-overlay"></div>
+  <div class="log-reg-content">
+    <div class="pt-3">
+      <a (click)="login = true" type="button">
+        <h4 [ngClass]="{ active: login }" class="d-inline login-text-btn mr-5">
+          Login
+        </h4>
+      </a>
+      <a (click)="login = false" type="button">
+        <h4 [ngClass]="{ active: !login }" class="d-inline register-text-btn">
+          Register
+        </h4>
+      </a>
+    </div>
+    <div *ngIf="login" class="login-panel">
+      <form>
+        <div class="form-group text-center d-inline-block mt-4">
+          <input type="text" placeholder="Login" class="form-control mb-4" />
+          <input type="text" placeholder="Password" class="form-control mb-2" />
+        </div>
+        <div class="form-group">
+          <button class="btn btn-custom mr-4">Submit</button>
+          <button class="btn btn-custom" (click)="cancel()">Cancel</button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="!login" class="register-panel">
+      <form>
+        <div class="form-group text-center d-inline-block mt-3">
+          <input type="text" placeholder="Login" class="form-control mb-3" />
+          <input type="text" placeholder="Password" class="form-control mb-3" />
+          <input
+            type="text"
+            placeholder="Repeat Password"
+            class="form-control mb-2"
+          />
+        </div>
+        <div class="form-group">
+          <button class="btn btn-custom mr-4">Submit</button>
+          <button class="btn btn-custom" (click)="cancel()">Cancel</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
