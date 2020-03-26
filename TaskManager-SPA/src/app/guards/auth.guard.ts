@@ -1,12 +1,17 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router, ActivatedRouteSnapshot } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
+import { ErrorService } from "../services/error.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private errorService: ErrorService,
+    private router: Router
+  ) {}
 
   canActivate(next: ActivatedRouteSnapshot): boolean {
     const role = next.firstChild.data.roles as string;
@@ -16,14 +21,14 @@ export class AuthGuard implements CanActivate {
         return true;
       } else {
         this.router.navigate([""]);
-        // error
+        this.errorService.newError("Not authorized.");
       }
     }
     if (this.authService.loggedIn()) {
       return true;
     }
 
-    // error
+    this.errorService.newError("Not authorized.");
     this.router.navigate([""]);
     return false;
   }

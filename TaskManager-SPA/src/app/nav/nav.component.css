@@ -1,0 +1,45 @@
+.top-panel {
+  position: relative;
+  padding: 5px 0;
+  background-color: #4e6754;
+}
+.left-panel {
+  position: absolute;
+  height: 100%;
+  width: 15%;
+  background-color: #6a8d73;
+}
+.content {
+  position: absolute;
+  left: 15%;
+  height: 100%;
+  width: 85%;
+}
+
+/* F4FDD9 */
+
+.nick {
+  margin-left: 45px;
+  color: #ffe8c2;
+}
+
+.btn-custom {
+  position: absolute;
+  color: #ffe8c2;
+  right: 0%;
+  top: 5%;
+  transition: all 200ms linear;
+}
+
+.btn-custom:hover {
+  color: #f0a868;
+}
+
+h4 {
+  color: #f4fdd9;
+}
+
+.aba {
+  color: #ffe8c2;
+  transform: scale(1.1);
+}
