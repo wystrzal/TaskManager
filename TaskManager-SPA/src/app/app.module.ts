@@ -8,12 +8,14 @@ import { ModalModule } from "ngx-bootstrap/modal";
 import { RouterModule } from "@angular/router";
 import { JwtModule } from "@auth0/angular-jwt";
 import { AppRoutes } from "./app.routing";
+import { HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
 import { LoginRegisterComponent } from "./login-register/login-register.component";
 import { HomeComponent } from "./home/home.component";
 import { ErrorModalComponent } from "./helpers/error-modal/error-modal.component";
 import { NavComponent } from "./nav/nav.component";
+import { StatisticsComponent } from "./statistics/statistics.component";
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -24,9 +26,11 @@ export function tokenGetter() {
     HomeComponent,
     LoginRegisterComponent,
     NavComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    StatisticsComponent
   ],
   imports: [
+    HttpClientModule,
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,

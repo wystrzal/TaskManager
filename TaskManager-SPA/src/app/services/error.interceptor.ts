@@ -16,7 +16,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError(error => {
         if (error.status === 401) {
-          return throwError("Not authorized.");
+          return throwError(error.statusText);
         }
         if (error instanceof HttpErrorResponse) {
           const applicationError = error.headers.get("Application-Error");
@@ -24,15 +24,10 @@ export class ErrorInterceptor implements HttpInterceptor {
             return throwError(applicationError);
           }
           const serverError = error.error;
-          let modalStateErrors = "";
-          if (serverError.errors && typeof serverError.errors === "object") {
-            for (const key in serverError.errors) {
-              if (serverError.errors[key]) {
-                modalStateErrors += serverError.errors[key] + "\n";
-              }
-            }
+          if (serverError.loaded === 0) {
+            return throwError("Could not fetch data.");
           }
-          return throwError(modalStateErrors || serverError || "Server Error");
+          return throwError(serverError);
         }
       })
     );

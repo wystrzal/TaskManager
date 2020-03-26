@@ -1,4 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { AuthService } from "../services/auth.service";
+import { NgForm } from "@angular/forms";
+import { Router } from "@angular/router";
+import { ErrorService } from "../services/error.service";
 
 @Component({
   selector: "app-login-register",
@@ -7,15 +11,39 @@ import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 })
 export class LoginRegisterComponent implements OnInit {
   @Output() canceled = new EventEmitter<boolean>();
-  login: boolean;
+  loginSelected = true;
+  model: any = {};
 
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    private errorService: ErrorService,
+    private route: Router
+  ) {}
 
-  ngOnInit() {
-    this.login = true;
+  ngOnInit() {}
+
+  login() {
+    this.authService.login(this.model).subscribe(
+      next => {
+        this.route.navigate(["statistics"]);
+      },
+      error => {
+        this.errorService.newError(error);
+      }
+    );
   }
 
   cancel() {
     this.canceled.emit(false);
+  }
+
+  selectLogin() {
+    this.loginSelected = true;
+    this.model = {};
+  }
+
+  selectRegister() {
+    this.loginSelected = false;
+    this.model = {};
   }
 }
