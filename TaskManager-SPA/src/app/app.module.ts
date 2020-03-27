@@ -9,6 +9,7 @@ import { RouterModule } from "@angular/router";
 import { JwtModule } from "@auth0/angular-jwt";
 import { AppRoutes } from "./app.routing";
 import { HttpClientModule } from "@angular/common/http";
+import { TabsModule } from "ngx-bootstrap/tabs";
 
 import { AppComponent } from "./app.component";
 import { LoginRegisterComponent } from "./login-register/login-register.component";
@@ -16,6 +17,11 @@ import { HomeComponent } from "./home/home.component";
 import { ErrorModalComponent } from "./helpers/error-modal/error-modal.component";
 import { NavComponent } from "./nav/nav.component";
 import { StatisticsComponent } from "./statistics/statistics.component";
+import { InboxComponent } from "./inbox/inbox.component";
+import { StartComponent } from "./start/start.component";
+import { InboxReceivedComponent } from "./inbox/inbox-received/inbox-received.component";
+import { InboxSendedComponent } from "./inbox/inbox-sended/inbox-sended.component";
+import { InboxNewComponent } from "./inbox/inbox-new/inbox-new.component";
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -27,7 +33,12 @@ export function tokenGetter() {
     LoginRegisterComponent,
     NavComponent,
     ErrorModalComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    InboxComponent,
+    StartComponent,
+    InboxReceivedComponent,
+    InboxSendedComponent,
+    InboxNewComponent
   ],
   imports: [
     HttpClientModule,
@@ -43,7 +54,8 @@ export function tokenGetter() {
         blacklistedRoutes: ["localhost:5000/api/auth"]
       }
     }),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [ErrorInterceptorProvider],
   bootstrap: [AppComponent],

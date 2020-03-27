@@ -1,0 +1,26 @@
+.nav-tabs .nav-link {
+  background-color: #6a8d73;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: #f4fdd9;
+}
+.nav-tabs .nav-link:hover {
+  background-color: #92a390;
+  border: 1px solid rgb(0, 0, 0);
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #4e6754;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: #ffe8c2;
+}
+
+.user-inbox {
+  overflow: scroll;
+  position: absolute;
+  height: 90%;
+}
+
+@media (max-height: 650px) {
+  .user-inbox {
+  }
+}
