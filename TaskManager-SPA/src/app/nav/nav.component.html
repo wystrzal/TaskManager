@@ -1,41 +1,24 @@
 <div class="top-panel">
+  <a (click)="openMenu()" class="d-inline ml-2">
+    <i class="fa fa-list menu-btn" aria-hidden="true"></i>
+  </a>
   <h4 class="nick">Nickname</h4>
   <a class="btn btn-nav"> <h5>Logout</h5> </a>
 </div>
-<div class="left-panel text-center">
+
+<div *ngIf="menuOpen">
+  <a type="button" class="right-panel" (click)="openMenu()"> </a>
+</div>
+<div *ngIf="menuOpen" [@animationMenu] class="left-panel text-center">
   <a type="button" class="mt-5 mr-5">
     <i class="fa fa-envelope-o" aria-hidden="true"></i>
     <h4 class="ml-2">Inbox</h4>
   </a>
-  <a
-    type="button"
-    class="mt-5 mr-5 big-list"
-    (click)="listsExpanded = !listsExpanded"
-  >
+  <a type="button" class="mt-5 mr-5">
     <i class="fa fa-list-ol" aria-hidden="true"></i>
     <h4 class="ml-2">Projects</h4>
   </a>
-  <a type="button" class="mt-5 small-list">
-    <i class="fa fa-list-ol" aria-hidden="true"></i>
-  </a>
-  <div *ngIf="listsExpanded">
-    <a class="mt-3 ml-4">
-      <h4 class="ml-2 ">Personal - 2</h4>
-    </a>
-    <div>
-      <a class="mt-3 ml-4">
-        <h4 class="ml-2 project-list">Mój</h4>
-      </a>
-    </div>
-    <a class="mt-3 ml-4">
-      <h4 class="ml-2 ">Group - 2</h4>
-    </a>
-    <div>
-      <a class="mt-3 ml-4">
-        <h4 class="ml-2 project-list">Wspólny</h4>
-      </a>
-    </div>
-  </div>
+
   <a type="button" class="mt-5 mr-5">
     <i class="fa fa-fire" aria-hidden="true"></i>
     <h4 class="ml-2">Important</h4>

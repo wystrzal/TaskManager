@@ -13,14 +13,3 @@
   border: 1px solid rgba(0, 0, 0, 0.5);
   color: #ffe8c2;
 }
-
-.user-inbox {
-  overflow: scroll;
-  position: absolute;
-  height: 90%;
-}
-
-@media (max-height: 650px) {
-  .user-inbox {
-  }
-}

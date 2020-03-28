@@ -19,9 +19,9 @@ import { NavComponent } from "./nav/nav.component";
 import { StatisticsComponent } from "./statistics/statistics.component";
 import { InboxComponent } from "./inbox/inbox.component";
 import { StartComponent } from "./start/start.component";
+import { InboxNewComponent } from "./inbox/inbox-new/inbox-new.component";
 import { InboxReceivedComponent } from "./inbox/inbox-received/inbox-received.component";
 import { InboxSendedComponent } from "./inbox/inbox-sended/inbox-sended.component";
-import { InboxNewComponent } from "./inbox/inbox-new/inbox-new.component";
 
 export function tokenGetter() {
   return localStorage.getItem("token");
