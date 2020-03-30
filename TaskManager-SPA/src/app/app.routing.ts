@@ -1,7 +1,8 @@
 import { Routes } from "@angular/router";
 import { HomeComponent } from "./home/home.component";
 import { AuthGuard } from "./guards/auth.guard";
-import { StatisticsComponent } from "./statistics/statistics.component";
+import { InboxComponent } from "./inbox/inbox.component";
+import { ProjectsComponent } from "./projects/projects.component";
 
 export const AppRoutes: Routes = [
   { path: "", component: HomeComponent },
@@ -9,7 +10,10 @@ export const AppRoutes: Routes = [
     path: "",
     runGuardsAndResolvers: "always",
     canActivate: [AuthGuard],
-    children: [{ path: "statistics", component: StatisticsComponent }]
+    children: [
+      { path: "inbox", component: InboxComponent },
+      { path: "projects", component: ProjectsComponent }
+    ]
   },
   { path: "**", redirectTo: "", pathMatch: "full" }
 ];

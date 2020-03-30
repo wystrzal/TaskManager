@@ -15,13 +15,13 @@ import { AppComponent } from "./app.component";
 import { LoginRegisterComponent } from "./login-register/login-register.component";
 import { HomeComponent } from "./home/home.component";
 import { ErrorModalComponent } from "./helpers/error-modal/error-modal.component";
-import { NavComponent } from "./nav/nav.component";
-import { StatisticsComponent } from "./statistics/statistics.component";
 import { InboxComponent } from "./inbox/inbox.component";
 import { StartComponent } from "./start/start.component";
 import { InboxNewComponent } from "./inbox/inbox-new/inbox-new.component";
 import { InboxReceivedComponent } from "./inbox/inbox-received/inbox-received.component";
 import { InboxSendedComponent } from "./inbox/inbox-sended/inbox-sended.component";
+import { ProjectsComponent } from "./projects/projects.component";
+import { ProjectTasksComponent } from "./projects/project-tasks/project-tasks.component";
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -31,14 +31,14 @@ export function tokenGetter() {
     AppComponent,
     HomeComponent,
     LoginRegisterComponent,
-    NavComponent,
     ErrorModalComponent,
-    StatisticsComponent,
     InboxComponent,
     StartComponent,
     InboxReceivedComponent,
     InboxSendedComponent,
-    InboxNewComponent
+    InboxNewComponent,
+    ProjectsComponent,
+    ProjectTasksComponent
   ],
   imports: [
     HttpClientModule,

@@ -1,12 +1,85 @@
-.content {
-  position: absolute;
-  height: 100%;
-  width: 100%;
+.panel {
+  position: relative;
+  min-height: 100%;
+  min-width: 100%;
 }
 
-.position {
+.top-panel {
+  position: relative;
+  padding: 8px 0;
+  background-color: #4e6754;
+  min-width: 100%;
+}
+
+.left-menu {
   position: absolute;
-  height: 100%;
-  width: 100%;
   left: 0;
+  width: 25%;
+  min-height: 100vh;
+  background-color: #6a8d73;
+  z-index: 100;
+}
+
+.right-menu {
+  position: absolute;
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgba(106, 141, 115, 0.7);
+  z-index: 50;
+}
+
+h4 {
+  display: inline;
+  color: #f4fdd9;
+}
+
+a {
+  display: block;
+}
+
+i {
+  color: #f4fdd9;
+  font-size: 25px;
+}
+
+.nick,
+.menu-btn {
+  margin-left: 15px;
+  color: #ffe8c2;
+  display: inline;
+}
+
+.btn-nav {
+  position: absolute;
+  color: #ffe8c2;
+  right: 0%;
+  top: 5%;
+  transition: all 200ms linear;
+}
+
+.btn-nav:hover {
+  color: #f0a868;
+}
+
+@media (max-width: 700px) {
+  h4 {
+    display: none;
+  }
+  .nick {
+    display: none;
+  }
+}
+
+@media (min-width: 701px) and (max-height: 516px) {
+  .right-menu {
+    min-height: 516px;
+    height: 100vh;
+  }
+}
+
+@media (max-width: 700px) and (max-height: 498px) {
+  .right-menu {
+    min-height: 498px;
+    height: 100vh;
+  }
 }

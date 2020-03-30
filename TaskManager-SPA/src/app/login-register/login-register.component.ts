@@ -12,7 +12,8 @@ import { ErrorService } from "../services/error.service";
 export class LoginRegisterComponent implements OnInit {
   @Output() canceled = new EventEmitter<boolean>();
   loginSelected = true;
-  model: any = {};
+  modelLogin: any = {};
+  modelRegister: any = {};
 
   constructor(
     private authService: AuthService,
@@ -23,9 +24,24 @@ export class LoginRegisterComponent implements OnInit {
   ngOnInit() {}
 
   login() {
-    this.authService.login(this.model).subscribe(
+    this.authService.login(this.modelLogin).subscribe(
+      () => {
+        this.authService.user.next(JSON.parse(localStorage.getItem("user")));
+      },
+      error => {
+        this.errorService.newError(error);
+      },
+      () => {
+        this.route.navigate(["inbox"]);
+      }
+    );
+  }
+
+  register() {
+    this.authService.register(this.modelRegister).subscribe(
       next => {
-        this.route.navigate(["statistics"]);
+        this.modelLogin.username = this.modelRegister.username;
+        this.selectLogin();
       },
       error => {
         this.errorService.newError(error);
@@ -39,11 +55,9 @@ export class LoginRegisterComponent implements OnInit {
 
   selectLogin() {
     this.loginSelected = true;
-    this.model = {};
   }
 
   selectRegister() {
     this.loginSelected = false;
-    this.model = {};
   }
 }

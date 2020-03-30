@@ -21,14 +21,14 @@ export class AuthGuard implements CanActivate {
         return true;
       } else {
         this.router.navigate([""]);
-        this.errorService.newError("Not authorized.");
+        this.errorService.newError("Unauthorized.");
       }
     }
     if (this.authService.loggedIn()) {
       return true;
     }
 
-    this.errorService.newError("Not authorized.");
+    this.errorService.newError("Unauthorized.");
     this.router.navigate([""]);
     return false;
   }
