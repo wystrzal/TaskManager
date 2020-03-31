@@ -10,6 +10,7 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { AppRoutes } from "./app.routing";
 import { HttpClientModule } from "@angular/common/http";
 import { TabsModule } from "ngx-bootstrap/tabs";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { AppComponent } from "./app.component";
 import { LoginRegisterComponent } from "./login-register/login-register.component";
@@ -22,6 +23,8 @@ import { InboxReceivedComponent } from "./inbox/inbox-received/inbox-received.co
 import { InboxSendedComponent } from "./inbox/inbox-sended/inbox-sended.component";
 import { ProjectsComponent } from "./projects/projects.component";
 import { ProjectTasksComponent } from "./projects/project-tasks/project-tasks.component";
+
+import { AlertModule } from "ngx-bootstrap";
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -41,6 +44,8 @@ export function tokenGetter() {
     ProjectTasksComponent
   ],
   imports: [
+    AlertModule.forRoot(),
+    InfiniteScrollModule,
     HttpClientModule,
     CommonModule,
     BrowserModule,

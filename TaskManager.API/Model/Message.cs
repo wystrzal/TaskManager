@@ -8,7 +8,6 @@ namespace TaskManager.API.Model
 {
     public class Message
     {
-        [Key]
         public int MessageId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }

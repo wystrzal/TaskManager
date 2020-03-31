@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TaskManager.API.Migrations
 {
-    public partial class InitDb : Migration
+    public partial class initDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -173,15 +173,18 @@ namespace TaskManager.API.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    RecipientId = table.Column<int>(nullable: false),
-                    SenderId = table.Column<int>(nullable: false),
-                    MessageId = table.Column<int>(nullable: false),
+                    MessageId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true)
+                    Content = table.Column<string>(nullable: true),
+                    SenderDeleted = table.Column<bool>(nullable: false),
+                    RecipientDeleted = table.Column<bool>(nullable: false),
+                    RecipientId = table.Column<int>(nullable: false),
+                    SenderId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Messages", x => new { x.RecipientId, x.SenderId });
+                    table.PrimaryKey("PK_Messages", x => x.MessageId);
                     table.ForeignKey(
                         name: "FK_Messages_AspNetUsers_RecipientId",
                         column: x => x.RecipientId,
@@ -258,6 +261,11 @@ namespace TaskManager.API.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_RecipientId",
+                table: "Messages",
+                column: "RecipientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_SenderId",

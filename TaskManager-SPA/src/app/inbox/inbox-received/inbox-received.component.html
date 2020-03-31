@@ -1,16 +1,17 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-12 content-scroll text-center">
-      <a href="#">
+    <div
+      class="col-12 content-scroll text-center"
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="onScroll()"
+      [scrollWindow]="false"
+    >
+      <a href="#" *ngFor="let message of messages">
         <div class="border">
-          <h4>From: 1234567890</h4>
-          <h4>Title: 1234567890234234</h4>
-        </div>
-      </a>
-      <a href="#">
-        <div class="border">
-          <h4>From: 1234567890</h4>
-          <h4>Title: 1234567890234234</h4>
+          <h4>From: {{ message.from | titlecase }}</h4>
+          <h4>Title: {{ message.title }}</h4>
         </div>
       </a>
     </div>

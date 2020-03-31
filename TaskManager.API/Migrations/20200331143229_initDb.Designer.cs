@@ -10,8 +10,8 @@ using TaskManager.API.Data;
 namespace TaskManager.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200330005557_UpdateMessage")]
-    partial class UpdateMessage
+    [Migration("20200331143229_initDb")]
+    partial class initDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -109,28 +109,32 @@ namespace TaskManager.API.Migrations
 
             modelBuilder.Entity("TaskManager.API.Model.Message", b =>
                 {
-                    b.Property<int>("RecipientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
+                    b.Property<int>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MessageId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("RecipientDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("RecipientId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("SenderDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("RecipientId", "SenderId");
+                    b.HasKey("MessageId");
+
+                    b.HasIndex("RecipientId");
 
                     b.HasIndex("SenderId");
 

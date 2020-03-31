@@ -20,13 +20,19 @@ namespace TaskManager.API.Helpers
 
             CreateMap<MessageForAddDto, Message>();
 
-            CreateMap<Message, MessageForReturnReceived>()
+            CreateMap<Message, MessageForReturnReceivedMessages>()
                 .ForMember(dest => dest.From,
                 opt => opt.MapFrom(src => src.Sender.Nickname));
 
-            CreateMap<Message, MessagesForReturnSended>()
+            CreateMap<Message, MessageForReturnSendedMessages>()
                 .ForMember(dest => dest.To,
                 opt => opt.MapFrom(src => src.Recipient.Nickname));
+
+            CreateMap<Message, MessageForReturnDetailMessage>()
+                          .ForMember(dest => dest.To,
+                opt => opt.MapFrom(src => src.Recipient.Nickname))
+                          .ForMember(dest => dest.From,
+                opt => opt.MapFrom(src => src.Sender.Nickname));
         }
     }
 }

@@ -16,14 +16,24 @@ namespace TaskManager.API.Data.Repository.MessageRepo
             this.dataContext = dataContext;
         }
 
-        public async Task<IEnumerable<Message>> GetReceivedMessages(int recipientId)
+        public async Task<Message> GetMessage(int id, int userId)
         {
-            return await dataContext.Messages.Include(m => m.Sender).Where(m => m.RecipientId == recipientId).ToListAsync();
+            return await dataContext.Messages.Include(m => m.Sender).Include(m => m.Recipient)
+                .Where(m => m.MessageId == id).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Message>> GetSendedMessages(int senderId)
+        public async Task<IEnumerable<Message>> GetReceivedMessages(int recipientId, int skip)
         {
-            return await dataContext.Messages.Include(m => m.Recipient).Where(m => m.SenderId == senderId).ToListAsync();
+            return await dataContext.Messages.Include(m => m.Sender)
+                .Where(m => m.RecipientId == recipientId && m.RecipientDeleted != true)
+                .Skip(skip).Take(15).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Message>> GetSendedMessages(int senderId, int skip)
+        {
+            return await dataContext.Messages.Include(m => m.Recipient)
+                .Where(m => m.SenderId == senderId && m.SenderDeleted != true)
+                .Skip(skip).Take(15).ToListAsync();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace TaskManager.API.Controllers
             var recipient = await userRepository.GetUserByNick(recipientNick);
 
             if (recipient == null)
-                return BadRequest("User with this nickname do not exist.");
+                return NotFound("User with this nickname do not exist.");
 
             var messageToAdd = mapper.Map<Message>(messageForAddDto);
 
@@ -57,35 +57,43 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet("received/{userId}")]
-        public async Task<IActionResult> GetReceivedMessages(int userId)
+        public async Task<IActionResult> GetReceivedMessages(int userId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var receivedMessages = await messageRepository.GetReceivedMessages(userId);
+            var receivedMessages = await messageRepository.GetReceivedMessages(userId, skip);
 
-            //To change
-            if (receivedMessages == null)
-                return BadRequest("Error");
+            var messageForReturn = mapper.Map<IEnumerable<MessageForReturnReceivedMessages>>(receivedMessages);
 
-            var messageForReturn = mapper.Map<IEnumerable<MessageForReturnReceived>>(receivedMessages);
-
-            return Ok(messageForReturn);   
+            return Ok(messageForReturn);
         }
 
         [HttpGet("sended/{userId}")]
-        public async Task<IActionResult> GetSendedMessages(int userId)
+        public async Task<IActionResult> GetSendedMessages(int userId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var receivedMessages = await messageRepository.GetSendedMessages(userId);
+            var receivedMessages = await messageRepository.GetSendedMessages(userId, skip);
 
-            //To change
-            if (receivedMessages == null)
-                return BadRequest("Error");
+            var messageForReturn = mapper.Map<IEnumerable<MessageForReturnSendedMessages>>(receivedMessages);
 
-            var messageForReturn = mapper.Map<IEnumerable<MessageForReturnReceived>>(receivedMessages);
+            return Ok(messageForReturn);
+        }
+
+        [HttpGet("{messageId}/user/{userId}")]
+        public async Task<IActionResult> GetMessage(int messageId, int userId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var message = await messageRepository.GetMessage(messageId, userId);
+
+            if (message == null)
+                return NotFound("Could not found the message");
+
+            var messageForReturn = mapper.Map<MessageForReturnDetailMessage>(message);
 
             return Ok(messageForReturn);
         }

@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace TaskManager.API.Dto.Message
 {
-    public class MessageForReturnReceived
+    public class MessageForReturnReceivedMessages
     {
         public string Title { get; set; }
-        public string Content { get; set; }
         public string From { get; set; }
     }
 }

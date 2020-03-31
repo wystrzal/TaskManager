@@ -42,18 +42,18 @@ namespace TaskManager.API.Data
 
                 userProject.HasOne(up => up.User)
                    .WithMany(up => up.UserProjects)
-                   .HasForeignKey(up => up.UserId);
+                   .HasForeignKey(up => up.UserId)
+                   .IsRequired();
 
                 userProject.HasOne(up => up.Project)
                    .WithMany(up => up.UserProjects)
-                   .HasForeignKey(up => up.ProjectId);
+                   .HasForeignKey(up => up.ProjectId)
+                   .IsRequired();
             });
 
 
             builder.Entity<Message>(message =>
            {
-               message.HasKey(m => new { m.RecipientId, m.SenderId });
-
                message.HasOne(m => m.Recipient)
                    .WithMany(m => m.MessagesReceived)
                    .HasForeignKey(m => m.RecipientId)

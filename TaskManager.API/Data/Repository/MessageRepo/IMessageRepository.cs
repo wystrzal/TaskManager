@@ -8,7 +8,8 @@ namespace TaskManager.API.Data.Repository.MessageRepo
 {
     public interface IMessageRepository
     {
-        Task<IEnumerable<Message>> GetSendedMessages(int senderId);
-        Task<IEnumerable<Message>> GetReceivedMessages(int recipientId);
+        Task<IEnumerable<Message>> GetSendedMessages(int senderId, int skip);
+        Task<IEnumerable<Message>> GetReceivedMessages(int recipientId, int skip);
+        Task<Message> GetMessage(int id, int userId);
     }
 }
