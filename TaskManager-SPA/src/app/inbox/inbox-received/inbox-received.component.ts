@@ -3,6 +3,7 @@ import { Message } from "src/app/models/message.model";
 import { MessageService } from "src/app/services/message.service";
 import { ErrorService } from "src/app/services/error.service";
 import { AuthService } from "src/app/services/auth.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-inbox-received",
@@ -15,6 +16,7 @@ export class InboxReceivedComponent implements OnInit {
 
   constructor(
     private messageService: MessageService,
+    public activatedRoute: ActivatedRoute,
     private errorService: ErrorService,
     private authService: AuthService
   ) {}

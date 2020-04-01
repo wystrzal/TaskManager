@@ -1,46 +1,41 @@
 import { Component, OnInit } from "@angular/core";
 import { trigger, transition, style, animate } from "@angular/animations";
-import { AuthService } from "../services/auth.service";
-import { User } from "../models/user.model";
-
-import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-start",
   templateUrl: "./start.component.html",
   styleUrls: ["./start.component.css"],
+
   animations: [
-    trigger("animationMenu", [
+    trigger("animationPanel", [
       transition(":enter", [
-        style({ width: "100%", opacity: 0 }),
-        animate("500ms ease-out", style({ width: "25%", opacity: 1 }))
+        style({ opacity: 0 }),
+        animate("1s ease-out", style({ opacity: 1 }))
       ]),
       transition(":leave", [
-        style({ width: "25%", opacity: 1 }),
-        animate("500ms ease-in", style({ width: "0%", opacity: 0 }))
+        style({ opacity: 1 }),
+        animate("1s ease-in", style({ opacity: 0 }))
       ])
     ])
   ]
 })
 export class StartComponent implements OnInit {
-  listsExpanded = false;
-  menuOpen = false;
-  user: User;
+  displayHome = true;
+  start = false;
 
-  constructor(private authService: AuthService) {}
+  constructor() {}
 
-  openMenu() {
-    this.menuOpen = !this.menuOpen;
+  ngOnInit() {}
+
+  onCancel(event: boolean) {
+    this.start = event;
+    setTimeout(() => {
+      this.displayHome = true;
+    }, 1000);
   }
 
-  logout() {
-    this.authService.logout();
-  }
-
-  ngOnInit() {
-    this.authService.user.subscribe(user => {
-      this.user = user;
-    });
-    this.user = this.authService.currentUser;
+  onStart() {
+    this.displayHome = false;
+    this.start = true;
   }
 }

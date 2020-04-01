@@ -32,7 +32,7 @@ export class LoginRegisterComponent implements OnInit {
         this.errorService.newError(error);
       },
       () => {
-        this.route.navigate(["inbox"]);
+        this.route.navigate(["/inbox"]);
       }
     );
   }

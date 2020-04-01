@@ -8,7 +8,11 @@
       (scrolled)="onScroll()"
       [scrollWindow]="false"
     >
-      <a href="#" *ngFor="let message of messages">
+      <a
+        href="#"
+        [routerLink]="[message.messageId]"
+        *ngFor="let message of messages"
+      >
         <div class="border">
           <h4>From: {{ message.from | titlecase }}</h4>
           <h4>Title: {{ message.title }}</h4>

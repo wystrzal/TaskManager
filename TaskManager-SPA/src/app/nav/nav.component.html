@@ -1,0 +1,41 @@
+<div class="panel">
+  <div class="top-panel">
+    <a (click)="openMenu()" class="d-inline ml-2">
+      <i class="fa fa-list menu-btn" aria-hidden="true"></i>
+    </a>
+    <h4 class="nick">{{ user?.nickname | titlecase }}</h4>
+    <a class="btn btn-nav" (click)="logout()"> <h5>Logout</h5> </a>
+  </div>
+
+  <div *ngIf="menuOpen">
+    <a type="button" class="right-menu" (click)="openMenu()"> </a>
+  </div>
+
+  <div *ngIf="menuOpen" [@animationMenu] class="left-menu text-center">
+    <a type="button" class="mt-5">
+      <i class="fa fa-envelope-o" aria-hidden="true"></i>
+      <h4 class="ml-2">Inbox</h4>
+    </a>
+    <a type="button" class="mt-5 ">
+      <i class="fa fa-list-ol" aria-hidden="true"></i>
+      <h4 class="ml-2">Projects</h4>
+    </a>
+
+    <a type="button" class="mt-5">
+      <i class="fa fa-fire" aria-hidden="true"></i>
+      <h4 class="ml-2">Important</h4>
+    </a>
+    <a type="button" class="mt-5">
+      <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+      <h4 class="ml-2">Today</h4>
+    </a>
+    <a type="button" class="mt-5">
+      <i class="fa fa-calendar" aria-hidden="true"></i>
+      <h4 class="ml-2">Next 7 days</h4>
+    </a>
+    <a type="button" class="my-5">
+      <i class="fa fa-cog" aria-hidden="true"></i>
+      <h4 class="ml-2">Account</h4>
+    </a>
+  </div>
+</div>

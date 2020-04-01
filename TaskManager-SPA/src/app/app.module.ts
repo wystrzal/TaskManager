@@ -9,12 +9,10 @@ import { RouterModule } from "@angular/router";
 import { JwtModule } from "@auth0/angular-jwt";
 import { AppRoutes } from "./app.routing";
 import { HttpClientModule } from "@angular/common/http";
-import { TabsModule } from "ngx-bootstrap/tabs";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { AppComponent } from "./app.component";
 import { LoginRegisterComponent } from "./login-register/login-register.component";
-import { HomeComponent } from "./home/home.component";
 import { ErrorModalComponent } from "./helpers/error-modal/error-modal.component";
 import { InboxComponent } from "./inbox/inbox.component";
 import { StartComponent } from "./start/start.component";
@@ -25,6 +23,9 @@ import { ProjectsComponent } from "./projects/projects.component";
 import { ProjectTasksComponent } from "./projects/project-tasks/project-tasks.component";
 
 import { AlertModule } from "ngx-bootstrap";
+import { NavComponent } from "./nav/nav.component";
+import { InboxReceivedDetailComponent } from "./inbox/inbox-received/inbox-received-detail/inbox-received-detail.component";
+import { InboxReceivedResolver } from "./_resolvers/inbox-received.resolver";
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -32,7 +33,6 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     LoginRegisterComponent,
     ErrorModalComponent,
     InboxComponent,
@@ -41,7 +41,9 @@ export function tokenGetter() {
     InboxSendedComponent,
     InboxNewComponent,
     ProjectsComponent,
-    ProjectTasksComponent
+    ProjectTasksComponent,
+    NavComponent,
+    InboxReceivedDetailComponent
   ],
   imports: [
     AlertModule.forRoot(),
@@ -59,10 +61,9 @@ export function tokenGetter() {
         blacklistedRoutes: ["localhost:5000/api/auth"]
       }
     }),
-    ModalModule.forRoot(),
-    TabsModule.forRoot()
+    ModalModule.forRoot()
   ],
-  providers: [ErrorInterceptorProvider],
+  providers: [ErrorInterceptorProvider, InboxReceivedResolver],
   bootstrap: [AppComponent],
   entryComponents: [ErrorModalComponent]
 })

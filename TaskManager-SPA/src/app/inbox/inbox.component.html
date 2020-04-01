@@ -1,11 +1,18 @@
-<tabset [justified]="true">
-  <tab heading="Received" id="tab1">
-    <app-inbox-received></app-inbox-received>
-  </tab>
-  <tab heading="Sended">
-    <app-inbox-sended></app-inbox-sended>
-  </tab>
-  <tab heading="New">
-    <app-inbox-new></app-inbox-new>
-  </tab>
-</tabset>
+<div class="inbox-menu">
+  <a type="button" class="mt-5 ">
+    <i class="fa fa-list-ol" aria-hidden="true"></i>
+    <h4 class="ml-2">Received</h4>
+  </a>
+  <a type="button" class="mt-5 ">
+    <i class="fa fa-list-ol" aria-hidden="true"></i>
+    <h4 class="ml-2">Sended</h4>
+  </a>
+  <a type="button" class="mt-5 ">
+    <i class="fa fa-list-ol" aria-hidden="true"></i>
+    <h4 class="ml-2">New</h4>
+  </a>
+</div>
+
+<div class="inbox-content pt-5">
+  <app-inbox-sended></app-inbox-sended>
+</div>

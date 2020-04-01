@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-inbox",
   templateUrl: "./inbox.component.html",
-  styleUrls: ["./inbox.component.css"],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ["./inbox.component.css"]
 })
 export class InboxComponent implements OnInit {
-  constructor() {}
+  routerValue: string;
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {}
 }
