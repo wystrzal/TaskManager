@@ -97,5 +97,38 @@ namespace TaskManager.API.Controllers
 
             return Ok(messageForReturn);
         }
+
+        [HttpPost("delete/{messageId}/user/{userId}")]
+        public async Task<IActionResult> DeleteMessage(int messageId, int userId, [FromQuery]string userType)
+        {
+            var message = await messageRepository.GetMessage(messageId, userId);
+
+            if (message == null)
+                return NotFound("Could not found the message");
+
+            if (userType == "recipient")
+            {
+                message.RecipientDeleted = true;
+            }
+            else
+            {
+                message.SenderDeleted = true;
+            }
+
+            await mainRepository.SaveAll();
+
+            if(message.SenderDeleted == true && message.RecipientDeleted == true)
+            {
+                mainRepository.Delete(message);
+
+                if (await mainRepository.SaveAll())
+                    return Ok();
+
+                return BadRequest("Could not delete the message.");
+            }
+
+            return NoContent();
+        }
+
     }
 }

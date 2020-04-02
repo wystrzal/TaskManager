@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 export class InboxComponent implements OnInit {
   routerValue: string;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor() {}
 
   ngOnInit() {}
 }

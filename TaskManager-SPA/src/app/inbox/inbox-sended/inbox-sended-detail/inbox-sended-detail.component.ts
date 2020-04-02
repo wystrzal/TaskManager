@@ -2,15 +2,15 @@ import { Component, OnInit } from "@angular/core";
 import { ErrorService } from "src/app/services/error.service";
 import { MessageService } from "src/app/services/message.service";
 import { AuthService } from "src/app/services/auth.service";
-import { Message } from "src/app/models/message.model";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Message } from "src/app/models/message.model";
 
 @Component({
-  selector: "app-inbox-received-detail",
-  templateUrl: "./inbox-received-detail.component.html",
-  styleUrls: ["./inbox-received-detail.component.css"]
+  selector: "app-inbox-sended-detail",
+  templateUrl: "./inbox-sended-detail.component.html",
+  styleUrls: ["./inbox-sended-detail.component.css"]
 })
-export class InboxReceivedDetailComponent implements OnInit {
+export class InboxSendedDetailComponent implements OnInit {
   message: Message;
 
   constructor(
@@ -42,7 +42,7 @@ export class InboxReceivedDetailComponent implements OnInit {
   }
 
   deleteMessage() {
-    const userType = "recipient";
+    const userType = "sender";
 
     this.messageService
       .deleteMessage(
@@ -52,7 +52,7 @@ export class InboxReceivedDetailComponent implements OnInit {
       )
       .subscribe(
         () => {
-          this.router.navigate(["received"], {
+          this.router.navigate(["sended"], {
             relativeTo: this.activatedRoute.parent
           });
         },

@@ -8,9 +8,9 @@
       (scrolled)="onScroll()"
       [scrollWindow]="false"
     >
-      <a href="#" *ngFor="let message of messages">
+      <a [routerLink]="[message.messageId]" *ngFor="let message of messages">
         <div class="border">
-          <h4>To: {{ message.to | titlecase }}</h4>
+          <h4 class="text-left ml-3">To: {{ message.to | titlecase }}</h4>
           <h4>Title: {{ message.title }}</h4>
         </div>
       </a>

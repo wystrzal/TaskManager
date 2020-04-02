@@ -33,11 +33,27 @@ export class MessageService {
     });
   }
 
+  getMessage(messageId: number, userId: number): Observable<Message> {
+    return this.http.get<Message>(this.baseUrl + messageId + "/user/" + userId);
+  }
+
   sendMessage(userId: number, recipientNick: string, model: any) {
     let params = new HttpParams();
 
     params = params.append("recipientNick", recipientNick);
 
     return this.http.post(this.baseUrl + userId, model, { params });
+  }
+
+  deleteMessage(messageId: number, userId: number, userType: string) {
+    let params = new HttpParams();
+
+    params = params.append("userType", userType);
+
+    return this.http.post(
+      this.baseUrl + "delete/" + messageId + "/user/" + userId,
+      {},
+      { params }
+    );
   }
 }

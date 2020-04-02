@@ -7,7 +7,7 @@ import { InboxReceivedDetailComponent } from "./inbox/inbox-received/inbox-recei
 import { InboxReceivedComponent } from "./inbox/inbox-received/inbox-received.component";
 import { InboxSendedComponent } from "./inbox/inbox-sended/inbox-sended.component";
 import { InboxNewComponent } from "./inbox/inbox-new/inbox-new.component";
-import { InboxReceivedResolver } from "./_resolvers/inbox-received.resolver";
+import { InboxSendedDetailComponent } from "./inbox/inbox-sended/inbox-sended-detail/inbox-sended-detail.component";
 
 export const AppRoutes: Routes = [
   { path: "", component: StartComponent },
@@ -26,6 +26,7 @@ export const AppRoutes: Routes = [
           },
           { path: "received/:id", component: InboxReceivedDetailComponent },
           { path: "sended", component: InboxSendedComponent },
+          { path: "sended/:id", component: InboxSendedDetailComponent },
           { path: "new", component: InboxNewComponent }
         ]
       },
