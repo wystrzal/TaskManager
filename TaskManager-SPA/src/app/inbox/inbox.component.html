@@ -1,18 +1,33 @@
-<div class="inbox-menu">
-  <a type="button" class="mt-5 ">
-    <i class="fa fa-list-ol" aria-hidden="true"></i>
+<div class="inbox-menu pt-5 text-center">
+  <a
+    type="button"
+    [routerLink]="['received']"
+    routerLinkActive="active"
+    class="mt-5 "
+  >
+    <i class="fa fa-newspaper-o" aria-hidden="true"></i>
     <h4 class="ml-2">Received</h4>
   </a>
-  <a type="button" class="mt-5 ">
-    <i class="fa fa-list-ol" aria-hidden="true"></i>
+  <a
+    type="button"
+    [routerLink]="['sended']"
+    routerLinkActive="active"
+    class="mt-5 "
+  >
+    <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
     <h4 class="ml-2">Sended</h4>
   </a>
-  <a type="button" class="mt-5 ">
-    <i class="fa fa-list-ol" aria-hidden="true"></i>
+  <a
+    [routerLink]="['new']"
+    routerLinkActive="active"
+    type="button"
+    class="mt-5 "
+  >
+    <i class="fa fa-plus" aria-hidden="true"></i>
     <h4 class="ml-2">New</h4>
   </a>
 </div>
 
 <div class="inbox-content pt-5">
-  <app-inbox-sended></app-inbox-sended>
+  <router-outlet></router-outlet>
 </div>

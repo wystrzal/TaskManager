@@ -1,28 +1,41 @@
 .inbox-menu {
-  position: absolute;
+  position: fixed;
   left: 0;
-  width: 15%;
+  top: 0;
+  width: 25%;
   height: 100%;
   background-color: #6a8d73;
 }
 
 .inbox-content {
-  position: absolute;
-  left: 15%;
-  width: 85%;
+  position: relative;
+  left: 25%;
+  width: 75%;
   min-height: 100%;
-}
-
-h4 {
-  display: inline;
-  color: #f4fdd9;
 }
 
 a {
   display: block;
-}
-
-i {
   color: #f4fdd9;
   font-size: 25px;
+}
+
+a:hover {
+  text-decoration: none;
+  opacity: 0.7;
+}
+
+i,
+h4 {
+  display: inline;
+}
+
+.active {
+  color: #ffe8c2 !important;
+}
+
+@media (max-width: 700px) {
+  h4 {
+    display: none;
+  }
 }

@@ -1,19 +1,15 @@
-.panel {
-  position: relative;
-  min-height: 100%;
-  min-width: 100%;
-}
-
 .top-panel {
-  position: relative;
+  position: fixed;
   padding: 8px 0;
   background-color: #4e6754;
   min-width: 100%;
+  z-index: 150;
 }
 
 .left-menu {
-  position: absolute;
+  position: fixed;
   left: 0;
+  top: 0;
   width: 25%;
   min-height: 100vh;
   background-color: #6a8d73;
@@ -21,7 +17,9 @@
 }
 
 .right-menu {
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   min-height: 100vh;
   background-color: rgba(106, 141, 115, 0.7);
@@ -70,16 +68,14 @@ i {
   }
 }
 
-@media (min-width: 701px) and (max-height: 516px) {
+@media (min-width: 701px) and (max-height: 564px) {
   .right-menu {
-    min-height: 516px;
-    height: 100vh;
+    min-height: 564px;
   }
 }
 
 @media (max-width: 700px) and (max-height: 498px) {
   .right-menu {
-    min-height: 498px;
-    height: 100vh;
+    min-height: 546px;
   }
 }

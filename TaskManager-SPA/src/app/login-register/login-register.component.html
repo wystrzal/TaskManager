@@ -62,12 +62,15 @@
             [(ngModel)]="modelRegister.password"
             name="password"
             required
+            minlength="6"
             #password="ngModel"
             type="password"
             placeholder="Password"
             class="form-control mb-3"
           />
-
+          <alert *ngIf="!password.valid && password.touched" type="danger p-1"
+            >Password is to short minimum 6.</alert
+          >
           <input
             [(ngModel)]="modelRegister.repeatPassword"
             name="repeatPassword"
@@ -83,7 +86,7 @@
             }"
           />
         </div>
-        <div class="form-group">
+        <div class="form-group pb-5">
           <button
             class="btn btn-custom mr-4"
             [disabled]="
