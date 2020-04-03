@@ -30,7 +30,6 @@ export const AppRoutes: Routes = [
           { path: "new", component: InboxNewComponent }
         ]
       },
-      { path: "received/:id", component: InboxReceivedDetailComponent },
       { path: "projects", component: ProjectsComponent }
     ]
   },

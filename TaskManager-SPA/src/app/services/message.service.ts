@@ -3,55 +3,57 @@ import { environment } from "src/environments/environment";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import { Message } from "../models/message.model";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class MessageService {
-  baseUrl = environment.apiUrl + "message/";
+  userId = this.authService.decodedToken.nameid;
+  baseUrl = environment.apiUrl + "message/user/" + this.userId;
   newMessage = new Subject<void>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getReceivedMessages(userId: number, skip: number): Observable<Message[]> {
+  getReceivedMessages(skip: number): Observable<Message[]> {
     let params = new HttpParams();
 
     params = params.append("skip", skip.toString());
 
-    return this.http.get<Message[]>(this.baseUrl + "received/" + userId, {
+    return this.http.get<Message[]>(this.baseUrl + "/received", {
       params
     });
   }
 
-  getSendedMessages(userId: number, skip: number): Observable<Message[]> {
+  getSendedMessages(skip: number): Observable<Message[]> {
     let params = new HttpParams();
 
     params = params.append("skip", skip.toString());
 
-    return this.http.get<Message[]>(this.baseUrl + "sended/" + userId, {
+    return this.http.get<Message[]>(this.baseUrl + "/sended", {
       params
     });
   }
 
-  getMessage(messageId: number, userId: number): Observable<Message> {
-    return this.http.get<Message>(this.baseUrl + messageId + "/user/" + userId);
+  getMessage(messageId: number): Observable<Message> {
+    return this.http.get<Message>(this.baseUrl + "/" + messageId);
   }
 
-  sendMessage(userId: number, recipientNick: string, model: any) {
+  sendMessage(recipientNick: string, model: any) {
     let params = new HttpParams();
 
     params = params.append("recipientNick", recipientNick);
 
-    return this.http.post(this.baseUrl + userId, model, { params });
+    return this.http.post(this.baseUrl + "/send", model, { params });
   }
 
-  deleteMessage(messageId: number, userId: number, userType: string) {
+  deleteMessage(messageId: number, userType: string) {
     let params = new HttpParams();
 
     params = params.append("userType", userType);
 
     return this.http.post(
-      this.baseUrl + "delete/" + messageId + "/user/" + userId,
+      this.baseUrl + "/delete/" + messageId,
       {},
       { params }
     );

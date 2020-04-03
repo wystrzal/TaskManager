@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { Message } from "src/app/models/message.model";
 import { MessageService } from "src/app/services/message.service";
 import { ErrorService } from "src/app/services/error.service";
-import { AuthService } from "src/app/services/auth.service";
 import { ActivatedRoute } from "@angular/router";
 
 @Component({
@@ -17,8 +16,7 @@ export class InboxReceivedComponent implements OnInit {
   constructor(
     private messageService: MessageService,
     public activatedRoute: ActivatedRoute,
-    private errorService: ErrorService,
-    private authService: AuthService
+    private errorService: ErrorService
   ) {}
 
   ngOnInit() {
@@ -26,20 +24,18 @@ export class InboxReceivedComponent implements OnInit {
   }
 
   getReceivedMessages(skip: number) {
-    this.messageService
-      .getReceivedMessages(this.authService.decodedToken.nameid, skip)
-      .subscribe(
-        message => {
-          if (this.messages == null) {
-            this.messages = message;
-          } else {
-            this.messages.push(...message);
-          }
-        },
-        error => {
-          this.errorService.newError(error);
+    this.messageService.getReceivedMessages(skip).subscribe(
+      message => {
+        if (this.messages == null) {
+          this.messages = message;
+        } else {
+          this.messages.push(...message);
         }
-      );
+      },
+      error => {
+        this.errorService.newError(error);
+      }
+    );
   }
 
   onScroll() {

@@ -1,18 +1,17 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12 content-scroll text-center">
-      <a href="#">
-        <div class="border">
-          <h4>Type: Personal</h4>
-          <h4>Title: 1234567890234234</h4>
-        </div>
-      </a>
-      <a href="#">
-        <div class="border">
-          <h4>Type: Group</h4>
-          <h4>Title: 1234567890234234</h4>
-        </div>
-      </a>
-    </div>
-  </div>
+<div class="projects-menu text-center mt-5">
+  <a type="button" class="mt-5">
+    <i class="fa fa-user" aria-hidden="true"></i>
+    <h4 class="ml-2">Personal</h4>
+  </a>
+  <a type="button" class="mt-5">
+    <i class="fa fa-users" aria-hidden="true"></i>
+    <h4 class="ml-2">Group</h4>
+  </a>
+  <a type="button" class="mt-5">
+    <i class="fa fa-cogs" aria-hidden="true"></i>
+    <h4 class="ml-2">Manage</h4>
+  </a>
+</div>
+<div class="projects-content pt-5">
+  <router-outlet></router-outlet>
 </div>

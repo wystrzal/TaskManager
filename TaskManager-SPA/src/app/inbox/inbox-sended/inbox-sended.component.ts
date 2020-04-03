@@ -2,7 +2,6 @@ import { Component, OnInit, OnChanges } from "@angular/core";
 import { Message } from "src/app/models/message.model";
 import { MessageService } from "src/app/services/message.service";
 import { ErrorService } from "src/app/services/error.service";
-import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-inbox-sended",
@@ -15,8 +14,7 @@ export class InboxSendedComponent implements OnInit {
 
   constructor(
     private messageService: MessageService,
-    private errorService: ErrorService,
-    private authService: AuthService
+    private errorService: ErrorService
   ) {}
 
   ngOnInit() {
@@ -29,20 +27,18 @@ export class InboxSendedComponent implements OnInit {
   }
 
   getSendedMessages(skip: number) {
-    this.messageService
-      .getSendedMessages(this.authService.decodedToken.nameid, skip)
-      .subscribe(
-        message => {
-          if (this.messages == null) {
-            this.messages = message;
-          } else {
-            this.messages.push(...message);
-          }
-        },
-        error => {
-          this.errorService.newError(error);
+    this.messageService.getSendedMessages(skip).subscribe(
+      message => {
+        if (this.messages == null) {
+          this.messages = message;
+        } else {
+          this.messages.push(...message);
         }
-      );
+      },
+      error => {
+        this.errorService.newError(error);
+      }
+    );
   }
 
   onScroll() {

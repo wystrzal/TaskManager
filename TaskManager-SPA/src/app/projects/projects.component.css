@@ -1,0 +1,36 @@
+.projects-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 25%;
+  height: 100%;
+  background-color: #6a8d73;
+}
+
+.projects-content {
+  position: relative;
+  left: 25%;
+  width: 75%;
+  min-height: 100%;
+}
+
+a {
+  display: block;
+  color: #f4fdd9;
+  font-size: 25px;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #f4fdd9;
+  opacity: 0.7;
+}
+
+i,
+h4 {
+  display: inline;
+}
+
+.active {
+  color: #ffe8c2 !important;
+}

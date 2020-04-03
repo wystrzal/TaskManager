@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.API.Dto;
 using TaskManager.API.Dto.Message;
+using TaskManager.API.Dto.Project;
 using TaskManager.API.Dto.User;
 using TaskManager.API.Model;
 
@@ -33,6 +34,10 @@ namespace TaskManager.API.Helpers
                 opt => opt.MapFrom(src => src.Recipient.Nickname))
                           .ForMember(dest => dest.From,
                 opt => opt.MapFrom(src => src.Sender.Nickname));
+
+            CreateMap<ProjectForAddDto, Project>();
+
+            CreateMap<Project, ProjectForReturnProjects>();
         }
     }
 }

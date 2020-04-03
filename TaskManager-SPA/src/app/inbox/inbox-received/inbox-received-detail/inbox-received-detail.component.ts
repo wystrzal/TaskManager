@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ErrorService } from "src/app/services/error.service";
 import { MessageService } from "src/app/services/message.service";
-import { AuthService } from "src/app/services/auth.service";
 import { Message } from "src/app/models/message.model";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -16,7 +15,6 @@ export class InboxReceivedDetailComponent implements OnInit {
   constructor(
     private errorService: ErrorService,
     private messageService: MessageService,
-    private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}
@@ -27,10 +25,7 @@ export class InboxReceivedDetailComponent implements OnInit {
 
   getMessage() {
     this.messageService
-      .getMessage(
-        this.activatedRoute.snapshot.params.id,
-        this.authService.decodedToken.nameid
-      )
+      .getMessage(this.activatedRoute.snapshot.params.id)
       .subscribe(
         (message: Message) => {
           this.message = message;
@@ -45,11 +40,7 @@ export class InboxReceivedDetailComponent implements OnInit {
     const userType = "recipient";
 
     this.messageService
-      .deleteMessage(
-        this.activatedRoute.snapshot.params.id,
-        this.authService.decodedToken.nameid,
-        userType
-      )
+      .deleteMessage(this.activatedRoute.snapshot.params.id, userType)
       .subscribe(
         () => {
           this.router.navigate(["received"], {

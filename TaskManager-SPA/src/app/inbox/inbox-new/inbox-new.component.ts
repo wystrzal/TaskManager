@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { AuthService } from "src/app/services/auth.service";
 import { MessageService } from "src/app/services/message.service";
 import { ErrorService } from "src/app/services/error.service";
 
@@ -16,34 +15,27 @@ export class InboxNewComponent implements OnInit {
 
   constructor(
     private messageService: MessageService,
-    private errorService: ErrorService,
-    private authService: AuthService
+    private errorService: ErrorService
   ) {}
 
   ngOnInit() {}
 
   sendMessage(form: any) {
-    this.messageService
-      .sendMessage(
-        this.authService.decodedToken.nameid,
-        this.recipientNick,
-        this.model
-      )
-      .subscribe(
-        () => {
-          form.resetForm();
-        },
-        error => {
-          this.errorService.newError(error);
-        },
-        () => {
-          this.sended = true;
-          this.messageService.newMessage.next();
+    this.messageService.sendMessage(this.recipientNick, this.model).subscribe(
+      () => {
+        form.resetForm();
+      },
+      error => {
+        this.errorService.newError(error);
+      },
+      () => {
+        this.sended = true;
+        this.messageService.newMessage.next();
 
-          setTimeout(() => {
-            this.sended = false;
-          }, 3000);
-        }
-      );
+        setTimeout(() => {
+          this.sended = false;
+        }, 3000);
+      }
+    );
   }
 }

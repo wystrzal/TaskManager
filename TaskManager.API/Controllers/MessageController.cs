@@ -14,7 +14,7 @@ using TaskManager.API.Model;
 
 namespace TaskManager.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/user/{userId}")]
     [ApiController]
     public class MessageController : ControllerBase
     {
@@ -32,10 +32,10 @@ namespace TaskManager.API.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPost("{senderId}")]
-        public async Task<IActionResult> AddMessage(int senderId, [FromQuery]string recipientNick, MessageForAddDto messageForAddDto)
+        [HttpPost("send")]
+        public async Task<IActionResult> AddMessage(int userId, [FromQuery]string recipientNick, MessageForAddDto messageForAddDto)
         {
-            if (senderId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
             var recipient = await userRepository.GetUserByNick(recipientNick);
@@ -45,7 +45,7 @@ namespace TaskManager.API.Controllers
 
             var messageToAdd = mapper.Map<Message>(messageForAddDto);
 
-            messageToAdd.SenderId = senderId;
+            messageToAdd.SenderId = userId;
             messageToAdd.RecipientId = recipient.Id;
 
             mainRepository.Add(messageToAdd);
@@ -56,7 +56,7 @@ namespace TaskManager.API.Controllers
             return BadRequest("Could not send the message.");
         }
 
-        [HttpGet("received/{userId}")]
+        [HttpGet("received")]
         public async Task<IActionResult> GetReceivedMessages(int userId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -69,7 +69,7 @@ namespace TaskManager.API.Controllers
             return Ok(messageForReturn);
         }
 
-        [HttpGet("sended/{userId}")]
+        [HttpGet("sended")]
         public async Task<IActionResult> GetSendedMessages(int userId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -82,7 +82,7 @@ namespace TaskManager.API.Controllers
             return Ok(messageForReturn);
         }
 
-        [HttpGet("{messageId}/user/{userId}")]
+        [HttpGet("{messageId}")]
         public async Task<IActionResult> GetMessage(int messageId, int userId)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -98,9 +98,12 @@ namespace TaskManager.API.Controllers
             return Ok(messageForReturn);
         }
 
-        [HttpPost("delete/{messageId}/user/{userId}")]
+        [HttpPost("delete/{messageId}")]
         public async Task<IActionResult> DeleteMessage(int messageId, int userId, [FromQuery]string userType)
         {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
             var message = await messageRepository.GetMessage(messageId, userId);
 
             if (message == null)

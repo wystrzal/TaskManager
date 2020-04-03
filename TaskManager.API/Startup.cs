@@ -24,6 +24,7 @@ using Microsoft.IdentityModel.Tokens;
 using TaskManager.API.Data;
 using TaskManager.API.Data.Repository;
 using TaskManager.API.Data.Repository.MessageRepo;
+using TaskManager.API.Data.Repository.ProjectRepo;
 using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Helpers;
 using TaskManager.API.Model;
@@ -88,6 +89,7 @@ namespace TaskManager.API
 
             services.AddScoped<IMainRepository, MainRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
         }
 
