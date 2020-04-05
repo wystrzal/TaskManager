@@ -17,6 +17,7 @@ namespace TaskManager.API.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<UserProject> UserProjects { get; set; }
+        public DbSet<PTask> PTasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

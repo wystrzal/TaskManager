@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TaskManager.API.Migrations
 {
-    public partial class initDb : Migration
+    public partial class InitDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,7 +56,9 @@ namespace TaskManager.API.Migrations
                 {
                     ProjectId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    Owner = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,7 +202,27 @@ namespace TaskManager.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserProject",
+                name: "PTasks",
+                columns: table => new
+                {
+                    PTaskId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    ProjectId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PTasks", x => x.PTaskId);
+                    table.ForeignKey(
+                        name: "FK_PTasks_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "ProjectId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserProjects",
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
@@ -208,15 +230,15 @@ namespace TaskManager.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserProject", x => new { x.ProjectId, x.UserId });
+                    table.PrimaryKey("PK_UserProjects", x => new { x.ProjectId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_UserProject_Projects_ProjectId",
+                        name: "FK_UserProjects_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserProject_AspNetUsers_UserId",
+                        name: "FK_UserProjects_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -273,8 +295,13 @@ namespace TaskManager.API.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserProject_UserId",
-                table: "UserProject",
+                name: "IX_PTasks_ProjectId",
+                table: "PTasks",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserProjects_UserId",
+                table: "UserProjects",
                 column: "UserId");
         }
 
@@ -299,7 +326,10 @@ namespace TaskManager.API.Migrations
                 name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "UserProject");
+                name: "PTasks");
+
+            migrationBuilder.DropTable(
+                name: "UserProjects");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

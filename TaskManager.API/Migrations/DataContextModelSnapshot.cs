@@ -139,6 +139,26 @@ namespace TaskManager.API.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("TaskManager.API.Model.PTask", b =>
+                {
+                    b.Property<int>("PTaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PTaskId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("PTasks");
+                });
+
             modelBuilder.Entity("TaskManager.API.Model.Project", b =>
                 {
                     b.Property<int>("ProjectId")
@@ -147,6 +167,12 @@ namespace TaskManager.API.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Owner")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProjectId");
@@ -268,7 +294,7 @@ namespace TaskManager.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserProject");
+                    b.ToTable("UserProjects");
                 });
 
             modelBuilder.Entity("TaskManager.API.Model.UserRole", b =>
@@ -335,6 +361,13 @@ namespace TaskManager.API.Migrations
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TaskManager.API.Model.PTask", b =>
+                {
+                    b.HasOne("TaskManager.API.Model.Project", "Project")
+                        .WithMany("PTasks")
+                        .HasForeignKey("ProjectId");
                 });
 
             modelBuilder.Entity("TaskManager.API.Model.UserProject", b =>

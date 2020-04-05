@@ -12,7 +12,7 @@ using TaskManager.API.Model;
 
 namespace TaskManager.API.Controllers
 {
-    [Route("api/[controller]/user/{userId}")]
+    [Route("api/user/{userId}/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
@@ -35,18 +35,24 @@ namespace TaskManager.API.Controllers
 
             var projectToAdd = mapper.Map<Project>(projectForAddDto);
 
+            projectToAdd.Owner = userId;
+
             mainRepository.Add(projectToAdd);
 
-            var userProject = new UserProject 
-            { 
-                ProjectId = projectToAdd.ProjectId, UserId = userId
-            };
-
-            mainRepository.Add(userProject);
-
             if (await mainRepository.SaveAll())
-                return Ok();
+            {
+                var userProject = new UserProject
+                {
+                    ProjectId = projectToAdd.ProjectId,
+                    UserId = userId
+                };
 
+                mainRepository.Add(userProject);
+
+                if (await mainRepository.SaveAll())
+                    return Ok();
+            }
+                
             return BadRequest("Could not add the project.");
         }
 
@@ -63,13 +69,16 @@ namespace TaskManager.API.Controllers
             return Ok(projectsForReturn);
         }
 
-        [HttpPost("{projectId}")]
-        public async Task<IActionResult> AddToProject(int userId, int projectId)
+        [HttpPost("{projectId}/new/{newUser}")]
+        public async Task<IActionResult> AddToProject(int userId, int projectId, int newUser)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
             var project = await projectRepository.GetProject(projectId);
+
+            if (project.Owner != userId)
+                return Unauthorized();
 
             if (project == null)
                 return NotFound("Could not found the project.");
@@ -77,7 +86,7 @@ namespace TaskManager.API.Controllers
             var userProject = new UserProject
             {
                 ProjectId = project.ProjectId,
-                UserId = userId
+                UserId = newUser
             };
 
             mainRepository.Add(userProject);
