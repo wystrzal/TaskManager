@@ -1,13 +1,28 @@
 <div class="projects-menu text-center mt-5">
-  <a type="button" class="mt-5">
+  <a
+    type="button"
+    class="mt-5"
+    [routerLink]="['personal']"
+    routerLinkActive="active"
+  >
     <i class="fa fa-user" aria-hidden="true"></i>
     <h4 class="ml-2">Personal</h4>
   </a>
-  <a type="button" class="mt-5">
+  <a
+    type="button"
+    class="mt-5"
+    [routerLink]="['group']"
+    routerLinkActive="active"
+  >
     <i class="fa fa-users" aria-hidden="true"></i>
     <h4 class="ml-2">Group</h4>
   </a>
-  <a type="button" class="mt-5">
+  <a
+    type="button"
+    class="mt-5"
+    [routerLink]="['manage']"
+    routerLinkActive="active"
+  >
     <i class="fa fa-cogs" aria-hidden="true"></i>
     <h4 class="ml-2">Manage</h4>
   </a>

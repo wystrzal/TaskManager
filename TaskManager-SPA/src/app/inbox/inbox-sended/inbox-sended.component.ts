@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges } from "@angular/core";
 import { Message } from "src/app/models/message.model";
-import { MessageService } from "src/app/services/message.service";
-import { ErrorService } from "src/app/services/error.service";
+import { MessageService } from "src/app/inbox/message.service";
+import { ErrorService } from "src/app/core/helpers/error.service";
 
 @Component({
   selector: "app-inbox-sended",

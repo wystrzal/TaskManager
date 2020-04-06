@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { GroupTasksComponent } from './group-tasks.component';
+import { ProjectsManageComponent } from './projects-manage.component';
 
-describe('GroupTasksComponent', () => {
-  let component: GroupTasksComponent;
-  let fixture: ComponentFixture<GroupTasksComponent>;
+describe('ProjectsManageComponent', () => {
+  let component: ProjectsManageComponent;
+  let fixture: ComponentFixture<ProjectsManageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupTasksComponent ]
+      declarations: [ ProjectsManageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupTasksComponent);
+    fixture = TestBed.createComponent(ProjectsManageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

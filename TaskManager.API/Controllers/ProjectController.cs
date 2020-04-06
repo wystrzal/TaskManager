@@ -50,21 +50,35 @@ namespace TaskManager.API.Controllers
                 mainRepository.Add(userProject);
 
                 if (await mainRepository.SaveAll())
-                    return Ok();
+                {
+                    var projectForReturn = mapper.Map<ProjectForReturn>(projectToAdd);
+                    return CreatedAtRoute("GetProject", new { userId = userId, projectId = projectToAdd.ProjectId }, projectForReturn);
+                }
             }
-                
+ 
+            
             return BadRequest("Could not add the project.");
         }
 
+        [HttpGet("{projectId}", Name = "GetProject")]
+        public async Task<IActionResult> GetProject(int projectId)
+        {
+            var project = await projectRepository.GetProject(projectId);
+
+            var projectForReturn = mapper.Map<ProjectForReturn>(project);
+
+            return Ok(project);
+        }
+
         [HttpGet]
-        public async Task<IActionResult> GetProjects(int userId, [FromQuery]string type)
+        public async Task<IActionResult> GetProjects(int userId, [FromQuery]string type, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var projects = await projectRepository.GetProjects(userId, type);
+            var projects = await projectRepository.GetProjects(userId, type, skip);
 
-            var projectsForReturn = mapper.Map<IEnumerable<ProjectForReturnProjects>>(projects);
+            var projectsForReturn = mapper.Map<IEnumerable<ProjectForReturn>>(projects);
 
             return Ok(projectsForReturn);
         }
@@ -96,10 +110,5 @@ namespace TaskManager.API.Controllers
 
             return BadRequest("This user already belong to project.");
         }
-
-
-
-
-
     }
 }

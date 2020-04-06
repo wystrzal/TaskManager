@@ -34,3 +34,9 @@ h4 {
 .active {
   color: #ffe8c2 !important;
 }
+
+@media (max-width: 700px) {
+  h4 {
+    display: none;
+  }
+}

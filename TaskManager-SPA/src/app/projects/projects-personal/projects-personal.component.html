@@ -1,3 +1,18 @@
-<p>
-  projects-personal works!
-</p>
+<div class="container-fluid">
+  <div class="row">
+    <div
+      class="col-12 content-scroll text-center mt-2"
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="onScroll()"
+      [scrollWindow]="false"
+    >
+      <a *ngFor="let project of projects">
+        <div class="border">
+          <h4>Name: {{ project.name }}</h4>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

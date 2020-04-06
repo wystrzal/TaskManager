@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace TaskManager.API.Dto.Project
 {
-    public class ProjectForReturnProjects
+    public class ProjectForReturn
     {
         public int ProjectId { get; set; }
         public string Name { get; set; }
+        public string Type { get; set; }
     }
 }

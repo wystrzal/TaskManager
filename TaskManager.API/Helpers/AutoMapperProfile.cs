@@ -37,7 +37,7 @@ namespace TaskManager.API.Helpers
 
             CreateMap<ProjectForAddDto, Project>();
 
-            CreateMap<Project, ProjectForReturnProjects>();
+            CreateMap<Project, ProjectForReturn>();
         }
     }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { MessageService } from "src/app/services/message.service";
-import { ErrorService } from "src/app/services/error.service";
+import { MessageService } from "src/app/inbox/message.service";
+import { ErrorService } from "src/app/core/helpers/error.service";
 
 @Component({
   selector: "app-inbox-new",

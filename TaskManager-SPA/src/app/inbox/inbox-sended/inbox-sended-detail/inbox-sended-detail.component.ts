@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { ErrorService } from "src/app/services/error.service";
-import { MessageService } from "src/app/services/message.service";
+import { ErrorService } from "src/app/core/helpers/error.service";
+import { MessageService } from "src/app/inbox/message.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Message } from "src/app/models/message.model";
 

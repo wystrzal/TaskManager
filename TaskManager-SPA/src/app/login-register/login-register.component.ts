@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { AuthService } from "../services/auth.service";
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
-import { ErrorService } from "../services/error.service";
+import { ErrorService } from "../core/helpers/error.service";
 
 @Component({
   selector: "app-login-register",

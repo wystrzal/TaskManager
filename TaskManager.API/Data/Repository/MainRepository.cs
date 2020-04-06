@@ -26,7 +26,6 @@ namespace TaskManager.API.Data.Repository
             dataContext.Remove(entity);
         }
 
-
         public async Task<bool> SaveAll()
         {
             return await dataContext.SaveChangesAsync() > 0 ? true : false;
