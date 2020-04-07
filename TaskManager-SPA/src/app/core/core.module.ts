@@ -22,12 +22,12 @@ export function tokenGetter() {
       config: {
         tokenGetter,
         whitelistedDomains: ["localhost:5000"],
-        blacklistedRoutes: ["localhost:5000/api/auth"]
-      }
-    })
+        blacklistedRoutes: ["localhost:5000/api/auth"],
+      },
+    }),
   ],
   providers: [ErrorInterceptorProvider],
   entryComponents: [ErrorModalComponent],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class CoreModule {}

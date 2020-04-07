@@ -1,0 +1,30 @@
+img {
+  width: 200px;
+  height: 200px;
+}
+
+.user-col {
+  padding-bottom: 200px;
+}
+
+.user-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(106, 141, 115, 0.6);
+}
+
+.user-text {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.user-delete {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+}

@@ -13,14 +13,14 @@ const routes: Routes = [
     children: [
       {
         path: "received",
-        component: InboxReceivedComponent
+        component: InboxReceivedComponent,
       },
       { path: "received/:id", component: InboxReceivedDetailComponent },
       { path: "sended", component: InboxSendedComponent },
       { path: "sended/:id", component: InboxSendedDetailComponent },
-      { path: "new", component: InboxNewComponent }
-    ]
-  }
+      { path: "new", component: InboxNewComponent },
+    ],
+  },
 ];
 
 export const InboxRoutes = RouterModule.forChild(routes);

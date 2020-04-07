@@ -6,6 +6,7 @@ import { ProjectsGroupComponent } from "./projects-group/projects-group.componen
 import { ProjectsPersonalComponent } from "./projects-personal/projects-personal.component";
 import { ProjectsManageComponent } from "./projects-manage/projects-manage.component";
 import { ProjectsManageAddComponent } from "./projects-manage/projects-manage-add/projects-manage-add.component";
+import { ProjectsManageDetailComponent } from "./projects-manage/projects-manage-detail/projects-manage-detail.component";
 
 @NgModule({
   declarations: [
@@ -13,9 +14,10 @@ import { ProjectsManageAddComponent } from "./projects-manage/projects-manage-ad
     ProjectsGroupComponent,
     ProjectsPersonalComponent,
     ProjectsManageComponent,
-    ProjectsManageAddComponent
+    ProjectsManageAddComponent,
+    ProjectsManageDetailComponent,
   ],
   imports: [SharedModule, ProjectsRoutes],
-  entryComponents: [ProjectsManageAddComponent]
+  entryComponents: [ProjectsManageAddComponent],
 })
 export class ProjectsModule {}
