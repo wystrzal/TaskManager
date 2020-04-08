@@ -3,4 +3,5 @@ export interface Project {
   name: string;
   type: string;
   owner: number;
+  anyUsers: boolean;
 }

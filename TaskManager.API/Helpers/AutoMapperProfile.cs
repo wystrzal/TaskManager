@@ -37,7 +37,9 @@ namespace TaskManager.API.Helpers
 
             CreateMap<ProjectForAddDto, Project>();
 
-            CreateMap<Project, ProjectForReturn>();
+            CreateMap<Project, ProjectForReturn>()
+                          .ForMember(dest => dest.AnyUsers,
+                 opt => opt.MapFrom(src => src.UserProjects.Count > 1 ? true : false));
         }
     }
 }

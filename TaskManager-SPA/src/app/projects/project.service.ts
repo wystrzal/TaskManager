@@ -29,4 +29,8 @@ export class ProjectService {
 
     return this.http.get<Project[]>(this.baseUrl, { params });
   }
+
+  getProject(projectId: number): Observable<Project> {
+    return this.http.get<Project>(this.baseUrl + "/" + projectId);
+  }
 }

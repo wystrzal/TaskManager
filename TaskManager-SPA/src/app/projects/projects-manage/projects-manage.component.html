@@ -13,7 +13,7 @@
           <i class="fa fa-plus-circle"> New</i>
         </button>
       </div>
-      <a *ngFor="let project of projects">
+      <a [routerLink]="[project.projectId]" *ngFor="let project of projects">
         <div class="border">
           <h4 class="text-left ml-3">Type: {{ project.type | titlecase }}</h4>
           <h4>Name: {{ project.name }}</h4>

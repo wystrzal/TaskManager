@@ -16,6 +16,13 @@ namespace TaskManager.API.Data.Repository.ProjectRepo
             this.dataContext = dataContext;
         }
 
+        public async Task<IEnumerable<Project>> GetInvitationsToProject(int userId, int skip)
+        {
+            return await dataContext.UserProjects
+                .Where(up => up.UserId == userId && up.Status == "inactive").Select(up => up.Project)
+                .Skip(skip).Take(15).ToListAsync();
+        }
+
         public async Task<Project> GetProject(int projectId)
         {
             return await dataContext.Projects.Where(p => p.ProjectId == projectId).FirstOrDefaultAsync();
@@ -26,13 +33,14 @@ namespace TaskManager.API.Data.Repository.ProjectRepo
             if (type == "all")
             {
                 return await dataContext.UserProjects
-                   .Where(up => up.UserId == userId).Select(up => up.Project)
+                   .Where(up => up.UserId == userId && up.Status == "active").Select(up => up.Project)
                    .Skip(skip).Take(15).ToListAsync();
             }
             else
             {
                 return await dataContext.UserProjects
-                   .Where(up => up.UserId == userId && up.Project.Type == type).Select(up => up.Project)
+                   .Where(up => up.UserId == userId && up.Project.Type == type && up.Status == "active")
+                   .Select(up => up.Project)
                    .Skip(skip).Take(15).ToListAsync();
             }
         }

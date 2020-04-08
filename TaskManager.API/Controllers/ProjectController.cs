@@ -44,7 +44,8 @@ namespace TaskManager.API.Controllers
                 var userProject = new UserProject
                 {
                     ProjectId = projectToAdd.ProjectId,
-                    UserId = userId
+                    UserId = userId,
+                    Status = "active"
                 };
 
                 mainRepository.Add(userProject);
@@ -60,14 +61,40 @@ namespace TaskManager.API.Controllers
             return BadRequest("Could not add the project.");
         }
 
-        [HttpGet("{projectId}", Name = "GetProject")]
-        public async Task<IActionResult> GetProject(int projectId)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProject(int userId ,int projectId)
         {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
             var project = await projectRepository.GetProject(projectId);
+
+            if (project == null)
+                return NotFound("Could not found the project.");
+
+            mainRepository.Delete(project);
+
+            if (await mainRepository.SaveAll())
+
+                return Ok();
+
+            return BadRequest("Could not delete the project.");
+        }
+
+        [HttpGet("{projectId}", Name = "GetProject")]
+        public async Task<IActionResult> GetProject(int userId, int projectId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var project = await projectRepository.GetProject(projectId);
+
+            if (project == null)
+                return NotFound("Could not found the project");
 
             var projectForReturn = mapper.Map<ProjectForReturn>(project);
 
-            return Ok(project);
+            return Ok(projectForReturn);
         }
 
         [HttpGet]
@@ -100,7 +127,8 @@ namespace TaskManager.API.Controllers
             var userProject = new UserProject
             {
                 ProjectId = project.ProjectId,
-                UserId = newUser
+                UserId = newUser,
+                Status = "inactive"
             };
 
             mainRepository.Add(userProject);

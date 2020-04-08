@@ -17,7 +17,6 @@ export function tokenGetter() {
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(AppRoutes),
     JwtModule.forRoot({
       config: {
         tokenGetter,
@@ -28,6 +27,5 @@ export function tokenGetter() {
   ],
   providers: [ErrorInterceptorProvider],
   entryComponents: [ErrorModalComponent],
-  exports: [RouterModule],
 })
 export class CoreModule {}
