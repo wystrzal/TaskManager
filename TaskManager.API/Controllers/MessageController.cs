@@ -14,7 +14,7 @@ using TaskManager.API.Model;
 
 namespace TaskManager.API.Controllers
 {
-    [Route("api/[controller]/user/{userId}")]
+    [Route("api/user/{userId}/[controller]")]
     [ApiController]
     public class MessageController : ControllerBase
     {

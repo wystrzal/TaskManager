@@ -8,7 +8,7 @@ import { User } from "../models/user.model";
 import { Subject } from "rxjs";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AuthService {
   baseUrl = environment.apiUrl + "auth/";

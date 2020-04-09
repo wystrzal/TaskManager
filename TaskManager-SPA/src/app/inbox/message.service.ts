@@ -6,11 +6,10 @@ import { Message } from "../models/message.model";
 import { AuthService } from "../services/auth.service";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class MessageService {
-  userId = this.authService.decodedToken.nameid;
-  baseUrl = environment.apiUrl + "message/user/" + this.userId;
+  baseUrl = environment.apiUrl;
   newMessage = new Subject<void>();
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -20,9 +19,16 @@ export class MessageService {
 
     params = params.append("skip", skip.toString());
 
-    return this.http.get<Message[]>(this.baseUrl + "/received", {
-      params
-    });
+    return this.http.get<Message[]>(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/message/" +
+        "received",
+      {
+        params,
+      }
+    );
   }
 
   getSendedMessages(skip: number): Observable<Message[]> {
@@ -30,13 +36,26 @@ export class MessageService {
 
     params = params.append("skip", skip.toString());
 
-    return this.http.get<Message[]>(this.baseUrl + "/sended", {
-      params
-    });
+    return this.http.get<Message[]>(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/message/" +
+        "sended",
+      {
+        params,
+      }
+    );
   }
 
   getMessage(messageId: number): Observable<Message> {
-    return this.http.get<Message>(this.baseUrl + "/" + messageId);
+    return this.http.get<Message>(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/message/" +
+        messageId
+    );
   }
 
   sendMessage(recipientNick: string, model: any) {
@@ -44,7 +63,15 @@ export class MessageService {
 
     params = params.append("recipientNick", recipientNick);
 
-    return this.http.post(this.baseUrl + "/send", model, { params });
+    return this.http.post(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/message/" +
+        "send",
+      model,
+      { params }
+    );
   }
 
   deleteMessage(messageId: number, userType: string) {
@@ -53,7 +80,12 @@ export class MessageService {
     params = params.append("userType", userType);
 
     return this.http.post(
-      this.baseUrl + "/delete/" + messageId,
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/message/" +
+        "delete/" +
+        messageId,
       {},
       { params }
     );

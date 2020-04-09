@@ -9,16 +9,18 @@ import { Project } from "../models/project.model";
   providedIn: "root",
 })
 export class ProjectService {
-  baseUrl =
-    environment.apiUrl +
-    "user/" +
-    this.authService.decodedToken.nameid +
-    "/project";
+  baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   addProject(model: any) {
-    return this.http.post(this.baseUrl, model);
+    return this.http.post(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project",
+      model
+    );
   }
 
   getProjects(type: string, skip: number): Observable<Project[]> {
@@ -27,24 +29,54 @@ export class ProjectService {
     params = params.append("type", type);
     params = params.append("skip", skip.toString());
 
-    return this.http.get<Project[]>(this.baseUrl, { params });
+    return this.http.get<Project[]>(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project",
+      { params }
+    );
   }
 
   getProject(projectId: number): Observable<Project> {
-    return this.http.get<Project>(this.baseUrl + "/" + projectId);
+    return this.http.get<Project>(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project/" +
+        projectId
+    );
   }
 
   getInvitations(): Observable<Project[]> {
-    return this.http.get<Project[]>(this.baseUrl + "/invitations");
+    return this.http.get<Project[]>(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project/" +
+        "invitations"
+    );
   }
 
   deleteProject(projectId: number) {
-    return this.http.delete(this.baseUrl + "/" + projectId);
+    return this.http.delete(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project/" +
+        projectId
+    );
   }
 
   addToProject(projectId: number, userNick: string) {
     return this.http.post(
-      this.baseUrl + "/" + projectId + "/new/" + userNick,
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project/" +
+        projectId +
+        "/new/" +
+        userNick,
       {}
     );
   }
