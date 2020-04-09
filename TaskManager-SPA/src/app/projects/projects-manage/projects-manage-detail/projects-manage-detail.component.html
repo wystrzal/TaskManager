@@ -2,11 +2,11 @@
   <i class="fa fa-arrow-left d-inline mr-1" aria-hidden="true"></i>
   <h5 class="d-inline">Back</h5>
 </a>
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-12 mt-2">
       <div class="text-left my-2">
-        <button class="btn btn-danger">
+        <button class="btn btn-danger" (click)="deleteProject()">
           <i class="fa fa-trash"> Delete</i>
         </button>
       </div>
@@ -26,44 +26,19 @@
       </a>
     </div>
   </div>
-  <form class="my-2">
+  <form class="my-2" #changeNick="ngForm">
     <label for="change-name">Change Name</label>
-    <input type="text" class="form-control" id="change-name" />
-    <button class="btn btn-success mt-2">Save</button>
+    <input
+      [(ngModel)]="model.changeNick"
+      name="changeNick"
+      required
+      type="text"
+      class="form-control"
+      id="change-name"
+    />
+    <button [disabled]="!changeNick.valid" class="btn btn-success mt-2">
+      Save
+    </button>
   </form>
-  <div *ngIf="project?.type == 'group'">
-    <div *ngIf="project?.anyUsers">
-      <h4 class="mt-3">Users:</h4>
-      <div class="row mb-1">
-        <div
-          class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mt-4 user-col d-flex justify-content-center"
-        >
-          <div class="position-absolute">
-            <img
-              class="img-responsive"
-              src="../../../../assets/images/bear.jpg"
-              alt="user"
-            />
-            <div class="user-info">
-              <div class="user-text">
-                Wystrzal
-              </div>
-              <div class="text-center user-delete">
-                <button class="btn-danger btn">
-                  <i class="fa fa-trash"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="my-4">
-      <form class="my-2">
-        <label for="new-user">Invite User</label>
-        <input type="text" id="new-user" class="form-control" />
-        <button type="submit" class="btn btn-success mt-2">Send</button>
-      </form>
-    </div>
-  </div>
+  <app-projects-manage-users [project]="project"></app-projects-manage-users>
 </div>

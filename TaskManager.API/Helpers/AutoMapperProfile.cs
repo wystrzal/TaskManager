@@ -15,11 +15,13 @@ namespace TaskManager.API.Helpers
     {
         public AutoMapperProfile()
         {
-            CreateMap<UserForRegisterDto, User>();
+            //User
+            CreateMap<UserForRegister, User>();
 
-            CreateMap<User, UserForUserDetailDto>();
+            CreateMap<User, UserForUserDetail>();
 
-            CreateMap<MessageForAddDto, Message>();
+            //Message
+            CreateMap<MessageForAdd, Message>();
 
             CreateMap<Message, MessageForReturnReceivedMessages>()
                 .ForMember(dest => dest.From,
@@ -30,16 +32,20 @@ namespace TaskManager.API.Helpers
                 opt => opt.MapFrom(src => src.Recipient.Nickname));
 
             CreateMap<Message, MessageForReturnDetailMessage>()
-                          .ForMember(dest => dest.To,
+                .ForMember(dest => dest.To,
                 opt => opt.MapFrom(src => src.Recipient.Nickname))
-                          .ForMember(dest => dest.From,
+                .ForMember(dest => dest.From,
                 opt => opt.MapFrom(src => src.Sender.Nickname));
 
-            CreateMap<ProjectForAddDto, Project>();
+            //Project
+            CreateMap<ProjectForAdd, Project>();
 
             CreateMap<Project, ProjectForReturn>()
-                          .ForMember(dest => dest.AnyUsers,
-                 opt => opt.MapFrom(src => src.UserProjects.Count > 1 ? true : false));
+                 .ForMember(dest => dest.AnyUsers,
+                 opt => opt.MapFrom(src => src.UserProjects.Where(up => up.Status == "active").ToList().Count > 1 ? true : false));
+
+            CreateMap<Project, ProjectForReturnInvitations>();
+                       
         }
     }
 }

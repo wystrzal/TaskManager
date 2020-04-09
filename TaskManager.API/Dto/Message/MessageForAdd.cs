@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.API.Dto.Message
 {
-    public class MessageForAddDto
+    public class MessageForAdd
     {
         public string Title { get; set; }
         public string Content { get; set; }

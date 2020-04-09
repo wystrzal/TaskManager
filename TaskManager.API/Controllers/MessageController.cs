@@ -33,7 +33,7 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPost("send")]
-        public async Task<IActionResult> AddMessage(int userId, [FromQuery]string recipientNick, MessageForAddDto messageForAddDto)
+        public async Task<IActionResult> AddMessage(int userId, [FromQuery]string recipientNick, MessageForAdd messageForAddDto)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
@@ -91,7 +91,7 @@ namespace TaskManager.API.Controllers
             var message = await messageRepository.GetMessage(messageId, userId);
 
             if (message == null)
-                return NotFound("Could not found the message");
+                return NotFound("Could not find the message");
 
             var messageForReturn = mapper.Map<MessageForReturnDetailMessage>(message);
 
@@ -107,7 +107,7 @@ namespace TaskManager.API.Controllers
             var message = await messageRepository.GetMessage(messageId, userId);
 
             if (message == null)
-                return NotFound("Could not found the message");
+                return NotFound("Could not find the message");
 
             if (userType == "recipient")
             {

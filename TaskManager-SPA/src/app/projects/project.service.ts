@@ -33,4 +33,19 @@ export class ProjectService {
   getProject(projectId: number): Observable<Project> {
     return this.http.get<Project>(this.baseUrl + "/" + projectId);
   }
+
+  getInvitations(): Observable<Project[]> {
+    return this.http.get<Project[]>(this.baseUrl + "/invitations");
+  }
+
+  deleteProject(projectId: number) {
+    return this.http.delete(this.baseUrl + "/" + projectId);
+  }
+
+  addToProject(projectId: number, userNick: string) {
+    return this.http.post(
+      this.baseUrl + "/" + projectId + "/new/" + userNick,
+      {}
+    );
+  }
 }

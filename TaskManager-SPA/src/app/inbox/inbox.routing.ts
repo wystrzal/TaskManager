@@ -8,7 +8,7 @@ import { InboxNewComponent } from "./inbox-new/inbox-new.component";
 
 const routes: Routes = [
   {
-    path: "",
+    path: "inbox",
     component: InboxComponent,
     children: [
       {

@@ -1,0 +1,52 @@
+<div *ngIf="project?.type == 'group'">
+  <div *ngIf="project?.anyUsers">
+    <h4 class="mt-3">Users:</h4>
+    <div class="row mb-1">
+      <div
+        class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mt-4 user-col d-flex justify-content-center"
+      >
+        <div class="position-absolute">
+          <img
+            class="img-responsive"
+            src="../../../../assets/images/bear.jpg"
+            alt="user"
+          />
+          <div class="user-info">
+            <div class="user-text">
+              Wystrzal
+            </div>
+            <div class="text-center user-delete">
+              <button class="btn-danger btn">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="my-4">
+    <form
+      class="my-2"
+      #inviteUser="ngForm"
+      (ngSubmit)="addToProject(inviteUser)"
+    >
+      <label for="new-user">Invite User</label>
+      <input
+        [(ngModel)]="model.userNick"
+        name="userNick"
+        required
+        type="text"
+        id="new-user"
+        class="form-control"
+      />
+      <button
+        [disabled]="!inviteUser.valid"
+        type="submit"
+        class="btn btn-success mt-2"
+      >
+        Send
+      </button>
+    </form>
+  </div>
+</div>

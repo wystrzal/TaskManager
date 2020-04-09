@@ -9,7 +9,7 @@ namespace TaskManager.API.Data.Repository.ProjectRepo
     public interface IProjectRepository
     {
         Task<IEnumerable<Project>> GetProjects(int userId, string type, int skip);
-        Task<IEnumerable<Project>> GetInvitationsToProject(int userId, int skip);
+        Task<IEnumerable<Project>> GetInvitationsToProject(int userId);
         Task<Project> GetProject(int projectId);
     }
 }

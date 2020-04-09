@@ -16,16 +16,16 @@ namespace TaskManager.API.Data.Repository.ProjectRepo
             this.dataContext = dataContext;
         }
 
-        public async Task<IEnumerable<Project>> GetInvitationsToProject(int userId, int skip)
+        public async Task<IEnumerable<Project>> GetInvitationsToProject(int userId)
         {
             return await dataContext.UserProjects
-                .Where(up => up.UserId == userId && up.Status == "inactive").Select(up => up.Project)
-                .Skip(skip).Take(15).ToListAsync();
+                .Where(up => up.UserId == userId && up.Status == "invited").Select(up => up.Project)
+                .ToListAsync();
         }
 
         public async Task<Project> GetProject(int projectId)
         {
-            return await dataContext.Projects.Where(p => p.ProjectId == projectId).FirstOrDefaultAsync();
+            return await dataContext.Projects.Include(p => p.UserProjects).Where(p => p.ProjectId == projectId).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Project>> GetProjects(int userId, string type, int skip)

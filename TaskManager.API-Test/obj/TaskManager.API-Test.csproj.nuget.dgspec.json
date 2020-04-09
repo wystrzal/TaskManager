@@ -1,21 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API-Test\\TaskManager.API-Test.csproj": {}
+    "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API-Test\\TaskManager.API-Test.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API-Test\\TaskManager.API-Test.csproj": {
+    "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API-Test\\TaskManager.API-Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API-Test\\TaskManager.API-Test.csproj",
+        "projectUniqueName": "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API-Test\\TaskManager.API-Test.csproj",
         "projectName": "TaskManager.API-Test",
-        "projectPath": "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API-Test\\TaskManager.API-Test.csproj",
-        "packagesPath": "C:\\Users\\ThinkPad T430\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API-Test\\obj\\",
+        "projectPath": "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API-Test\\TaskManager.API-Test.csproj",
+        "packagesPath": "C:\\Users\\Patryk\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API-Test\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ThinkPad T430\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Patryk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -27,8 +32,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj": {
-                "projectPath": "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj"
+              "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj": {
+                "projectPath": "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj"
               }
             }
           }
@@ -81,22 +86,27 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj": {
+    "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj",
+        "projectUniqueName": "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj",
         "projectName": "TaskManager.API",
-        "projectPath": "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj",
-        "packagesPath": "C:\\Users\\ThinkPad T430\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ThinkPad T430\\Desktop\\TaskManager\\TaskManager.API\\obj\\",
+        "projectPath": "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API\\TaskManager.API.csproj",
+        "packagesPath": "C:\\Users\\Patryk\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ThinkPad T430\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Patryk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -168,7 +178,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

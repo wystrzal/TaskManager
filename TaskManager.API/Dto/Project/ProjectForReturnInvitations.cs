@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace TaskManager.API.Dto.Project
 {
-    public class ProjectForAddDto
+    public class ProjectForReturnInvitations
     {
+        public int ProjectId { get; set; }
         public string Name { get; set; }
-        public string Type { get; set; }
     }
 }

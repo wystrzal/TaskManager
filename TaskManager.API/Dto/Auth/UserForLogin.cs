@@ -6,22 +6,12 @@ using System.Threading.Tasks;
 
 namespace TaskManager.API.Dto
 {
-    public class UserForRegisterDto
+    public class UserForLogin
     {
         [Required]
         public string Username { get; set; }
 
         [Required]
         public string Password { get; set; }
-
-        public string RepeatPassword { get; set; }
-
-        public DateTime LastActive { get; set; }
-
-        public UserForRegisterDto()
-        {
-            LastActive = DateTime.Now;
-        }
-
     }
 }

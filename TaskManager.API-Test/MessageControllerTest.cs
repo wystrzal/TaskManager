@@ -44,7 +44,7 @@ namespace TaskManager.API_Test
             TestIdentity.GetIdentity(controller);
 
             //Act
-            var action = await controller.AddMessage(2, It.IsAny<string>(), It.IsAny<MessageForAddDto>()) as UnauthorizedResult;
+            var action = await controller.AddMessage(2, It.IsAny<string>(), It.IsAny<MessageForAdd>()) as UnauthorizedResult;
                 
 
             //Assert

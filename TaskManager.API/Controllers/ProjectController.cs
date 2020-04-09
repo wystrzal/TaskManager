@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using TaskManager.API.Data.Repository;
 using TaskManager.API.Data.Repository.ProjectRepo;
+using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Dto.Project;
 using TaskManager.API.Model;
 
@@ -19,16 +20,19 @@ namespace TaskManager.API.Controllers
         private readonly IMapper mapper;
         private readonly IMainRepository mainRepository;
         private readonly IProjectRepository projectRepository;
+        private readonly IUserRepository userRepository;
 
-        public ProjectController(IMapper mapper, IMainRepository mainRepository, IProjectRepository projectRepository)
+        public ProjectController(IMapper mapper, IMainRepository mainRepository,
+            IProjectRepository projectRepository, IUserRepository userRepository)
         {
             this.mapper = mapper;
             this.mainRepository = mainRepository;
             this.projectRepository = projectRepository;
+            this.userRepository = userRepository;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProject(ProjectForAddDto projectForAddDto, int userId)
+        public async Task<IActionResult> AddProject(ProjectForAdd projectForAddDto, int userId)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
@@ -56,12 +60,11 @@ namespace TaskManager.API.Controllers
                     return CreatedAtRoute("GetProject", new { userId = userId, projectId = projectToAdd.ProjectId }, projectForReturn);
                 }
             }
- 
-            
+        
             return BadRequest("Could not add the project.");
         }
 
-        [HttpDelete]
+        [HttpDelete("{projectId}")]
         public async Task<IActionResult> DeleteProject(int userId ,int projectId)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -70,7 +73,7 @@ namespace TaskManager.API.Controllers
             var project = await projectRepository.GetProject(projectId);
 
             if (project == null)
-                return NotFound("Could not found the project.");
+                return NotFound("Could not find the project.");
 
             mainRepository.Delete(project);
 
@@ -90,7 +93,7 @@ namespace TaskManager.API.Controllers
             var project = await projectRepository.GetProject(projectId);
 
             if (project == null)
-                return NotFound("Could not found the project");
+                return NotFound("Could not find the project");
 
             var projectForReturn = mapper.Map<ProjectForReturn>(project);
 
@@ -110,33 +113,87 @@ namespace TaskManager.API.Controllers
             return Ok(projectsForReturn);
         }
 
-        [HttpPost("{projectId}/new/{newUser}")]
-        public async Task<IActionResult> AddToProject(int userId, int projectId, int newUser)
+        [HttpGet("invitations")]
+        public async Task<IActionResult> GetInvitations(int userId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var projects = await projectRepository.GetInvitationsToProject(userId);
+
+            var projectsForReturn = mapper.Map<IEnumerable<ProjectForReturnInvitations>>(projects);
+
+            return Ok(projectsForReturn);
+        }
+
+        [HttpPost("{projectId}/new/{userNick}")]
+        public async Task<IActionResult> AddToProject(int userId, int projectId, string userNick)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var newUser = await userRepository.GetUserByNick(userNick.ToLower());
+
+            if (newUser == null)
+                return NotFound("Could not find user.");
+  
+            var project = await projectRepository.GetProject(projectId);
+
+            if (project == null)
+                return NotFound("Could not find the project.");
+
+            if (project.Owner != userId)
+                return Unauthorized();
+
+            var checkStatus = project.UserProjects
+                .Where(up => up.UserId == newUser.Id).Select(up => up.Status).FirstOrDefault();
+
+            if (checkStatus == "invited" || checkStatus == "rejected")
+                return BadRequest("This user is currently invited, or your invite was rejected.");
+            else if (checkStatus == "active")
+                return BadRequest("This user already belong to project.");
+            else
+            {
+                var userProject = new UserProject
+                {
+                    ProjectId = project.ProjectId,
+                    UserId = newUser.Id,
+                    Status = "invited"
+                };
+
+                mainRepository.Add(userProject);
+
+                if (await mainRepository.SaveAll())
+                    return Ok();
+            
+                return BadRequest("This user already belong to project.");
+            }
+        }
+
+        // TODO !!!
+        [HttpPost("join/{projectId}")]
+        public async Task<IActionResult> JoinToProject(int userId, int projectId, [FromQuery]int action)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
             var project = await projectRepository.GetProject(projectId);
 
-            if (project.Owner != userId)
-                return Unauthorized();
-
             if (project == null)
-                return NotFound("Could not found the project.");
+                return NotFound("Could not find the project.");
 
-            var userProject = new UserProject
-            {
-                ProjectId = project.ProjectId,
-                UserId = newUser,
-                Status = "inactive"
-            };
+            var joinUser = project.UserProjects.Where(up => up.UserId == userId && up.ProjectId == projectId).FirstOrDefault();
 
-            mainRepository.Add(userProject);
+            // 1 = accept
+            if (action == 1)
+                joinUser.Status = "active";
+            else
+                joinUser.Status = "rejected";
 
             if (await mainRepository.SaveAll())
                 return Ok();
 
-            return BadRequest("This user already belong to project.");
+            return BadRequest("Task failed.");
         }
     }
 }

@@ -36,7 +36,7 @@ namespace TaskManager.API.Controllers
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
+        public async Task<IActionResult> Login(UserForLogin userForLoginDto)
         {
             var dbUser = await userManager.FindByNameAsync(userForLoginDto.Username);
 
@@ -51,7 +51,7 @@ namespace TaskManager.API.Controllers
             {
                 var userToReturn = await userManager.Users.FirstOrDefaultAsync(u => u.Id == dbUser.Id);
 
-                var user = mapper.Map<UserForUserDetailDto>(userToReturn);
+                var user = mapper.Map<UserForUserDetail>(userToReturn);
 
                 return Ok(new
                 {
@@ -64,7 +64,7 @@ namespace TaskManager.API.Controllers
 
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Register(UserForRegister userForRegisterDto)
         {
             if (userForRegisterDto.Password != userForRegisterDto.RepeatPassword)
             {
