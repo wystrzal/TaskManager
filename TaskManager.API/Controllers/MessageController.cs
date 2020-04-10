@@ -88,7 +88,7 @@ namespace TaskManager.API.Controllers
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var message = await messageRepository.GetMessage(messageId, userId);
+            var message = await messageRepository.GetMessage(messageId);
 
             if (message == null)
                 return NotFound("Could not find the message");
@@ -104,7 +104,7 @@ namespace TaskManager.API.Controllers
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var message = await messageRepository.GetMessage(messageId, userId);
+            var message = await messageRepository.GetMessage(messageId);
 
             if (message == null)
                 return NotFound("Could not find the message");

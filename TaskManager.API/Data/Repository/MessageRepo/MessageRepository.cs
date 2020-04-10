@@ -16,7 +16,7 @@ namespace TaskManager.API.Data.Repository.MessageRepo
             this.dataContext = dataContext;
         }
 
-        public async Task<Message> GetMessage(int id, int userId)
+        public async Task<Message> GetMessage(int id)
         {
             return await dataContext.Messages.Include(m => m.Sender).Include(m => m.Recipient)
                 .Where(m => m.MessageId == id).FirstOrDefaultAsync();
