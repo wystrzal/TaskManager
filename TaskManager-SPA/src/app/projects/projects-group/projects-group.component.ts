@@ -26,6 +26,10 @@ export class ProjectsGroupComponent implements OnInit {
     this.getProjects();
   }
 
+  onAcceptInvite(project: Project) {
+    this.projects.push(project);
+  }
+
   getProjects() {
     this.projectService.getProjects("group", this.skip).subscribe(
       (project) => {

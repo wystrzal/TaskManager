@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 *ngIf="error" class="modal-title pull-left">Error</h4>
-  <h4 *ngIf="id" class="modal-title pull-left">Delete</h4>
+  <h4 *ngIf="message" class="modal-title pull-left">Confirm</h4>
   <button
     type="button"
     class="close pull-right"
@@ -12,15 +12,10 @@
 </div>
 <div class="modal-body">
   <h4 *ngIf="error">{{ error }}</h4>
-  <h4 *ngIf="id">Are you sure you want delete?</h4>
+  <h4 *ngIf="message">{{ message }}</h4>
 </div>
-<div class="modal-footer" *ngIf="id">
-  <button
-    (click)="confirmDelete($event)"
-    type="submit"
-    class="btn btn-danger"
-    form="addForm"
-  >
-    Delete
+<div class="modal-footer" *ngIf="message">
+  <button (click)="confirmAction()" class="btn btn-danger">
+    Yes
   </button>
 </div>

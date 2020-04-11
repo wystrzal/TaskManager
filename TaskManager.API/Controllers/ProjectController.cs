@@ -57,11 +57,11 @@ namespace TaskManager.API.Controllers
                 if (await mainRepository.SaveAll())
                 {
                     var projectForReturn = mapper.Map<ProjectForReturn>(projectToAdd);
-                    return CreatedAtRoute("GetProject", new { userId = userId, projectId = projectToAdd.ProjectId }, projectForReturn);
+                    return CreatedAtRoute("GetProject", new { userId, projectToAdd.ProjectId }, projectForReturn);
                 }
             }
         
-            return BadRequest("Could not add the project.");
+            return BadRequest("Could not add project.");
         }
 
         [HttpDelete("{projectId}")]
@@ -73,7 +73,10 @@ namespace TaskManager.API.Controllers
             var project = await projectRepository.GetProject(projectId);
 
             if (project == null)
-                return NotFound("Could not find the project.");
+                return NotFound("Could not find project.");
+
+            if (project.Owner != userId)
+                return Unauthorized();
 
             mainRepository.Delete(project);
 
@@ -81,7 +84,7 @@ namespace TaskManager.API.Controllers
 
                 return Ok();
 
-            return BadRequest("Could not delete the project.");
+            return BadRequest("Could not delete project.");
         }
 
         [HttpGet("{projectId}", Name = "GetProject")]
@@ -93,7 +96,7 @@ namespace TaskManager.API.Controllers
             var project = await projectRepository.GetProject(projectId);
 
             if (project == null)
-                return NotFound("Could not find the project");
+                return NotFound("Could not find project");
 
             var projectForReturn = mapper.Map<ProjectForReturn>(project);
 
@@ -140,7 +143,7 @@ namespace TaskManager.API.Controllers
             var project = await projectRepository.GetProject(projectId);
 
             if (project == null)
-                return NotFound("Could not find the project.");
+                return NotFound("Could not find project.");
 
             if (project.Owner != userId)
                 return Unauthorized();
@@ -170,7 +173,6 @@ namespace TaskManager.API.Controllers
             }
         }
 
-        // TODO !!!
         [HttpPost("join/{projectId}")]
         public async Task<IActionResult> JoinToProject(int userId, int projectId, [FromQuery]int action)
         {
@@ -180,7 +182,7 @@ namespace TaskManager.API.Controllers
             var project = await projectRepository.GetProject(projectId);
 
             if (project == null)
-                return NotFound("Could not find the project.");
+                return NotFound("Could not find project.");
 
             var joinUser = project.UserProjects.Where(up => up.UserId == userId && up.ProjectId == projectId).FirstOrDefault();
 
@@ -191,9 +193,38 @@ namespace TaskManager.API.Controllers
                 joinUser.Status = "rejected";
 
             if (await mainRepository.SaveAll())
-                return Ok();
+            {
+                if (action == 1)
+                {
+                    var projectForReturn = mapper.Map<ProjectForReturn>(project);
+                    return Ok(projectForReturn);
+                }
+                else
+                    return Ok();
+            }
 
             return BadRequest("Task failed.");
+        }      
+
+        [HttpPost("leave/{projectId}")]
+        public async Task<IActionResult> LeaveProject(int userId, int projectId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var project = await projectRepository.GetProject(projectId);
+
+            if (project == null)
+                return NotFound("Could not find project.");
+
+            var userLeave = project.UserProjects.Where(up => up.UserId == userId && up.ProjectId == projectId).FirstOrDefault();
+
+            userLeave.Status = "inactive";
+
+            if (await mainRepository.SaveAll())
+                return Ok();
+
+            return BadRequest("Could not leave project.");
         }
     }
 }

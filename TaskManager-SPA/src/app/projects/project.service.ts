@@ -25,7 +25,6 @@ export class ProjectService {
 
   getProjects(type: string, skip: number): Observable<Project[]> {
     let params = new HttpParams();
-
     params = params.append("type", type);
     params = params.append("skip", skip.toString());
 
@@ -77,6 +76,34 @@ export class ProjectService {
         projectId +
         "/new/" +
         userNick,
+      {}
+    );
+  }
+
+  joinToProject(projectId: number, action: number) {
+    let params = new HttpParams();
+    params = params.append("action", action.toString());
+
+    return this.http.post(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project/" +
+        "join/" +
+        projectId,
+      {},
+      { params }
+    );
+  }
+
+  leaveProject(projectId: number) {
+    return this.http.post(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project/" +
+        "leave/" +
+        projectId,
       {}
     );
   }

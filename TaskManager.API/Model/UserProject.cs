@@ -7,7 +7,7 @@ namespace TaskManager.API.Model
 {
     public class UserProject
     {
-        // active / rejected / invited
+        // active / inactive / rejected / invited
         public string Status { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }

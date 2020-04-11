@@ -1,6 +1,7 @@
 <div class="container-fluid">
-  <app-projects-group-invitations></app-projects-group-invitations>
-
+  <app-projects-group-invitations
+    (project)="onAcceptInvite($event)"
+  ></app-projects-group-invitations>
   <div class="row">
     <div
       class="col-12 content-scroll text-center mt-3"

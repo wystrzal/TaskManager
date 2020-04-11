@@ -6,24 +6,22 @@ import { ErrorModalComponent } from "./error-modal/error-modal.component";
   providedIn: "root",
 })
 export class ErrorService {
-  error: string;
-  id: number;
-  line: string;
-
   bsModalRef: BsModalRef;
   constructor(private modalService: BsModalService) {}
 
   newError(error: string) {
-    this.error = error;
-    this.openErrorModal();
+    this.openErrorModal(error);
   }
 
-  delete(id: number) {}
+  confirm(message: string, action: any) {
+    this.openErrorModal(null, action, message);
+  }
 
-  openErrorModal() {
+  openErrorModal(isError?: string, isAction?: any, isMessage?: string) {
     const initialState = {
-      error: this.error,
-      id: this.id,
+      error: isError,
+      action: isAction,
+      message: isMessage,
     };
     this.bsModalRef = this.modalService.show(ErrorModalComponent, {
       initialState,

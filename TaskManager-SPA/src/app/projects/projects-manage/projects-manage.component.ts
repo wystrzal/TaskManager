@@ -28,7 +28,6 @@ export class ProjectsManageComponent implements OnInit {
   openProjectAddModal() {
     this.bsModalRef = this.modalService.show(ProjectsManageAddComponent);
     this.bsModalRef.content.newProject.subscribe((project: Project) => {
-      console.log(project);
       this.projects.push(project);
     });
   }

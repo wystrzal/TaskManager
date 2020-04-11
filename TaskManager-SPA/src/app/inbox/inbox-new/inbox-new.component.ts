@@ -6,7 +6,7 @@ import { ErrorService } from "src/app/core/helpers/error.service";
   selector: "app-inbox-new",
   templateUrl: "./inbox-new.component.html",
   styleUrls: ["./inbox-new.component.css"],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class InboxNewComponent implements OnInit {
   model: any = {};
@@ -25,7 +25,7 @@ export class InboxNewComponent implements OnInit {
       () => {
         form.resetForm();
       },
-      error => {
+      (error) => {
         this.errorService.newError(error);
       },
       () => {

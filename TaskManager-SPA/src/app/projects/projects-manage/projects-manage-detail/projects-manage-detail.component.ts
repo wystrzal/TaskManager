@@ -3,6 +3,7 @@ import { Project } from "src/app/models/project.model";
 import { ProjectService } from "../../project.service";
 import { ErrorService } from "src/app/core/helpers/error.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-projects-manage-detail",
@@ -12,11 +13,13 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class ProjectsManageDetailComponent implements OnInit {
   model: any = {};
   project: Project;
+  userId: number;
 
   constructor(
     private projectService: ProjectService,
     private errorService: ErrorService,
     private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -30,6 +33,7 @@ export class ProjectsManageDetailComponent implements OnInit {
       .subscribe(
         (project) => {
           this.project = project;
+          this.userId = this.authService.decodedToken.nameid;
         },
         (error) => {
           this.errorService.newError(error);
@@ -38,15 +42,32 @@ export class ProjectsManageDetailComponent implements OnInit {
   }
 
   deleteProject() {
-    this.projectService
-      .deleteProject(this.activatedRoute.snapshot.params.id)
-      .subscribe(
-        () => {
-          this.router.navigate(["../"], { relativeTo: this.activatedRoute });
-        },
-        (error) => {
-          this.errorService.newError(error);
-        }
-      );
+    this.errorService.confirm("Are you sure you want delete?", () => {
+      this.projectService
+        .deleteProject(this.activatedRoute.snapshot.params.id)
+        .subscribe(
+          () => {
+            this.router.navigate(["../"], { relativeTo: this.activatedRoute });
+          },
+          (error) => {
+            this.errorService.newError(error);
+          }
+        );
+    });
+  }
+
+  leaveProject() {
+    this.errorService.confirm("Are you sure you want leave?", () => {
+      this.projectService
+        .leaveProject(this.activatedRoute.snapshot.params.id)
+        .subscribe(
+          () => {
+            this.router.navigate(["../"], { relativeTo: this.activatedRoute });
+          },
+          (error) => {
+            this.errorService.newError(error);
+          }
+        );
+    });
   }
 }

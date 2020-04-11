@@ -10,7 +10,9 @@ import { ErrorService } from "src/app/core/helpers/error.service";
 })
 export class ProjectsManageUsersComponent implements OnInit {
   @Input() project: Project;
+  @Input() userId: number;
   model: any = {};
+  sended = false;
 
   constructor(
     private projectService: ProjectService,
@@ -28,6 +30,13 @@ export class ProjectsManageUsersComponent implements OnInit {
         },
         (error) => {
           this.errorService.newError(error);
+        },
+        () => {
+          this.sended = true;
+
+          setTimeout(() => {
+            this.sended = false;
+          }, 3000);
         }
       );
   }

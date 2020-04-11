@@ -5,9 +5,14 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12 mt-2">
-      <div class="text-left my-2">
+      <div class="text-left my-2" *ngIf="project?.owner == userId">
         <button class="btn btn-danger" (click)="deleteProject()">
           <i class="fa fa-trash"> Delete</i>
+        </button>
+      </div>
+      <div class="text-left my-2" *ngIf="project?.owner != userId">
+        <button class="btn btn-danger" (click)="leaveProject()">
+          <i class="fa fa-trash"> Leave</i>
         </button>
       </div>
       <a>
@@ -26,7 +31,7 @@
       </a>
     </div>
   </div>
-  <form class="my-2" #changeNick="ngForm">
+  <form class="my-2" #changeNick="ngForm" *ngIf="project?.owner == userId">
     <label for="change-name">Change Name</label>
     <input
       [(ngModel)]="model.changeNick"
@@ -40,5 +45,8 @@
       Save
     </button>
   </form>
-  <app-projects-manage-users [project]="project"></app-projects-manage-users>
+  <app-projects-manage-users
+    [userId]="userId"
+    [project]="project"
+  ></app-projects-manage-users>
 </div>

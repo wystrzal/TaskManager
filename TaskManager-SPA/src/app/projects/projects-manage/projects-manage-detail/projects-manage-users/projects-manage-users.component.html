@@ -15,7 +15,10 @@
             <div class="user-text">
               Wystrzal
             </div>
-            <div class="text-center user-delete">
+            <div
+              class="text-center user-delete"
+              *ngIf="project?.owner == userId"
+            >
               <button class="btn-danger btn">
                 <i class="fa fa-trash"></i>
               </button>
@@ -25,7 +28,7 @@
       </div>
     </div>
   </div>
-  <div class="my-4">
+  <div class="my-4" *ngIf="project?.owner == userId">
     <form
       class="my-2"
       #inviteUser="ngForm"
@@ -48,5 +51,8 @@
         Send
       </button>
     </form>
+    <alert type="success" *ngIf="sended">
+      <strong>Invited successfully!</strong>
+    </alert>
   </div>
 </div>

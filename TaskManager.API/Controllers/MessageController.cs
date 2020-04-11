@@ -53,7 +53,7 @@ namespace TaskManager.API.Controllers
             if (await mainRepository.SaveAll())
                 return Ok();
 
-            return BadRequest("Could not send the message.");
+            return BadRequest("Could not send message.");
         }
 
         [HttpGet("received")]
@@ -91,7 +91,7 @@ namespace TaskManager.API.Controllers
             var message = await messageRepository.GetMessage(messageId);
 
             if (message == null)
-                return NotFound("Could not find the message");
+                return NotFound("Could not find message");
 
             var messageForReturn = mapper.Map<MessageForReturnDetailMessage>(message);
 
@@ -107,7 +107,7 @@ namespace TaskManager.API.Controllers
             var message = await messageRepository.GetMessage(messageId);
 
             if (message == null)
-                return NotFound("Could not find the message");
+                return NotFound("Could not find message");
 
             if (userType == "recipient")
             {
@@ -127,7 +127,7 @@ namespace TaskManager.API.Controllers
                 if (await mainRepository.SaveAll())
                     return Ok();
 
-                return BadRequest("Could not delete the message.");
+                return BadRequest("Could not delete message.");
             }
 
             return NoContent();
