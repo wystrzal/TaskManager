@@ -226,5 +226,24 @@ namespace TaskManager.API.Controllers
 
             return BadRequest("Could not leave project.");
         }
+
+        [HttpPut("change/{projectId}")]
+        public async Task<IActionResult> ChangeProjectName(int userId, int projectId, ProjectForChangeName projectForChangeName)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var project = await projectRepository.GetProject(projectId);
+
+            if (project == null)
+                return NotFound("Could not find project.");
+
+            mapper.Map(projectForChangeName, project);
+
+            if (await mainRepository.SaveAll())
+                return Ok();
+
+            return BadRequest("Could not change project name.");
+        }
     }
 }

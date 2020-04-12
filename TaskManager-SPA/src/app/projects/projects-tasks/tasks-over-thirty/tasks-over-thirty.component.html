@@ -1,0 +1,93 @@
+<div class="border p-2 item">
+  <div class="row align-items-center">
+    <div class="col-2">
+      <span dropdown>
+        <a id="basic-link" dropdownToggle aria-controls="basic-link-dropdown">
+          <img
+            src="../../../assets/images/bear.jpg"
+            class="img-responsive rounded-circle"
+            alt="Bear"
+          />
+        </a>
+        <ul
+          id="basic-link-dropdown"
+          *dropdownMenu
+          class="dropdown-menu"
+          role="menu"
+          aria-labelledby="basic-link"
+        >
+          <a class="dropdown-item" href="#">Wystrzal8365</a>
+        </ul>
+      </span>
+    </div>
+    <div class="col-4 task-name">
+      Make your app
+    </div>
+    <div class="col-3">
+      <a
+        (click)="changePriority(1)"
+        *ngIf="!priorityOpen[1]"
+        type="button"
+        class="btn btn-warning"
+      >
+        Medium
+      </a>
+      <select
+        (change)="changePriority(1)"
+        *ngIf="priorityOpen[1]"
+        class="custom-select mt-1"
+      >
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+    </div>
+    <div class="col-3">
+      <a
+        (click)="changeStatus()"
+        *ngIf="statusOpen"
+        type="button"
+        class="btn btn-warning"
+      >
+        In Progress
+      </a>
+      <select
+        (change)="changeStatus()"
+        *ngIf="!statusOpen"
+        class="custom-select"
+      >
+        <option value="Abandoned">Done</option>
+        <option value="Medium">In Progress</option>
+        <option value="Low">To Do</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="border p-2 mobile-item">
+  <div class="row align-items-center">
+    <div class="col-4">
+      <span dropdown>
+        <a id="basic-link" dropdownToggle aria-controls="basic-link-dropdown">
+          <img
+            src="../../../assets/images/bear.jpg"
+            class="img-responsive rounded-circle"
+            alt="Bear"
+          />
+        </a>
+        <ul
+          id="basic-link-dropdown"
+          *dropdownMenu
+          class="dropdown-menu"
+          role="menu"
+          aria-labelledby="basic-link"
+        >
+          <a class="dropdown-item" href="#">Wystrzal8365</a>
+        </ul>
+      </span>
+    </div>
+    <div class="col-7 task-name">
+      Make your app
+    </div>
+  </div>
+</div>

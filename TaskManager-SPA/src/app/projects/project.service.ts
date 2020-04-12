@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "src/environments/environment";
-import { AuthService } from "../services/auth.service";
+import { AuthService } from "../shared/services/auth.service";
 import { Observable } from "rxjs";
 import { Project } from "../models/project.model";
 
@@ -105,6 +105,18 @@ export class ProjectService {
         "leave/" +
         projectId,
       {}
+    );
+  }
+
+  changeProjectName(projectId: number, model: any) {
+    return this.http.put(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project/" +
+        "change/" +
+        projectId,
+      model
     );
   }
 }

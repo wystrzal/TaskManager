@@ -9,6 +9,10 @@ import { ProjectsManageAddComponent } from "./projects-manage/projects-manage-ad
 import { ProjectsManageDetailComponent } from "./projects-manage/projects-manage-detail/projects-manage-detail.component";
 import { ProjectsGroupInvitationsComponent } from "./projects-group/projects-group-invitations/projects-group-invitations.component";
 import { ProjectsManageUsersComponent } from "./projects-manage/projects-manage-detail/projects-manage-users/projects-manage-users.component";
+import { ProjectsTasksComponent } from "./projects-tasks/projects-tasks.component";
+import { TasksWithinSevenComponent } from "./projects-tasks/tasks-within-seven/tasks-within-seven.component";
+import { TasksWithinThirtyComponent } from "./projects-tasks/tasks-within-thirty/tasks-within-thirty.component";
+import { TasksOverThirtyComponent } from "./projects-tasks/tasks-over-thirty/tasks-over-thirty.component";
 
 @NgModule({
   declarations: [
@@ -20,6 +24,10 @@ import { ProjectsManageUsersComponent } from "./projects-manage/projects-manage-
     ProjectsManageDetailComponent,
     ProjectsGroupInvitationsComponent,
     ProjectsManageUsersComponent,
+    ProjectsTasksComponent,
+    TasksWithinSevenComponent,
+    TasksWithinThirtyComponent,
+    TasksOverThirtyComponent,
   ],
   imports: [SharedModule, ProjectsRoutes],
   entryComponents: [ProjectsManageAddComponent],

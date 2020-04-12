@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { AuthService } from "../services/auth.service";
+import { AuthService } from "../shared/services/auth.service";
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ErrorService } from "../core/helpers/error.service";
@@ -7,7 +7,7 @@ import { ErrorService } from "../core/helpers/error.service";
 @Component({
   selector: "app-login-register",
   templateUrl: "./login-register.component.html",
-  styleUrls: ["./login-register.component.css"]
+  styleUrls: ["./login-register.component.css"],
 })
 export class LoginRegisterComponent implements OnInit {
   @Output() canceled = new EventEmitter<boolean>();
@@ -28,7 +28,7 @@ export class LoginRegisterComponent implements OnInit {
       () => {
         this.authService.user.next(JSON.parse(localStorage.getItem("user")));
       },
-      error => {
+      (error) => {
         this.errorService.newError(error);
       },
       () => {
@@ -39,11 +39,11 @@ export class LoginRegisterComponent implements OnInit {
 
   register() {
     this.authService.register(this.modelRegister).subscribe(
-      next => {
+      (next) => {
         this.modelLogin.username = this.modelRegister.username;
         this.selectLogin();
       },
-      error => {
+      (error) => {
         this.errorService.newError(error);
       }
     );

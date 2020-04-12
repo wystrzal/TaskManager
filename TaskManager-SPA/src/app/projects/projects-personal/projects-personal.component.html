@@ -1,15 +1,15 @@
 <div class="container-fluid">
   <div class="row">
     <div
-      class="col-12 content-scroll text-center mt-2"
+      class="col-12 content-scroll text-center mt-3"
       infiniteScroll
       [infiniteScrollDistance]="2"
       [infiniteScrollThrottle]="50"
       (scrolled)="onScroll()"
       [scrollWindow]="false"
     >
-      <a *ngFor="let project of projects">
-        <div class="border">
+      <a [routerLink]="['../tasks']" *ngFor="let project of projects">
+        <div class="border p-2">
           <h4>Name: {{ project.name }}</h4>
         </div>
       </a>

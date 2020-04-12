@@ -10,6 +10,7 @@ import { NavComponent } from "./nav/nav.component";
 import { CoreModule } from "./core/core.module";
 import { RouterModule } from "@angular/router";
 import { AppRoutes } from "./app.routing";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AppRoutes } from "./app.routing";
     CoreModule,
     InboxModule,
     ProjectsModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

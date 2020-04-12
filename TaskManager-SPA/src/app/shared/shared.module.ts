@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { AlertModule, ModalModule } from "ngx-bootstrap";
+import { AlertModule, ModalModule, BsDropdownModule } from "ngx-bootstrap";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
@@ -11,8 +11,9 @@ import { RouterModule } from "@angular/router";
     AlertModule.forRoot(),
     InfiniteScrollModule,
     ModalModule.forRoot(),
+    BsDropdownModule.forRoot(),
     FormsModule,
-    RouterModule
+    RouterModule,
   ],
   declarations: [],
   exports: [
@@ -21,7 +22,8 @@ import { RouterModule } from "@angular/router";
     InfiniteScrollModule,
     ModalModule,
     FormsModule,
-    RouterModule
-  ]
+    RouterModule,
+    BsDropdownModule,
+  ],
 })
 export class SharedModule {}

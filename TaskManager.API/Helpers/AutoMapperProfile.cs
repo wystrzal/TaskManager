@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaskManager.API.Dto;
 using TaskManager.API.Dto.Message;
 using TaskManager.API.Dto.Project;
+using TaskManager.API.Dto.Task;
 using TaskManager.API.Dto.User;
 using TaskManager.API.Model;
 
@@ -44,7 +45,12 @@ namespace TaskManager.API.Helpers
                  .ForMember(dest => dest.AnyUsers,
                  opt => opt.MapFrom(src => src.UserProjects.Where(up => up.Status == "active").ToList().Count > 1 ? true : false));
 
-            CreateMap<Project, ProjectForReturnInvitations>();                  
+            CreateMap<Project, ProjectForReturnInvitations>();
+
+            CreateMap<ProjectForChangeName, Project>();
+
+            //Task 
+            CreateMap<TaskForAdd, PTask>();
         }
    }
 }

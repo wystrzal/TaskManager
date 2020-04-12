@@ -31,17 +31,26 @@
       </a>
     </div>
   </div>
-  <form class="my-2" #changeNick="ngForm" *ngIf="project?.owner == userId">
+  <form
+    class="my-2"
+    #changeNick="ngForm"
+    *ngIf="project?.owner == userId"
+    (ngSubmit)="changeProjectName()"
+  >
     <label for="change-name">Change Name</label>
     <input
-      [(ngModel)]="model.changeNick"
-      name="changeNick"
+      [(ngModel)]="model.name"
+      name="name"
       required
       type="text"
       class="form-control"
       id="change-name"
     />
-    <button [disabled]="!changeNick.valid" class="btn btn-success mt-2">
+    <button
+      type="submit"
+      [disabled]="!changeNick.valid"
+      class="btn btn-success mt-2"
+    >
       Save
     </button>
   </form>

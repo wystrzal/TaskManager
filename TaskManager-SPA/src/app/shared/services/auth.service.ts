@@ -4,7 +4,7 @@ import { environment } from "src/environments/environment";
 import { map } from "rxjs/operators";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Router } from "@angular/router";
-import { User } from "../models/user.model";
+import { User } from "../../models/user.model";
 import { Subject } from "rxjs";
 
 @Injectable({

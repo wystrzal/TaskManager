@@ -3,7 +3,7 @@ import { Project } from "src/app/models/project.model";
 import { ProjectService } from "../../project.service";
 import { ErrorService } from "src/app/core/helpers/error.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { AuthService } from "src/app/services/auth.service";
+import { AuthService } from "src/app/shared/services/auth.service";
 
 @Component({
   selector: "app-projects-manage-detail",
@@ -69,5 +69,19 @@ export class ProjectsManageDetailComponent implements OnInit {
           }
         );
     });
+  }
+
+  changeProjectName() {
+    this.projectService
+      .changeProjectName(this.activatedRoute.snapshot.params.id, this.model)
+      .subscribe(
+        () => {
+          this.project.name = this.model.name;
+        },
+        (error) => {
+          this.errorService.newError(error);
+        }
+      );
+    console.log(this.model);
   }
 }

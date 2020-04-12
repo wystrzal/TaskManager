@@ -4,6 +4,7 @@ import { ProjectsGroupComponent } from "./projects-group/projects-group.componen
 import { ProjectsPersonalComponent } from "./projects-personal/projects-personal.component";
 import { ProjectsManageComponent } from "./projects-manage/projects-manage.component";
 import { ProjectsManageDetailComponent } from "./projects-manage/projects-manage-detail/projects-manage-detail.component";
+import { ProjectsTasksComponent } from "./projects-tasks/projects-tasks.component";
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: "manage/:id",
         component: ProjectsManageDetailComponent,
+      },
+      {
+        path: "tasks",
+        component: ProjectsTasksComponent,
       },
     ],
   },
