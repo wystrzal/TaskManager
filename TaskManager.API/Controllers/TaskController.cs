@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.Data.Repository;
 using TaskManager.API.Data.Repository.ProjectRepo;
+using TaskManager.API.Data.Repository.TaskRepo;
 using TaskManager.API.Dto.Task;
 using TaskManager.API.Model;
 
@@ -20,12 +21,44 @@ namespace TaskManager.API.Controllers
         private readonly IMainRepository mainRepository;
         private readonly IProjectRepository projectRepository;
         private readonly IMapper mapper;
+        private readonly ITaskRepository taskRepository;
 
-        public TaskController(IMainRepository mainRepository, IProjectRepository projectRepository, IMapper mapper)
+        public TaskController(IMainRepository mainRepository, IProjectRepository projectRepository, IMapper mapper, 
+            ITaskRepository taskRepository)
         {
             this.mainRepository = mainRepository;
             this.projectRepository = projectRepository;
             this.mapper = mapper;
+            this.taskRepository = taskRepository;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTasks(int userId, int projectId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var tasks = await taskRepository.GetTasks(projectId);
+
+            var tasksForReturn = mapper.Map<IEnumerable<PTask>>(tasks);
+
+            return Ok(tasksForReturn);
+        }
+
+        [HttpGet("{taskId}", Name = "GetTask")]
+        public async Task<IActionResult> GetTask(int userId, int taskId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var task = await taskRepository.GetTask(taskId);
+
+            if (task == null)
+                return NotFound("Could not find task");
+
+            var taskForReturn = mapper.Map<TaskForReturn>(task);
+
+            return Ok(taskForReturn);
         }
 
         [HttpPost]
@@ -44,9 +77,14 @@ namespace TaskManager.API.Controllers
             project.PTasks.Add(taskToAdd);
 
             if (await mainRepository.SaveAll())
-                return Ok();
+            {
+                var taskForReturn = mapper.Map<TaskForReturn>(taskToAdd);
+                return CreatedAtRoute("GetTask", new { userId, projectId, taskId = taskToAdd.PTaskId }, taskForReturn);
+            }
 
             return BadRequest("Could not add task");
         }
+
+
     }
 }

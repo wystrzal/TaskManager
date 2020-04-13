@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">New Task</h4>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="bsModalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #taskForm="ngForm" id="taskForm" (ngSubmit)="addTask()">
+    <div class="form-group">
+      <label for="name">Name </label>
+      <input
+        [(ngModel)]="model.name"
+        name="name"
+        required
+        class="form-control"
+        type="text"
+        id="name"
+      />
+    </div>
+    <div class="form-group">
+      <label for="status">Status</label>
+      <select
+        [(ngModel)]="model.status"
+        name="status"
+        required
+        id="status"
+        class="form-control"
+      >
+        <option value="done">Done</option>
+        <option value="inProgress">In Progress</option>
+        <option value="toDo">To Do</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="priority">Priority</label>
+      <select
+        [(ngModel)]="model.priority"
+        name="priority"
+        required
+        id="priority"
+        class="form-control"
+      >
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="timeToEnd">Time To End</label>
+      <input
+        [(ngModel)]="model.timeToEnd"
+        name="timeToEnd"
+        required
+        id="timeToEnd"
+        class="form-control"
+        type="date"
+      />
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button
+    [disabled]="!taskForm.valid"
+    type="submit"
+    class="btn btn-success"
+    form="taskForm"
+  >
+    Add
+  </button>
+</div>

@@ -51,6 +51,7 @@ namespace TaskManager.API.Helpers
 
             //Task 
             CreateMap<TaskForAdd, PTask>();
+            CreateMap<PTask, TaskForReturn>();
         }
    }
 }

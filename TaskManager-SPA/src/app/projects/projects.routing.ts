@@ -28,7 +28,7 @@ const routes: Routes = [
         component: ProjectsManageDetailComponent,
       },
       {
-        path: "tasks",
+        path: ":id/tasks",
         component: ProjectsTasksComponent,
       },
     ],

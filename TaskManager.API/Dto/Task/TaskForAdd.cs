@@ -8,5 +8,8 @@ namespace TaskManager.API.Dto.Task
     public class TaskForAdd
     {
         public string Name { get; set; }
+        public string Status { get; set; }
+        public string Priority { get; set; }
+        public DateTime TimeToEnd { get; set; }
     }
 }

@@ -13,6 +13,7 @@ import { ProjectsTasksComponent } from "./projects-tasks/projects-tasks.componen
 import { TasksWithinSevenComponent } from "./projects-tasks/tasks-within-seven/tasks-within-seven.component";
 import { TasksWithinThirtyComponent } from "./projects-tasks/tasks-within-thirty/tasks-within-thirty.component";
 import { TasksOverThirtyComponent } from "./projects-tasks/tasks-over-thirty/tasks-over-thirty.component";
+import { ProjectsTasksAddComponent } from "./projects-tasks/projects-tasks-add/projects-tasks-add.component";
 
 @NgModule({
   declarations: [
@@ -28,8 +29,9 @@ import { TasksOverThirtyComponent } from "./projects-tasks/tasks-over-thirty/tas
     TasksWithinSevenComponent,
     TasksWithinThirtyComponent,
     TasksOverThirtyComponent,
+    ProjectsTasksAddComponent,
   ],
   imports: [SharedModule, ProjectsRoutes],
-  entryComponents: [ProjectsManageAddComponent],
+  entryComponents: [ProjectsManageAddComponent, ProjectsTasksAddComponent],
 })
 export class ProjectsModule {}
