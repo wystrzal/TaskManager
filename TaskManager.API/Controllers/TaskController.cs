@@ -40,7 +40,7 @@ namespace TaskManager.API.Controllers
 
             var tasks = await taskRepository.GetTasks(projectId);
 
-            var tasksForReturn = mapper.Map<IEnumerable<PTask>>(tasks);
+            var tasksForReturn = mapper.Map<IEnumerable<TaskForReturn>>(tasks);
 
             return Ok(tasksForReturn);
         }

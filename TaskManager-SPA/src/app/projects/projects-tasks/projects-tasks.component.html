@@ -12,17 +12,329 @@
     <div class="col-12 text-center">
       <h4 class="text-left text-danger mt-5">To be done within 7 days</h4>
 
-      <app-tasks-within-seven></app-tasks-within-seven>
+      <div *ngFor="let task of tasks">
+        <div
+          class="border p-2 item"
+          *ngIf="task.timeToEnd > 0 && task.timeToEnd <= 7"
+        >
+          <div class="row align-items-center">
+            <div class="col-2">
+              <span dropdown>
+                <a
+                  id="basic-link"
+                  dropdownToggle
+                  aria-controls="basic-link-dropdown"
+                >
+                  <img
+                    src="../../../assets/images/bear.jpg"
+                    class="img-responsive rounded-circle"
+                    alt="Bear"
+                  />
+                </a>
+                <ul
+                  id="basic-link-dropdown"
+                  *dropdownMenu
+                  class="dropdown-menu"
+                  role="menu"
+                  aria-labelledby="basic-link"
+                >
+                  <a class="dropdown-item" href="#">Wystrzal8365</a>
+                </ul>
+              </span>
+            </div>
+            <div class="col-4 task-name">
+              {{ task.name }}
+              {{ task.timeToEnd }}
+            </div>
+            <div class="col-3">
+              <a
+                (click)="changePriority(task.taskId)"
+                *ngIf="!priorityOpen[task.taskId]"
+                type="button"
+                class="btn btn-warning"
+              >
+                {{ task.priority }}
+              </a>
+              <select
+                (change)="changePriority(task.taskId)"
+                *ngIf="priorityOpen[task.taskId]"
+                class="custom-select mt-1"
+              >
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </div>
+            <div class="col-3">
+              <a
+                (click)="changeStatus(task.taskId)"
+                *ngIf="!statusOpen[task.taskId]"
+                type="button"
+                class="btn btn-warning"
+              >
+                {{ task.status }}
+              </a>
+              <select
+                (change)="changeStatus(task.taskId)"
+                *ngIf="statusOpen[task.taskId]"
+                class="custom-select"
+              >
+                <option value="Done">Done</option>
+                <option value="In Progress">In Progress</option>
+                <option value="To Do">To Do</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="border p-2 mobile-item">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <span dropdown>
+                <a
+                  id="basic-link"
+                  dropdownToggle
+                  aria-controls="basic-link-dropdown"
+                >
+                  <img
+                    src="../../../assets/images/bear.jpg"
+                    class="img-responsive rounded-circle"
+                    alt="Bear"
+                  />
+                </a>
+                <ul
+                  id="basic-link-dropdown"
+                  *dropdownMenu
+                  class="dropdown-menu"
+                  role="menu"
+                  aria-labelledby="basic-link"
+                >
+                  <a class="dropdown-item" href="#">Wystrzal8365</a>
+                </ul>
+              </span>
+            </div>
+            <div class="col-7 task-name">
+              {{ task.name }}
+            </div>
+          </div>
+        </div>
+      </div>
 
       <h4 class="text-left text-warning mt-5">To be done within 30 days</h4>
 
-      <app-tasks-within-thirty></app-tasks-within-thirty>
+      <div *ngFor="let task of tasks">
+        <div
+          class="border p-2 item"
+          *ngIf="task.timeToEnd <= 30 && task.timeToEnd > 7"
+        >
+          <div class="row align-items-center">
+            <div class="col-2">
+              <span dropdown>
+                <a
+                  id="basic-link"
+                  dropdownToggle
+                  aria-controls="basic-link-dropdown"
+                >
+                  <img
+                    src="../../../assets/images/bear.jpg"
+                    class="img-responsive rounded-circle"
+                    alt="Bear"
+                  />
+                </a>
+                <ul
+                  id="basic-link-dropdown"
+                  *dropdownMenu
+                  class="dropdown-menu"
+                  role="menu"
+                  aria-labelledby="basic-link"
+                >
+                  <a class="dropdown-item" href="#">Wystrzal8365</a>
+                </ul>
+              </span>
+            </div>
+            <div class="col-4 task-name">
+              {{ task.name }}
+            </div>
+            <div class="col-3">
+              <a
+                (click)="changePriority(task.taskId)"
+                *ngIf="!priorityOpen[task.taskId]"
+                type="button"
+                class="btn btn-warning"
+              >
+                {{ task.priority }}
+              </a>
+              <select
+                (change)="changePriority(task.taskId)"
+                *ngIf="priorityOpen[task.taskId]"
+                class="custom-select mt-1"
+              >
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </div>
+            <div class="col-3">
+              <a
+                (click)="changeStatus(task.taskId)"
+                *ngIf="!statusOpen[task.taskId]"
+                type="button"
+                class="btn btn-warning"
+              >
+                {{ task.status }}
+              </a>
+              <select
+                (change)="changeStatus(task.taskId)"
+                *ngIf="statusOpen[task.taskId]"
+                class="custom-select"
+              >
+                <option value="Done">Done</option>
+                <option value="In Progress">In Progress</option>
+                <option value="To Do">To Do</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="border p-2 mobile-item">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <span dropdown>
+                <a
+                  id="basic-link"
+                  dropdownToggle
+                  aria-controls="basic-link-dropdown"
+                >
+                  <img
+                    src="../../../assets/images/bear.jpg"
+                    class="img-responsive rounded-circle"
+                    alt="Bear"
+                  />
+                </a>
+                <ul
+                  id="basic-link-dropdown"
+                  *dropdownMenu
+                  class="dropdown-menu"
+                  role="menu"
+                  aria-labelledby="basic-link"
+                >
+                  <a class="dropdown-item" href="#">Wystrzal8365</a>
+                </ul>
+              </span>
+            </div>
+            <div class="col-7 task-name">
+              {{ task.name }}
+            </div>
+          </div>
+        </div>
+      </div>
 
       <h4 class="text-left text-success mt-5">
         Over 30 days to go
       </h4>
+      <div *ngFor="let task of tasks">
+        <div class="border p-2 item" *ngIf="task.timeToEnd > 30">
+          <div class="row align-items-center">
+            <div class="col-2">
+              <span dropdown>
+                <a
+                  id="basic-link"
+                  dropdownToggle
+                  aria-controls="basic-link-dropdown"
+                >
+                  <img
+                    src="../../../assets/images/bear.jpg"
+                    class="img-responsive rounded-circle"
+                    alt="Bear"
+                  />
+                </a>
+                <ul
+                  id="basic-link-dropdown"
+                  *dropdownMenu
+                  class="dropdown-menu"
+                  role="menu"
+                  aria-labelledby="basic-link"
+                >
+                  <a class="dropdown-item" href="#">Wystrzal8365</a>
+                </ul>
+              </span>
+            </div>
+            <div class="col-4 task-name">
+              {{ task.name }}
+            </div>
+            <div class="col-3">
+              <a
+                (click)="changePriority(task.taskId)"
+                *ngIf="!priorityOpen[task.taskId]"
+                type="button"
+                class="btn btn-warning"
+              >
+                {{ task.priority }}
+              </a>
+              <select
+                (change)="changePriority(task.taskId)"
+                *ngIf="priorityOpen[task.taskId]"
+                class="custom-select mt-1"
+              >
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </div>
+            <div class="col-3">
+              <a
+                (click)="changeStatus(task.taskId)"
+                *ngIf="!statusOpen[task.taskId]"
+                type="button"
+                class="btn btn-warning"
+              >
+                {{ task.status }}
+              </a>
+              <select
+                (change)="changeStatus(task.taskId)"
+                *ngIf="statusOpen[task.taskId]"
+                class="custom-select"
+              >
+                <option value="Done">Done</option>
+                <option value="In Progress">In Progress</option>
+                <option value="To Do">To Do</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-      <app-tasks-over-thirty></app-tasks-over-thirty>
+        <div class="border p-2 mobile-item">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <span dropdown>
+                <a
+                  id="basic-link"
+                  dropdownToggle
+                  aria-controls="basic-link-dropdown"
+                >
+                  <img
+                    src="../../../assets/images/bear.jpg"
+                    class="img-responsive rounded-circle"
+                    alt="Bear"
+                  />
+                </a>
+                <ul
+                  id="basic-link-dropdown"
+                  *dropdownMenu
+                  class="dropdown-menu"
+                  role="menu"
+                  aria-labelledby="basic-link"
+                >
+                  <a class="dropdown-item" href="#">Wystrzal8365</a>
+                </ul>
+              </span>
+            </div>
+            <div class="col-7 task-name">
+              {{ task.name }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

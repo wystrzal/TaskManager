@@ -23,7 +23,8 @@ namespace TaskManager.API.Data.Repository.TaskRepo
 
         public async Task<IEnumerable<PTask>> GetTasks(int projectId)
         {
-            return await dataContext.PTasks.Where(t => t.Project.ProjectId == projectId).ToListAsync();
+            return await dataContext.PTasks.Where(t => t.Project.ProjectId == projectId)
+                .OrderBy(t => t.TimeToEnd).ToListAsync();
         }
     }
 }

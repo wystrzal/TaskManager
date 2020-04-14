@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { BsModalRef } from "ngx-bootstrap";
 import { ErrorService } from "src/app/core/helpers/error.service";
-import { Task } from "src/app/models/task.model";
 import { TaskService } from "../task.service";
+import { Task } from "src/app/models/task.model";
 
 @Component({
   selector: "app-projects-tasks-add",
@@ -26,7 +26,7 @@ export class ProjectsTasksAddComponent implements OnInit {
   addTask() {
     this.taskService.addTask(this.userId, this.projectId, this.model).subscribe(
       (task: Task) => {
-        this.newTask.emit(task);
+        this.newTask.next(task);
       },
       (error) => {
         this.errorService.newError(error);

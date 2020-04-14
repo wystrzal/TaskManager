@@ -3,5 +3,5 @@ export interface Task {
   name: string;
   status: string;
   priority: string;
-  timeToEnd: Date;
+  timeToEnd: number;
 }

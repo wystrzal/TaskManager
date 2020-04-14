@@ -51,7 +51,9 @@ namespace TaskManager.API.Helpers
 
             //Task 
             CreateMap<TaskForAdd, PTask>();
-            CreateMap<PTask, TaskForReturn>();
+            CreateMap<PTask, TaskForReturn>()
+                .ForMember(dest => dest.TimeToEnd,
+                opt => opt.MapFrom(src => src.TimeToEnd.Subtract(DateTime.Now).TotalDays));
         }
    }
 }
