@@ -149,6 +149,9 @@ namespace TaskManager.API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Owner")
+                        .HasColumnType("int");
+
                     b.Property<string>("Priority")
                         .HasColumnType("nvarchar(max)");
 

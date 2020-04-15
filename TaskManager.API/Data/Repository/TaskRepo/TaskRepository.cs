@@ -21,10 +21,15 @@ namespace TaskManager.API.Data.Repository.TaskRepo
             return await dataContext.PTasks.Where(t => t.PTaskId == id).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<PTask>> GetTasks(int projectId)
+        public async Task<IEnumerable<PTask>> GetTasks(int projectId, int skip)
         {
-            return await dataContext.PTasks.Where(t => t.Project.ProjectId == projectId)
-                .OrderBy(t => t.TimeToEnd).ToListAsync();
+            return await dataContext.PTasks.Include(t => t.Project).Where(t => t.Project.ProjectId == projectId)
+                .OrderBy(t => t.TimeToEnd).Skip(skip).Take(15).ToListAsync();
+        }
+        public async Task<IEnumerable<PTask>> GetImportantTasks(int userId)
+        {
+            return await dataContext.PTasks.Include(t => t.Project)
+                .Where(t => t.Owner == userId || t.Project.Owner == userId && t.Priority == "High").ToListAsync();
         }
     }
 }

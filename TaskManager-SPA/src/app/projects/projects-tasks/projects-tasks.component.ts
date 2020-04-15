@@ -5,7 +5,7 @@ import { ProjectsTasksAddComponent } from "./projects-tasks-add/projects-tasks-a
 import { Task } from "src/app/models/task.model";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { ActivatedRoute } from "@angular/router";
-import { TaskService } from "./task.service";
+import { TaskService } from "../../shared/services/task.service";
 import { ErrorService } from "src/app/core/helpers/error.service";
 
 @Component({
@@ -14,10 +14,14 @@ import { ErrorService } from "src/app/core/helpers/error.service";
   styleUrls: ["./projects-tasks.component.css"],
 })
 export class ProjectsTasksComponent implements OnInit {
+  currentUser: number;
   priorityOpen: boolean[] = [];
   statusOpen: boolean[] = [];
   bsModalRef: BsModalRef;
   tasks: Task[];
+  priority: string;
+  status: string;
+  skip = 0;
 
   constructor(
     private location: Location,
@@ -49,19 +53,59 @@ export class ProjectsTasksComponent implements OnInit {
     this.location.back();
   }
 
-  changePriority(id: number) {
+  changePriority(id: number, taskIndex: number) {
     if (!this.priorityOpen[id]) {
       this.priorityOpen[id] = true;
     } else {
-      this.priorityOpen[id] = false;
+      if (this.tasks[taskIndex].priority === this.priority) {
+        this.priorityOpen[id] = false;
+      } else {
+        this.taskService
+          .changeStatusPriority(
+            this.authService.decodedToken.nameid,
+            this.activatedRoute.snapshot.params.id,
+            id,
+            "priority",
+            this.priority
+          )
+          .subscribe(
+            () => {
+              this.tasks[taskIndex].priority = this.priority;
+            },
+            (error) => {
+              this.errorService.newError(error);
+            }
+          );
+        this.priorityOpen[id] = false;
+      }
     }
   }
 
-  changeStatus(id: number) {
+  changeStatus(id: number, taskIndex: number) {
     if (!this.statusOpen[id]) {
       this.statusOpen[id] = true;
     } else {
-      this.statusOpen[id] = false;
+      if (this.tasks[taskIndex].status === this.status) {
+        this.statusOpen[id] = false;
+      } else {
+        this.taskService
+          .changeStatusPriority(
+            this.authService.decodedToken.nameid,
+            this.activatedRoute.snapshot.params.id,
+            id,
+            "status",
+            this.status
+          )
+          .subscribe(
+            () => {
+              this.tasks[taskIndex].status = this.status;
+            },
+            (error) => {
+              this.errorService.newError(error);
+            }
+          );
+        this.statusOpen[id] = false;
+      }
     }
   }
 
@@ -69,15 +113,45 @@ export class ProjectsTasksComponent implements OnInit {
     this.taskService
       .getTasks(
         this.authService.decodedToken.nameid,
-        this.activatedRoute.snapshot.params.id
+        this.activatedRoute.snapshot.params.id,
+        this.skip
       )
       .subscribe(
-        (tasks) => {
-          this.tasks = tasks;
+        (task) => {
+          if (this.tasks == null) {
+            this.tasks = task;
+          } else {
+            this.tasks.push(...task);
+          }
+          this.currentUser = this.authService.decodedToken.nameid;
         },
         (error) => {
           this.errorService.newError(error);
         }
       );
+  }
+
+  onScroll() {
+    this.skip += 15;
+    this.getTasks();
+  }
+
+  deleteTask(id: number, taskIndex: number) {
+    this.errorService.confirm("Are you sure you want delete?", () => {
+      this.taskService
+        .deleteTask(
+          this.authService.decodedToken.nameid,
+          this.activatedRoute.snapshot.params.id,
+          id
+        )
+        .subscribe(
+          () => {
+            this.tasks.splice(taskIndex, 1);
+          },
+          (error) => {
+            this.errorService.newError(error);
+          }
+        );
+    });
   }
 }

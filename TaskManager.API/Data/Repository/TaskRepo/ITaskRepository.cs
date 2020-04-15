@@ -9,6 +9,8 @@ namespace TaskManager.API.Data.Repository.TaskRepo
     public interface ITaskRepository
     {
         Task<PTask> GetTask(int id);
-        Task<IEnumerable<PTask>> GetTasks(int projectId);
+        Task<IEnumerable<PTask>> GetTasks(int projectId, int skip);
+
+        Task<IEnumerable<PTask>> GetImportantTasks(int userId);
     }
 }

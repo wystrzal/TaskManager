@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { BsModalRef } from "ngx-bootstrap";
 import { ErrorService } from "src/app/core/helpers/error.service";
-import { TaskService } from "../task.service";
+import { TaskService } from "../../../shared/services/task.service";
 import { Task } from "src/app/models/task.model";
 
 @Component({

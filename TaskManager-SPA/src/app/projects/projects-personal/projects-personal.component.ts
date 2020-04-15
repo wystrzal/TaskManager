@@ -22,7 +22,7 @@ export class ProjectsPersonalComponent implements OnInit {
   }
 
   onScroll() {
-    this.skip += 10;
+    this.skip += 15;
     this.getProjects();
   }
 

@@ -11,6 +11,7 @@ namespace TaskManager.API.Model
         public string Name { get; set; }
         public string Status { get; set; }
         public string Priority { get; set; }
+        public int Owner { get; set; }
         public DateTime TimeToEnd { get; set; }
         public Project Project { get; set; }
     }

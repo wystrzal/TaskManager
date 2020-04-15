@@ -6,7 +6,7 @@ import { ErrorService } from "src/app/core/helpers/error.service";
 @Component({
   selector: "app-inbox-sended",
   templateUrl: "./inbox-sended.component.html",
-  styleUrls: ["./inbox-sended.component.css"]
+  styleUrls: ["./inbox-sended.component.css"],
 })
 export class InboxSendedComponent implements OnInit {
   messages: Message[];
@@ -28,21 +28,21 @@ export class InboxSendedComponent implements OnInit {
 
   getSendedMessages(skip: number) {
     this.messageService.getSendedMessages(skip).subscribe(
-      message => {
+      (message) => {
         if (this.messages == null) {
           this.messages = message;
         } else {
           this.messages.push(...message);
         }
       },
-      error => {
+      (error) => {
         this.errorService.newError(error);
       }
     );
   }
 
   onScroll() {
-    this.skip += 10;
+    this.skip += 15;
     this.getSendedMessages(this.skip);
   }
 }

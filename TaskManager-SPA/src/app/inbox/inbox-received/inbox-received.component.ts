@@ -7,7 +7,7 @@ import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "app-inbox-received",
   templateUrl: "./inbox-received.component.html",
-  styleUrls: ["./inbox-received.component.css"]
+  styleUrls: ["./inbox-received.component.css"],
 })
 export class InboxReceivedComponent implements OnInit {
   messages: Message[];
@@ -25,21 +25,21 @@ export class InboxReceivedComponent implements OnInit {
 
   getReceivedMessages(skip: number) {
     this.messageService.getReceivedMessages(skip).subscribe(
-      message => {
+      (message) => {
         if (this.messages == null) {
           this.messages = message;
         } else {
           this.messages.push(...message);
         }
       },
-      error => {
+      (error) => {
         this.errorService.newError(error);
       }
     );
   }
 
   onScroll() {
-    this.skip += 10;
+    this.skip += 15;
     this.getReceivedMessages(this.skip);
   }
 }

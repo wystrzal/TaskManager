@@ -33,16 +33,27 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTasks(int userId, int projectId)
+        public async Task<IActionResult> GetTasks(int userId, int projectId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var tasks = await taskRepository.GetTasks(projectId);
+            var tasks = await taskRepository.GetTasks(projectId, skip);
 
             var tasksForReturn = mapper.Map<IEnumerable<TaskForReturn>>(tasks);
 
             return Ok(tasksForReturn);
+        }
+
+        [HttpGet("important")]
+        public async Task<IActionResult> GetImportantTasks(int userId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var importantTasks = await taskRepository.GetImportantTasks(userId);
+
+
         }
 
         [HttpGet("{taskId}", Name = "GetTask")]
@@ -54,7 +65,7 @@ namespace TaskManager.API.Controllers
             var task = await taskRepository.GetTask(taskId);
 
             if (task == null)
-                return NotFound("Could not find task");
+                return NotFound("Could not find task.");
 
             var taskForReturn = mapper.Map<TaskForReturn>(task);
 
@@ -70,9 +81,11 @@ namespace TaskManager.API.Controllers
             var project = await projectRepository.GetProject(projectId);
 
             if (project == null)
-                return NotFound("Could not find project");
+                return NotFound("Could not find project.");
 
             var taskToAdd = mapper.Map<PTask>(taskForAdd);
+
+            taskToAdd.Status = "To Do";
 
             project.PTasks.Add(taskToAdd);
 
@@ -82,9 +95,49 @@ namespace TaskManager.API.Controllers
                 return CreatedAtRoute("GetTask", new { userId, projectId, taskId = taskToAdd.PTaskId }, taskForReturn);
             }
 
-            return BadRequest("Could not add task");
+            return BadRequest("Could not add task.");
         }
 
+        [HttpPut("change/{taskId}")]
+        public async Task<IActionResult> ChangeStatusPriority(int userId, int taskId, [FromQuery]string action,
+            [FromQuery]string newStatPrior)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
 
+            var task = await taskRepository.GetTask(taskId);
+
+            if (task == null)
+                return NotFound("Could not find task.");
+
+            if (action == "status")
+                task.Status = newStatPrior;
+            else
+                task.Priority = newStatPrior;
+
+            if (await mainRepository.SaveAll())
+                return Ok();
+
+            return BadRequest("Task failed.");
+        }
+
+        [HttpDelete("{taskId}")]
+        public async Task<IActionResult> DeleteTask(int userId, int taskId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var task = await taskRepository.GetTask(taskId);
+
+            if (task == null)
+                return NotFound("Could not find task.");
+
+            mainRepository.Delete(task);
+
+            if (await mainRepository.SaveAll())
+                return Ok();
+
+            return BadRequest("Could not delete task.");
+        }
     }
 }

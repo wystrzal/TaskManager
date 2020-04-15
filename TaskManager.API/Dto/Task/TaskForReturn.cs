@@ -7,10 +7,13 @@ namespace TaskManager.API.Dto.Task
 {
     public class TaskForReturn
     {
-        public int PTaskId { get; set; }
+        public int TaskId { get; set; }
         public string Name { get; set; }
         public string Status { get; set; }
         public string Priority { get; set; }
         public int TimeToEnd { get; set; }
+        public string ProjectType  { get; set; }
+        public int ProjectOwner { get; set; }
+        public int TaskOwner { get; set; }
     }
 }

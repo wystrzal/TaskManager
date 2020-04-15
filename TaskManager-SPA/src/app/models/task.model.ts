@@ -4,4 +4,7 @@ export interface Task {
   status: string;
   priority: string;
   timeToEnd: number;
+  projectType: string;
+  taskOwner: number;
+  projectOwner: number;
 }
