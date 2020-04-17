@@ -5,11 +5,14 @@ import { ProjectsPersonalComponent } from "./projects-personal/projects-personal
 import { ProjectsManageComponent } from "./projects-manage/projects-manage.component";
 import { ProjectsManageDetailComponent } from "./projects-manage/projects-manage-detail/projects-manage-detail.component";
 import { ProjectsTasksComponent } from "./projects-tasks/projects-tasks.component";
+import { AuthGuard } from "../guards/auth.guard";
 
 const routes: Routes = [
   {
     path: "projects",
     component: ProjectsComponent,
+    runGuardsAndResolvers: "always",
+    canActivate: [AuthGuard],
     children: [
       {
         path: "group",

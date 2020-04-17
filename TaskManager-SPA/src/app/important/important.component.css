@@ -1,0 +1,27 @@
+.content {
+  position: relative;
+  left: 0%;
+  min-height: 100vh;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+.mobile-item {
+  display: none;
+}
+
+.task-name {
+  overflow: hidden;
+}
+
+@media (max-width: 750px) {
+  .item {
+    display: none;
+  }
+  .mobile-item {
+    display: block;
+  }
+}

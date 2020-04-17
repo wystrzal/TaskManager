@@ -23,7 +23,6 @@ import { ProjectsTasksAddComponent } from "./projects-tasks/projects-tasks-add/p
     ProjectsGroupInvitationsComponent,
     ProjectsManageUsersComponent,
     ProjectsTasksComponent,
-
     ProjectsTasksAddComponent,
   ],
   imports: [SharedModule, ProjectsRoutes],

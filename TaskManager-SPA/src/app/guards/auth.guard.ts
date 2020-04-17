@@ -13,17 +13,7 @@ export class AuthGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate(next: ActivatedRouteSnapshot): boolean {
-    const role = next.firstChild.data.roles as string;
-    if (role) {
-      const match = this.authService.roleMatch(role);
-      if (match) {
-        return true;
-      } else {
-        this.router.navigate([""]);
-        this.errorService.newError("Unauthorized.");
-      }
-    }
+  canActivate(): boolean {
     if (this.authService.loggedIn()) {
       return true;
     }

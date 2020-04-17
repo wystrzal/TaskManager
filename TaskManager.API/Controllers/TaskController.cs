@@ -46,14 +46,16 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet("important")]
-        public async Task<IActionResult> GetImportantTasks(int userId)
+        public async Task<IActionResult> GetImportantTasks(int userId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var importantTasks = await taskRepository.GetImportantTasks(userId);
+            var importantTasks = await taskRepository.GetImportantTasks(userId, skip);
 
+            var importantTasksForReturn = mapper.Map<IEnumerable<TaskForReturnImportant>>(importantTasks);
 
+            return Ok(importantTasksForReturn);
         }
 
         [HttpGet("{taskId}", Name = "GetTask")]

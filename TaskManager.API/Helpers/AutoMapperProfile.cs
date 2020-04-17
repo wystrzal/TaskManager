@@ -55,22 +55,21 @@ namespace TaskManager.API.Helpers
             CreateMap<PTask, TaskForReturn>()
                 .ForMember(dest => dest.TimeToEnd,
                 opt => opt.MapFrom(src => src.TimeToEnd.Subtract(DateTime.Now).TotalDays))
-                .ForMember(dest => dest.ProjectType,
-                opt => opt.MapFrom(src => src.Project.Type))
-                .ForMember(dest => dest.ProjectOwner,
-                opt => opt.MapFrom(src => src.Project.Owner))
                 .ForMember(dest => dest.TaskOwner,
                 opt => opt.MapFrom(src => src.Owner))
                      .ForMember(dest => dest.TaskId,
                 opt => opt.MapFrom(src => src.PTaskId));
 
             CreateMap<PTask, TaskForReturnImportant>()
+                .ForMember(dest => dest.TimeToEnd,
+                opt => opt.MapFrom(src => src.TimeToEnd.Subtract(DateTime.Now).TotalDays))
                 .ForMember(dest => dest.ProjectName,
                 opt => opt.MapFrom(src => src.Project.Name))
                 .ForMember(dest => dest.ProjectId,
                 opt => opt.MapFrom(src => src.Project.ProjectId))
-                .ForMember(dest => dest.TimeToEnd,
-                opt => opt.MapFrom(src => src.TimeToEnd.Subtract(DateTime.Now).TotalDays));
+                .ForMember(dest => dest.TaskId,
+                opt => opt.MapFrom(src => src.PTaskId));
+
         }
    }
 }

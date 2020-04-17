@@ -7,6 +7,8 @@ import { AuthService } from "src/app/shared/services/auth.service";
 import { ActivatedRoute } from "@angular/router";
 import { TaskService } from "../../shared/services/task.service";
 import { ErrorService } from "src/app/core/helpers/error.service";
+import { ProjectService } from "../project.service";
+import { Project } from "src/app/models/project.model";
 
 @Component({
   selector: "app-projects-tasks",
@@ -19,6 +21,7 @@ export class ProjectsTasksComponent implements OnInit {
   statusOpen: boolean[] = [];
   bsModalRef: BsModalRef;
   tasks: Task[];
+  project: Project;
   priority: string;
   status: string;
   skip = 0;
@@ -29,7 +32,8 @@ export class ProjectsTasksComponent implements OnInit {
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private taskService: TaskService,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private projectService: ProjectService
   ) {}
 
   openTaskAddModal() {
@@ -47,6 +51,7 @@ export class ProjectsTasksComponent implements OnInit {
 
   ngOnInit() {
     this.getTasks();
+    this.getProjectInfo();
   }
 
   backClicked() {
@@ -63,7 +68,6 @@ export class ProjectsTasksComponent implements OnInit {
         this.taskService
           .changeStatusPriority(
             this.authService.decodedToken.nameid,
-            this.activatedRoute.snapshot.params.id,
             id,
             "priority",
             this.priority
@@ -91,7 +95,6 @@ export class ProjectsTasksComponent implements OnInit {
         this.taskService
           .changeStatusPriority(
             this.authService.decodedToken.nameid,
-            this.activatedRoute.snapshot.params.id,
             id,
             "status",
             this.status
@@ -131,6 +134,19 @@ export class ProjectsTasksComponent implements OnInit {
       );
   }
 
+  getProjectInfo() {
+    this.projectService
+      .getProject(this.activatedRoute.snapshot.params.id)
+      .subscribe(
+        (project: Project) => {
+          this.project = project;
+        },
+        (error) => {
+          this.errorService.newError(error);
+        }
+      );
+  }
+
   onScroll() {
     this.skip += 15;
     this.getTasks();
@@ -139,11 +155,7 @@ export class ProjectsTasksComponent implements OnInit {
   deleteTask(id: number, taskIndex: number) {
     this.errorService.confirm("Are you sure you want delete?", () => {
       this.taskService
-        .deleteTask(
-          this.authService.decodedToken.nameid,
-          this.activatedRoute.snapshot.params.id,
-          id
-        )
+        .deleteTask(this.authService.decodedToken.nameid, id)
         .subscribe(
           () => {
             this.tasks.splice(taskIndex, 1);

@@ -1,1 +1,129 @@
-<p>important works!</p>
+<div class="content pt-1">
+  <div
+    class="container-fluid content-scroll mt-5"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll()"
+    [scrollWindow]="false"
+  >
+    <div class="row">
+      <div class="col-12 text-center">
+        <div *ngFor="let task of importantTasks; let i = index">
+          <div class="item">
+            <div *ngIf="task.timeToEnd >= 0">
+              <div class="mt-5">
+                <a [routerLink]="['/projects/' + task.projectId + '/tasks/']">
+                  <h3>
+                    <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
+                    Project: {{ task.projectName }}
+                  </h3>
+                </a>
+              </div>
+              <div>
+                <h4 *ngIf="task.timeToEnd == 1">
+                  Time To End : {{ task.timeToEnd }} day
+                </h4>
+                <h4 *ngIf="task.timeToEnd > 1">
+                  Time To End : {{ task.timeToEnd }} days
+                </h4>
+                <h4 *ngIf="task.timeToEnd == 0">
+                  Time To End : Today
+                </h4>
+              </div>
+
+              <div class="border p-2">
+                <div class="row align-items-center">
+                  <a class="col-8 task-name">
+                    {{ task.name }}
+                  </a>
+
+                  <div class="col-4">
+                    <button
+                      (click)="changeStatus(task.taskId, i)"
+                      *ngIf="!statusOpen[task.taskId]"
+                      type="button"
+                      class="btn"
+                      [ngClass]="{
+                        'btn-warning': task.status == 'In Progress',
+                        'btn-danger': task.status == 'To Do',
+                        'btn-success': task.status == 'Done'
+                      }"
+                    >
+                      {{ task.status }}
+                    </button>
+                    <select
+                      (change)="changeStatus(task.taskId, i)"
+                      *ngIf="statusOpen[task.taskId]"
+                      class="custom-select"
+                      name="status"
+                      [(ngModel)]="status"
+                    >
+                      <option value="Done">Done</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="To Do">To Do</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mobile-item" *ngIf="task.timeToEnd >= 0">
+            <div class="mt-5">
+              <a [routerLink]="['/projects/' + task.projectId + '/tasks/']">
+                <h3>
+                  <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
+                  Project: {{ task.projectName }}
+                </h3>
+              </a>
+            </div>
+            <div>
+              <h4 *ngIf="task.timeToEnd == 1">
+                Time To End : {{ task.timeToEnd }} day
+              </h4>
+              <h4 *ngIf="task.timeToEnd > 1">
+                Time To End : {{ task.timeToEnd }} days
+              </h4>
+              <h4 *ngIf="task.timeToEnd == 0">Time To End : Today</h4>
+            </div>
+
+            <div class="border p-2">
+              <div class="row align-items-center">
+                <div class="col-12 mt-2 task-name">
+                  {{ task.name }}
+                </div>
+                <div class="col-12 mt-2">
+                  <button
+                    (click)="changeStatus(task.taskId, i)"
+                    *ngIf="!statusOpen[task.taskId]"
+                    type="button"
+                    class="btn"
+                    [ngClass]="{
+                      'btn-warning': task.status == 'In Progress',
+                      'btn-danger': task.status == 'To Do',
+                      'btn-success': task.status == 'Done'
+                    }"
+                  >
+                    {{ task.status }}
+                  </button>
+                  <select
+                    (change)="changeStatus(task.taskId, i)"
+                    *ngIf="statusOpen[task.taskId]"
+                    class="custom-select"
+                    name="status"
+                    [(ngModel)]="status"
+                  >
+                    <option value="Done">Done</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="To Do">To Do</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -22,6 +22,10 @@ img {
   overflow: hidden;
 }
 
+.content-scroll {
+  height: 85vh;
+}
+
 @media (max-width: 750px) {
   .item {
     display: none;

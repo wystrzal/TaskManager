@@ -5,10 +5,13 @@ import { InboxReceivedDetailComponent } from "./inbox-received/inbox-received-de
 import { InboxSendedComponent } from "./inbox-sended/inbox-sended.component";
 import { InboxSendedDetailComponent } from "./inbox-sended/inbox-sended-detail/inbox-sended-detail.component";
 import { InboxNewComponent } from "./inbox-new/inbox-new.component";
+import { AuthGuard } from "../guards/auth.guard";
 
 const routes: Routes = [
   {
     path: "inbox",
+    runGuardsAndResolvers: "always",
+    canActivate: [AuthGuard],
     component: InboxComponent,
     children: [
       {

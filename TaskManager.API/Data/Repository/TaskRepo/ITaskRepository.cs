@@ -11,6 +11,6 @@ namespace TaskManager.API.Data.Repository.TaskRepo
         Task<PTask> GetTask(int id);
         Task<IEnumerable<PTask>> GetTasks(int projectId, int skip);
 
-        Task<IEnumerable<PTask>> GetImportantTasks(int userId);
+        Task<IEnumerable<PTask>> GetImportantTasks(int userId, int skip);
     }
 }

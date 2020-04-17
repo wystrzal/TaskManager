@@ -1,0 +1,48 @@
+.content {
+  position: relative;
+  left: 0%;
+  min-height: 100vh;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+img {
+  width: 250px;
+  height: 250px;
+  border: 1px solid #000;
+}
+
+.img-thumbnail {
+  width: 150px;
+  height: 150px;
+}
+
+.borders {
+  position: relative;
+  border: 1px solid #4e6754;
+}
+
+.borders:before {
+  content: " ";
+  position: absolute;
+  z-index: -1;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border: 8px solid #ffe8c2;
+}
+
+.form-group {
+  width: 80%;
+  display: inline-block;
+  text-align: left;
+}
+
+.btn-sub {
+  background-color: #4e6754;
+  color: #ffe8c2;
+}

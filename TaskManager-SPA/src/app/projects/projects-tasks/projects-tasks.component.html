@@ -18,21 +18,24 @@
 >
   <div class="row">
     <div class="col-12 text-center">
+      <h2 class="mb-5">{{ project?.name | titlecase }}</h2>
       <div *ngFor="let task of tasks; let i = index">
         <div class="item">
           <div *ngIf="task.timeToEnd >= 0">
-            <div class="nt-1">
+            <div class="mt-5">
               <h4 *ngIf="task.timeToEnd == 1">
                 Time To End : {{ task.timeToEnd }} day
               </h4>
               <h4 *ngIf="task.timeToEnd > 1">
                 Time To End : {{ task.timeToEnd }} days
               </h4>
-              <h4 *ngIf="task.timeToEnd == 0">Time To End : Today</h4>
+              <h4 *ngIf="task.timeToEnd == 0">
+                Time To End : Today
+              </h4>
             </div>
             <div class="border p-2">
               <div class="row align-items-center">
-                <div class="col-2" *ngIf="task.projectType == 'group'">
+                <div class="col-2" *ngIf="project?.type == 'group'">
                   <span dropdown>
                     <a
                       id="basic-link"
@@ -61,7 +64,7 @@
                 </div>
                 <div class="col-3">
                   <button
-                    [disabled]="task.projectOwner != currentUser"
+                    [disabled]="project?.owner != currentUser"
                     (click)="changePriority(task.taskId, i)"
                     *ngIf="!priorityOpen[task.taskId]"
                     type="button"
@@ -113,7 +116,7 @@
                     <option value="To Do">To Do</option>
                   </select>
                 </div>
-                <div class="col-1" *ngIf="task.projectOwner == currentUser">
+                <div class="col-1" *ngIf="project?.owner == currentUser">
                   <button
                     class="btn btn-danger"
                     (click)="deleteTask(task.taskId, i)"
@@ -127,7 +130,7 @@
         </div>
 
         <div class="mobile-item" *ngIf="task.timeToEnd >= 0">
-          <div class="nt-1">
+          <div class="mt-5">
             <h4 *ngIf="task.timeToEnd == 1">
               Time To End : {{ task.timeToEnd }} day
             </h4>
@@ -138,7 +141,7 @@
           </div>
           <div class="border p-2">
             <div class="row align-items-center">
-              <div class="col-12 mt-2" *ngIf="task.projectType == 'group'">
+              <div class="col-12 mt-2" *ngIf="project?.type == 'group'">
                 <span dropdown>
                   <a
                     id="basic-link"
@@ -167,7 +170,7 @@
               </div>
               <div class="col-12 mt-2">
                 <button
-                  [disabled]="task.projectOwner != currentUser"
+                  [disabled]="project?.owner != currentUser"
                   (click)="changePriority(task.taskId)"
                   *ngIf="!priorityOpen[task.taskId]"
                   type="button"
@@ -215,7 +218,7 @@
                   <option value="To Do">To Do</option>
                 </select>
               </div>
-              <div class="col-12 mt-2" *ngIf="task.projectOwner == currentUser">
+              <div class="col-12 mt-2" *ngIf="project?.owner == currentUser">
                 <button
                   class="btn btn-danger"
                   (click)="deleteTask(task.taskId, i)"

@@ -26,14 +26,20 @@
       [routerLink]="['/projects']"
       routerLinkActive="active"
       type="button"
-      class="mt-5 "
+      class="mt-5"
       (click)="openMenu()"
     >
       <i class="fa fa-list-ol" aria-hidden="true"></i>
       <h4 class="ml-2">Projects</h4>
     </a>
 
-    <a type="button" class="mt-5" (click)="openMenu()">
+    <a
+      [routerLink]="['/important']"
+      routerLinkActive="active"
+      type="button"
+      class="mt-5"
+      (click)="openMenu()"
+    >
       <i class="fa fa-fire" aria-hidden="true"></i>
       <h4 class="ml-2">Important</h4>
     </a>
@@ -45,7 +51,13 @@
       <i class="fa fa-calendar" aria-hidden="true"></i>
       <h4 class="ml-2">Next 7 days</h4>
     </a>
-    <a type="button" class="my-5" (click)="openMenu()">
+    <a
+      type="button"
+      class="my-5"
+      (click)="openMenu()"
+      [routerLink]="['/account']"
+      routerLinkActive="active"
+    >
       <i class="fa fa-cog" aria-hidden="true"></i>
       <h4 class="ml-2">Account</h4>
     </a>

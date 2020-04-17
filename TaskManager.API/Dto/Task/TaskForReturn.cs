@@ -12,8 +12,6 @@ namespace TaskManager.API.Dto.Task
         public string Status { get; set; }
         public string Priority { get; set; }
         public int TimeToEnd { get; set; }
-        public string ProjectType  { get; set; }
-        public int ProjectOwner { get; set; }
         public int TaskOwner { get; set; }
     }
 }

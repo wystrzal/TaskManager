@@ -32,9 +32,18 @@ export class TaskService {
     return this.http.get<Task[]>(this.url(userId, projectId), { params });
   }
 
+  getImportantTasks(userId: number, skip: number): Observable<Task[]> {
+    let params = new HttpParams();
+
+    params = params.append("skip", skip.toString());
+
+    return this.http.get<Task[]>(this.url(userId, 0) + "/important", {
+      params,
+    });
+  }
+
   changeStatusPriority(
     userId: number,
-    projectId: number,
     taskId: number,
     action: string,
     newStatPrior: any
@@ -45,13 +54,13 @@ export class TaskService {
     params = params.append("newStatPrior", newStatPrior);
 
     return this.http.put(
-      this.url(userId, projectId) + "/change/" + taskId,
+      this.url(userId, null) + "/change/" + taskId,
       {},
       { params }
     );
   }
 
-  deleteTask(userId: number, projectId: number, taskId: number) {
-    return this.http.delete(this.url(userId, projectId) + "/" + taskId);
+  deleteTask(userId: number, taskId: number) {
+    return this.http.delete(this.url(userId, null) + "/" + taskId);
   }
 }

@@ -12,6 +12,7 @@ import { RouterModule } from "@angular/router";
 import { AppRoutes } from "./app.routing";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ImportantComponent } from "./important/important.component";
+import { AccountComponent } from "./account/account.component";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ImportantComponent } from "./important/important.component";
     StartComponent,
     NavComponent,
     ImportantComponent,
+    AccountComponent,
   ],
   imports: [
     RouterModule.forRoot(AppRoutes),
