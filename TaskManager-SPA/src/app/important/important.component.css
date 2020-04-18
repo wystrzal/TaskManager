@@ -1,7 +1,44 @@
-.content {
-  position: relative;
-  left: 0%;
-  min-height: 100vh;
+.task-bg {
+  background: url(../../assets/images/task-bg.jpg) no-repeat;
+  background-size: cover;
+  min-width: 100%;
+  min-height: 100%;
+  position: fixed;
+}
+
+.task-overlay {
+  background-color: rgba(0, 0, 0, 0.85);
+  min-width: 100%;
+  min-height: 100%;
+  position: fixed;
+}
+
+h3 {
+  color: #28a745;
+}
+
+h4 {
+  color: #f4fdd9;
+}
+
+h6 {
+  color: #fff;
+  font-size: 19px;
+}
+
+.warning {
+  color: #ffd900;
+  font-size: 21px;
+}
+
+.danger {
+  color: #ff0019;
+  font-size: 21px;
+}
+
+.success {
+  color: #15e045;
+  font-size: 21px;
 }
 
 a {

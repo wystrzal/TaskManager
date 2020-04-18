@@ -1,3 +1,52 @@
+.task-bg {
+  background: url(../../../assets/images/task-bg.jpg) no-repeat;
+  background-size: cover;
+}
+
+.task-overlay {
+  background-color: rgba(0, 0, 0, 0.85);
+  min-width: 100%;
+  min-height: 100%;
+  position: fixed;
+}
+
+.top-content {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.back-btn {
+  color: #28a745;
+  transition: all 200ms linear;
+}
+.back-btn:hover {
+  color: #ffe8c2;
+}
+
+h2 {
+  color: #28a745;
+}
+
+h4 {
+  color: #f4fdd9;
+}
+
+h6 {
+  color: #fff;
+  font-size: 19px;
+}
+
+.new-btn {
+  background-color: #28a745;
+  transition: all 200ms linear;
+  color: #fff;
+}
+.new-btn:hover {
+  background-color: #ffe8c2;
+  color: #000;
+}
+
 a {
   color: #000;
   text-decoration: none;
@@ -23,7 +72,22 @@ img {
 }
 
 .content-scroll {
-  height: 85vh;
+  height: 82vh;
+}
+
+.warning {
+  color: #ffd900;
+  font-size: 21px;
+}
+
+.danger {
+  color: #ff0019;
+  font-size: 21px;
+}
+
+.success {
+  color: #15e045;
+  font-size: 21px;
 }
 
 @media (max-width: 750px) {

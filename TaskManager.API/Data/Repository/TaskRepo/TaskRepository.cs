@@ -23,7 +23,8 @@ namespace TaskManager.API.Data.Repository.TaskRepo
 
         public async Task<IEnumerable<PTask>> GetTasks(int projectId, int skip)
         {
-            return await dataContext.PTasks.Include(t => t.Project).Where(t => t.Project.ProjectId == projectId)
+            return await dataContext.PTasks.Include(t => t.Project)
+                .Where(t => t.Project.ProjectId == projectId && t.TimeToEnd > DateTime.Today)
                 .OrderBy(t => t.TimeToEnd).Skip(skip).Take(15).ToListAsync();
         }
         public async Task<IEnumerable<PTask>> GetImportantTasks(int userId, int skip)

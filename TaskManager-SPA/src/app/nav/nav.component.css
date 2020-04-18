@@ -7,7 +7,7 @@
 }
 
 .left-menu {
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   width: 25%;
@@ -22,7 +22,7 @@
   left: 0;
   width: 100%;
   min-height: 100vh;
-  background-color: rgba(106, 141, 115, 0.7);
+  background-color: rgba(106, 141, 115, 0.95);
   z-index: 50;
 }
 
@@ -72,17 +72,5 @@ a:hover {
   }
   .nick {
     display: none;
-  }
-}
-
-@media (min-width: 701px) and (max-height: 564px) {
-  .right-menu {
-    min-height: 564px;
-  }
-}
-
-@media (max-width: 700px) and (max-height: 498px) {
-  .right-menu {
-    min-height: 546px;
   }
 }
