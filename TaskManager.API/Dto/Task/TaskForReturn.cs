@@ -13,5 +13,6 @@ namespace TaskManager.API.Dto.Task
         public string Priority { get; set; }
         public int TimeToEnd { get; set; }
         public int TaskOwner { get; set; }
+        public int TaskOwnerPhoto { get; set; }
     }
 }

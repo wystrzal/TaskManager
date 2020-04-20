@@ -16,9 +16,15 @@ namespace TaskManager.API.Data.Repository.UserRepo
             this.dataContext = dataContext;
         }
 
+        public async Task<User> GetUser(int id)
+        {
+            return await dataContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+        }
+
         public async Task<User> GetUserByNick(string nick)
         {
             return await dataContext.Users.Where(u => u.Nickname == nick).FirstOrDefaultAsync();
         }
+  
     }
 }

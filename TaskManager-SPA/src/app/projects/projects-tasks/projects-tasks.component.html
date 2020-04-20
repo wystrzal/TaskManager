@@ -43,16 +43,20 @@
                   <div class="col-2" *ngIf="project?.type == 'group'">
                     <span dropdown>
                       <a
+                        type="button"
                         id="basic-link"
                         dropdownToggle
                         aria-controls="basic-link-dropdown"
                       >
                         <img
-                          src="../../../assets/images/bear.jpg"
+                          src="../../../assets/images/user-{{
+                            task.taskOwnerPhoto
+                          }}.jpg"
                           class="img-responsive rounded-circle"
-                          alt="Bear"
+                          alt="Photo"
                         />
                       </a>
+
                       <ul
                         id="basic-link-dropdown"
                         *dropdownMenu
@@ -60,7 +64,16 @@
                         role="menu"
                         aria-labelledby="basic-link"
                       >
-                        <a class="dropdown-item" href="#">Wystrzal8365</a>
+                        <div
+                          *ngFor="let projectUser of project.projectUsersNick"
+                        >
+                          <button
+                            class="dropdown-item"
+                            [disabled]="project.owner != currentUser"
+                          >
+                            {{ projectUser | titlecase }}
+                          </button>
+                        </div>
                       </ul>
                     </span>
                   </div>
@@ -158,7 +171,7 @@
                       aria-controls="basic-link-dropdown"
                     >
                       <img
-                        src="../../../assets/images/bear.jpg"
+                        src="../../../assets/images/user-2.jpg"
                         class="img-responsive rounded-circle"
                         alt="Bear"
                       />

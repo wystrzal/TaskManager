@@ -434,3 +434,5 @@ C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1
 C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1\TaskManager.API-Test.csproj.CopyComplete
 C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1\TaskManager.API-Test.dll
 C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1\TaskManager.API-Test.pdb
+C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1\TaskManager.API-Test.csproj.CoreCompileInputs.cache
+C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1\TaskManager.API-Test.genruntimeconfig.cache

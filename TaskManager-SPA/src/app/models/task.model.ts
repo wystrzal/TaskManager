@@ -7,4 +7,5 @@ export interface Task {
   taskOwner: number;
   projectId: number;
   projectName: string;
+  taskOwnerPhoto: number;
 }

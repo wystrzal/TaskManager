@@ -12,5 +12,8 @@ namespace TaskManager.API.Dto.Project
         public string Type { get; set; }
         public int Owner { get; set; }
         public bool AnyUsers { get; set; }
+        public int[] ProjectUsersId { get; set; }
+        public string[] ProjectUsersNick { get; set; }
+
     }
 }

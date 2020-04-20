@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.API.Dto.User
 {
-    public class UserForUserDetail
+    public class UserForReturnNickname
     {
         public string Nickname { get; set; }
     }

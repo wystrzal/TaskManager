@@ -11,6 +11,7 @@ namespace TaskManager.API.Model
     {
         public string Nickname { get; set; }
         public DateTime LastActive { get; set; }
+        public int PhotoId { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }
         public ICollection<UserProject> UserProjects { get; set; }

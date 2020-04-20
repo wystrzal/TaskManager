@@ -36,7 +36,9 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> GetTasks(int userId, int projectId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }
 
             var tasks = await taskRepository.GetTasks(projectId, skip);
 
@@ -49,7 +51,9 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> GetImportantTasks(int userId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }
 
             var importantTasks = await taskRepository.GetImportantTasks(userId, skip);
 
@@ -62,12 +66,16 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> GetTask(int userId, int taskId)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }
 
             var task = await taskRepository.GetTask(taskId);
 
             if (task == null)
+            {
                 return NotFound("Could not find task.");
+            }
 
             var taskForReturn = mapper.Map<TaskForReturn>(task);
 
@@ -78,16 +86,21 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> AddTask(int userId, int projectId, TaskForAdd taskForAdd)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }
 
             var project = await projectRepository.GetProject(projectId);
 
             if (project == null)
+            {
                 return NotFound("Could not find project.");
+            }
 
             var taskToAdd = mapper.Map<PTask>(taskForAdd);
 
             taskToAdd.Status = "To Do";
+            taskToAdd.Owner = userId;
 
             project.PTasks.Add(taskToAdd);
 
@@ -105,20 +118,30 @@ namespace TaskManager.API.Controllers
             [FromQuery]string newStatPrior)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }
 
             var task = await taskRepository.GetTask(taskId);
 
             if (task == null)
+            {
                 return NotFound("Could not find task.");
+            }
 
             if (action == "status")
+            {
                 task.Status = newStatPrior;
+            }
             else
+            {
                 task.Priority = newStatPrior;
+            }
 
             if (await mainRepository.SaveAll())
+            {
                 return Ok();
+            }
 
             return BadRequest("Task failed.");
         }
@@ -127,17 +150,23 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> DeleteTask(int userId, int taskId)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }
 
             var task = await taskRepository.GetTask(taskId);
 
             if (task == null)
+            {
                 return NotFound("Could not find task.");
+            }
 
             mainRepository.Delete(task);
 
             if (await mainRepository.SaveAll())
+            {
                 return Ok();
+            }
 
             return BadRequest("Could not delete task.");
         }

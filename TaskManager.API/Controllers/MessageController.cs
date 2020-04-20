@@ -36,13 +36,17 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> AddMessage(int userId, [FromQuery]string recipientNick, MessageForAdd messageForAddDto)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
-
+            }
+               
             var recipient = await userRepository.GetUserByNick(recipientNick);
 
             if (recipient == null)
+            {
                 return NotFound("User with this nickname do not exist.");
-
+            }
+               
             var messageToAdd = mapper.Map<Message>(messageForAddDto);
 
             messageToAdd.SenderId = userId;
@@ -51,8 +55,10 @@ namespace TaskManager.API.Controllers
             mainRepository.Add(messageToAdd);
 
             if (await mainRepository.SaveAll())
+            {
                 return Ok();
-
+            }
+             
             return BadRequest("Could not send message.");
         }
 
@@ -60,7 +66,9 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> GetReceivedMessages(int userId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }            
 
             var receivedMessages = await messageRepository.GetReceivedMessages(userId, skip);
 
@@ -73,8 +81,10 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> GetSendedMessages(int userId, [FromQuery]int skip)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
-
+            }
+              
             var receivedMessages = await messageRepository.GetSendedMessages(userId, skip);
 
             var messageForReturn = mapper.Map<IEnumerable<MessageForReturnSendedMessages>>(receivedMessages);
@@ -86,12 +96,16 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> GetMessage(int messageId, int userId)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }
 
             var message = await messageRepository.GetMessage(messageId);
 
             if (message == null)
+            {
                 return NotFound("Could not find message");
+            }
 
             var messageForReturn = mapper.Map<MessageForReturnDetailMessage>(message);
 
@@ -102,12 +116,16 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> DeleteMessage(int messageId, int userId, [FromQuery]string userType)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }
 
             var message = await messageRepository.GetMessage(messageId);
 
             if (message == null)
+            {
                 return NotFound("Could not find message");
+            }
 
             if (userType == "recipient")
             {

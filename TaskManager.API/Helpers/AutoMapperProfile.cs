@@ -19,7 +19,7 @@ namespace TaskManager.API.Helpers
             //User
             CreateMap<UserForRegister, User>();
 
-            CreateMap<User, UserForUserDetail>();
+            CreateMap<User, UserForReturnNickname>();
 
             //Message
             CreateMap<MessageForAdd, Message>();
@@ -43,7 +43,11 @@ namespace TaskManager.API.Helpers
 
             CreateMap<Project, ProjectForReturn>()
                  .ForMember(dest => dest.AnyUsers,
-                 opt => opt.MapFrom(src => src.UserProjects.Where(up => up.Status == "active").ToList().Count > 1 ? true : false));
+                 opt => opt.MapFrom(src => src.UserProjects.Where(up => up.Status == "active").ToList().Count > 1 ? true : false))
+                 .ForMember(dest => dest.ProjectUsersNick,
+                 opt => opt.MapFrom(src => src.UserProjects.Select(up => up.User.Nickname)))
+                 .ForMember(dest => dest.ProjectUsersId,
+                 opt => opt.MapFrom(src => src.UserProjects.Select(up => up.User.Id)));
 
             CreateMap<Project, ProjectForReturnInvitations>();
 
@@ -57,8 +61,11 @@ namespace TaskManager.API.Helpers
                 opt => opt.MapFrom(src => src.TimeToEnd.Subtract(DateTime.Now).TotalDays))
                 .ForMember(dest => dest.TaskOwner,
                 opt => opt.MapFrom(src => src.Owner))
-                     .ForMember(dest => dest.TaskId,
-                opt => opt.MapFrom(src => src.PTaskId));
+                .ForMember(dest => dest.TaskId,
+                opt => opt.MapFrom(src => src.PTaskId))
+                .ForMember(dest => dest.TaskOwnerPhoto,
+                opt => opt.MapFrom(src => src.Project.UserProjects.Where(up => up.UserId == src.Owner)
+                    .Select(up => up.User.PhotoId).FirstOrDefault()));
 
             CreateMap<PTask, TaskForReturnImportant>()
                 .ForMember(dest => dest.TimeToEnd,

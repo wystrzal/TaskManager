@@ -25,6 +25,7 @@ namespace TaskManager.API.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly IConfiguration config;
         private readonly IMapper mapper;
+        private Random random = new Random();
 
         public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IMapper mapper)
         {
@@ -32,6 +33,7 @@ namespace TaskManager.API.Controllers
             this.signInManager = signInManager;
             this.config = config;
             this.mapper = mapper;
+
         }
 
 
@@ -41,9 +43,9 @@ namespace TaskManager.API.Controllers
             var dbUser = await userManager.FindByNameAsync(userForLoginDto.Username);
 
             if (dbUser == null)
+            {
                 return Unauthorized();
-
-         
+            }      
 
             var result = await signInManager.CheckPasswordSignInAsync(dbUser, userForLoginDto.Password, false);
 
@@ -51,7 +53,7 @@ namespace TaskManager.API.Controllers
             {
                 var userToReturn = await userManager.Users.FirstOrDefaultAsync(u => u.Id == dbUser.Id);
 
-                var user = mapper.Map<UserForUserDetail>(userToReturn);
+                var user = mapper.Map<UserForReturnNickname>(userToReturn);
 
                 return Ok(new
                 {
@@ -59,6 +61,7 @@ namespace TaskManager.API.Controllers
                     user
                 });
             }
+
             return Unauthorized();
         }
 
@@ -81,6 +84,8 @@ namespace TaskManager.API.Controllers
             }
 
             userToCreate.Nickname = "user" + lastUser.Id;
+
+            userToCreate.PhotoId = random.Next(1, 9);
 
             var result = await userManager.CreateAsync(userToCreate, userForRegisterDto.Password);
 
