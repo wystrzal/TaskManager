@@ -51,13 +51,13 @@ namespace TaskManager.API.Controllers
 
             if (result.Succeeded)
             {
-                var userToReturn = await userManager.Users.FirstOrDefaultAsync(u => u.Id == dbUser.Id);
+                var userForReturn = await userManager.Users.FirstOrDefaultAsync(u => u.Id == dbUser.Id);
 
-                var user = mapper.Map<UserForReturnNickname>(userToReturn);
+                var user = mapper.Map<UserForReturnNickname>(userForReturn);
 
                 return Ok(new
                 {
-                    token = GenerateToken.GenerateJwtToken(userToReturn, config),
+                    token = GenerateToken.GenerateJwtToken(userForReturn, config),
                     user
                 });
             }

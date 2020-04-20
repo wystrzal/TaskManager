@@ -19,7 +19,13 @@ namespace TaskManager.API.Helpers
             //User
             CreateMap<UserForRegister, User>();
 
+            CreateMap<UserForChangeNick, User>();
+
+            CreateMap<UserForChangePassword, User>();
+
             CreateMap<User, UserForReturnNickname>();
+
+            CreateMap<User, UserForReturn>();
 
             //Message
             CreateMap<MessageForAdd, Message>();

@@ -12,7 +12,25 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  getUser(userId: number): Observable<User> {
+    return this.http.get<User>(this.baseUrl + "/" + userId);
+  }
+
   changePhoto(userId: number, photoId: number) {
-    this.http.put(this.baseUrl + "/" + userId + "/photo/" + photoId, {});
+    return this.http.put(this.baseUrl + "/" + userId + "/photo/" + photoId, {});
+  }
+
+  changeNick(userId: number, nickModel: any) {
+    return this.http.put(
+      this.baseUrl + "/" + userId + "/changeNick",
+      nickModel
+    );
+  }
+
+  changePassword(userId: number, passwordModel: any) {
+    return this.http.put(
+      this.baseUrl + "/" + userId + "/changePassword",
+      passwordModel
+    );
   }
 }
