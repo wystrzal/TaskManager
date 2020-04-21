@@ -58,7 +58,7 @@ namespace TaskManager.API.Controllers
 
                 if (await mainRepository.SaveAll())
                 {
-                    var projectForReturn = mapper.Map<ProjectForReturn>(projectToAdd);
+                    var projectForReturn = mapper.Map<ProjectForReturnAdded>(projectToAdd);
                     return CreatedAtRoute("GetProject", new { userId, projectToAdd.ProjectId }, projectForReturn);
                 }
             }

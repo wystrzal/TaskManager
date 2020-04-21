@@ -78,14 +78,14 @@ namespace TaskManager.API_Test
             User user = new User { Nickname = nick, Id = 1 };
             Message message = new Message { MessageId = 1 };
 
-            userRepositoryMock.Setup(u => u.GetUserByNick(nick)).Returns(() => Task.Run(() =>
+            userRepositoryMock.Setup(u => u.GetUserByNick(nick)).Returns(Task.Run(() =>
             { return user; }));
 
             mapperMock.Setup(m => m.Map<Message>(It.IsAny<MessageForAdd>())).Returns(message);
 
             mainRepositoryMock.Setup(m => m.Add(message));
 
-            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(() => Task.Run(() => { return false; }));
+            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(Task.Run(() => { return false; }));
 
             MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
                 userRepositoryMock.Object, mapperMock.Object);
@@ -108,14 +108,14 @@ namespace TaskManager.API_Test
             User user = new User { Nickname = nick, Id = 1 };
             Message message = new Message { MessageId = 1 };
 
-            userRepositoryMock.Setup(u => u.GetUserByNick(nick)).Returns(() => Task.Run(() =>
+            userRepositoryMock.Setup(u => u.GetUserByNick(nick)).Returns(Task.Run(() =>
             { return user; }));
 
             mapperMock.Setup(m => m.Map<Message>(It.IsAny<MessageForAdd>())).Returns(message);
 
             mainRepositoryMock.Setup(m => m.Add(message)).Verifiable();
 
-            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(() => Task.Run(() => { return true; }));
+            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(Task.Run(() => { return true; }));
 
             MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
                 userRepositoryMock.Object, mapperMock.Object);
@@ -158,7 +158,7 @@ namespace TaskManager.API_Test
                 new MessageForReturnReceivedMessages {MessageId = 2}
             };
 
-            messageRepositoryMock.Setup(m => m.GetReceivedMessages(1, 0)).Returns(() => Task.Run(() =>
+            messageRepositoryMock.Setup(m => m.GetReceivedMessages(1, 0)).Returns(Task.Run(() =>
             {
                 return messages;
             }));
@@ -208,7 +208,7 @@ namespace TaskManager.API_Test
                 new MessageForReturnSendedMessages {MessageId = 2}
             };
 
-            messageRepositoryMock.Setup(m => m.GetSendedMessages(1, 0)).Returns(() => Task.Run(() =>
+            messageRepositoryMock.Setup(m => m.GetSendedMessages(1, 0)).Returns(Task.Run(() =>
             {
                 return messages;
             }));
@@ -269,7 +269,7 @@ namespace TaskManager.API_Test
             Message message = new Message() { MessageId = 1, Content = "test"};
             MessageForReturnDetailMessage messageForReturn = new MessageForReturnDetailMessage { Content = "test" };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(() => Task.Run(() =>
+            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
@@ -329,7 +329,7 @@ namespace TaskManager.API_Test
             //Arrange
             Message message = new Message { MessageId = 1, RecipientDeleted = false, SenderDeleted = false };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(() => Task.Run(() =>
+            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
@@ -354,7 +354,7 @@ namespace TaskManager.API_Test
             //Arrange
             Message message = new Message { MessageId = 1, RecipientDeleted = false, SenderDeleted = false };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(() => Task.Run(() =>
+            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
@@ -379,14 +379,14 @@ namespace TaskManager.API_Test
             //Arrange
             Message message = new Message { MessageId = 1, RecipientDeleted = true, SenderDeleted = true };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(() => Task.Run(() =>
+            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
 
             mainRepositoryMock.Setup(m => m.Delete(message)).Verifiable();
 
-            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(() => Task.Run(() =>
+            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(Task.Run(() =>
           {
               return true;
           }));
@@ -411,14 +411,14 @@ namespace TaskManager.API_Test
             //Arrange
             Message message = new Message { MessageId = 1, RecipientDeleted = true, SenderDeleted = true };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(() => Task.Run(() =>
+            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
 
             mainRepositoryMock.Setup(m => m.Delete(message)).Verifiable();
 
-            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(() => Task.Run(() =>
+            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(Task.Run(() =>
             {
                 return false;
             }));

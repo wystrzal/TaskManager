@@ -28,6 +28,7 @@ using TaskManager.API.Data.Repository.ProjectRepo;
 using TaskManager.API.Data.Repository.TaskRepo;
 using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Helpers;
+using TaskManager.API.Helpers.GenerateToken;
 using TaskManager.API.Model;
 
 namespace TaskManager.API
@@ -93,6 +94,7 @@ namespace TaskManager.API
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

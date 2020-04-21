@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using TaskManager.API.Dto;
 using TaskManager.API.Dto.User;
 using TaskManager.API.Helpers;
+using TaskManager.API.Helpers.GenerateToken;
 using TaskManager.API.Model;
 
 namespace TaskManager.API.Controllers
@@ -25,17 +26,18 @@ namespace TaskManager.API.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly IConfiguration config;
         private readonly IMapper mapper;
+        private readonly ITokenGenerator tokenGenerator;
         private Random random = new Random();
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IMapper mapper)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config,
+            IMapper mapper, ITokenGenerator tokenGenerator)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.config = config;
             this.mapper = mapper;
-
+            this.tokenGenerator = tokenGenerator;
         }
-
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLogin userForLoginDto)
@@ -45,30 +47,28 @@ namespace TaskManager.API.Controllers
             if (dbUser == null)
             {
                 return Unauthorized();
-            }      
+            }
 
             var result = await signInManager.CheckPasswordSignInAsync(dbUser, userForLoginDto.Password, false);
 
             if (result.Succeeded)
             {
-                var userForReturn = await userManager.Users.FirstOrDefaultAsync(u => u.Id == dbUser.Id);
-
-                var user = mapper.Map<UserForReturnNickname>(userForReturn);
+                var user = mapper.Map<UserForReturnNickname>(dbUser);
 
                 return Ok(new
                 {
-                    token = GenerateToken.GenerateJwtToken(userForReturn, config),
+                    token = tokenGenerator.GenerateJwtToken(dbUser, config),
                     user
                 });
             }
 
-            return Unauthorized();
+            return NotFound();
         }
 
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegister userForRegisterDto)
-        {
+         {
             if (userForRegisterDto.Password != userForRegisterDto.RepeatPassword)
             {
                 return BadRequest("The password repeat is incorrect.");

@@ -135,16 +135,9 @@ namespace TaskManager.API.Controllers
             if (changePassword.Succeeded)
             {
                 return Ok();
-            } 
-            else if(!changePassword.Succeeded)
-            {
-                return BadRequest("Wrong password.");
-            }
-            else
-            {
-                return BadRequest("Could not change password.");
-            }
-
+            }  
+            
+            return Unauthorized();        
         }
 
     }
