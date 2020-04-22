@@ -436,3 +436,4 @@ C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1
 C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1\TaskManager.API-Test.pdb
 C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1\TaskManager.API-Test.csproj.CoreCompileInputs.cache
 C:\Users\Patryk\Desktop\TaskManager\TaskManager.API-Test\obj\Debug\netcoreapp3.1\TaskManager.API-Test.genruntimeconfig.cache
+C:\Users\ThinkPad T430\Desktop\TaskManager\TaskManager.API-Test\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.InMemory.dll

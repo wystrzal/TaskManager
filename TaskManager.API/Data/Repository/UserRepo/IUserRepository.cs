@@ -9,6 +9,6 @@ namespace TaskManager.API.Data.Repository.UserRepo
     public interface IUserRepository
     {
         Task<User> GetUserByNick(string nick);
-
+        Task<User> GetLastUser();
     }
 }

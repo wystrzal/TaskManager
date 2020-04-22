@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Dto;
 using TaskManager.API.Dto.User;
 using TaskManager.API.Helpers;
@@ -27,16 +28,18 @@ namespace TaskManager.API.Controllers
         private readonly IConfiguration config;
         private readonly IMapper mapper;
         private readonly ITokenGenerator tokenGenerator;
+        private readonly IUserRepository userRepository;
         private Random random = new Random();
 
         public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config,
-            IMapper mapper, ITokenGenerator tokenGenerator)
+            IMapper mapper, ITokenGenerator tokenGenerator, IUserRepository userRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.config = config;
             this.mapper = mapper;
             this.tokenGenerator = tokenGenerator;
+            this.userRepository = userRepository;
         }
 
         [HttpPost("login")]
@@ -62,7 +65,7 @@ namespace TaskManager.API.Controllers
                 });
             }
 
-            return NotFound();
+            return Unauthorized();
         }
 
 
@@ -76,7 +79,7 @@ namespace TaskManager.API.Controllers
 
             var userToCreate = mapper.Map<User>(userForRegisterDto);
 
-            var lastUser = userManager.Users.OrderByDescending(u => u.Id).First();
+            var lastUser = await userRepository.GetLastUser();
 
             if (lastUser == null)
             {
