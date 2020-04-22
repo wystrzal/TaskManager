@@ -22,26 +22,21 @@ namespace TaskManager.API_Test
 {
     public class MessageControllerTest
     {
-        readonly Mock<IMainRepository> mainRepositoryMock;
-        readonly Mock<IMessageRepository> messageRepositoryMock;
-        readonly Mock<IUserRepository> userRepositoryMock;
-        readonly Mock<IMapper> mapperMock;
+        private readonly Mock<IMapper> mapperMock;
+        private readonly Mock<IRepositoryWrapper> wrapperMock;
 
 
         public MessageControllerTest()
         {
-            mainRepositoryMock = new Mock<IMainRepository>();
-            messageRepositoryMock = new Mock<IMessageRepository>();
-            userRepositoryMock = new Mock<IUserRepository>();
             mapperMock = new Mock<IMapper>();
+            wrapperMock = new Mock<IRepositoryWrapper>();
         }
 
         [Fact]
         public async Task AddMessageUnauthorizedStatus()
         {
             //Arrange
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-                userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -57,8 +52,9 @@ namespace TaskManager.API_Test
         public async Task AddMessageNotFoundStatus()
         {
             //Arrange
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-                userRepositoryMock.Object, mapperMock.Object);
+            wrapperMock.Setup(w => w.UserRepository.GetUserByNick("test")).Returns(Task.FromResult((User)null));
+
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -78,17 +74,15 @@ namespace TaskManager.API_Test
             User user = new User { Nickname = nick, Id = 1 };
             Message message = new Message { MessageId = 1 };
 
-            userRepositoryMock.Setup(u => u.GetUserByNick(nick)).Returns(Task.Run(() =>
-            { return user; }));
+            wrapperMock.Setup(u => u.UserRepository.GetUserByNick(nick)).Returns(Task.FromResult(user));
 
             mapperMock.Setup(m => m.Map<Message>(It.IsAny<MessageForAdd>())).Returns(message);
 
-            mainRepositoryMock.Setup(m => m.Add(message));
+            wrapperMock.Setup(m => m.MessageRepository.Add(message));
 
-            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(Task.Run(() => { return false; }));
+            wrapperMock.Setup(m => m.SaveAll()).Returns(Task.Run(() => { return false; }));
 
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-                userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -108,17 +102,16 @@ namespace TaskManager.API_Test
             User user = new User { Nickname = nick, Id = 1 };
             Message message = new Message { MessageId = 1 };
 
-            userRepositoryMock.Setup(u => u.GetUserByNick(nick)).Returns(Task.Run(() =>
+            wrapperMock.Setup(u => u.UserRepository.GetUserByNick(nick)).Returns(Task.Run(() =>
             { return user; }));
 
             mapperMock.Setup(m => m.Map<Message>(It.IsAny<MessageForAdd>())).Returns(message);
 
-            mainRepositoryMock.Setup(m => m.Add(message)).Verifiable();
+            wrapperMock.Setup(m => m.MessageRepository.Add(message)).Verifiable();
 
-            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(Task.Run(() => { return true; }));
+            wrapperMock.Setup(m => m.SaveAll()).Returns(Task.Run(() => { return true; }));
 
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-                userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -133,8 +126,7 @@ namespace TaskManager.API_Test
         public async Task GetReceivedMessagesUnauthorizedStatus()
         {
             //Arrange
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-              userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -158,15 +150,14 @@ namespace TaskManager.API_Test
                 new MessageForReturnReceivedMessages {MessageId = 2}
             };
 
-            messageRepositoryMock.Setup(m => m.GetReceivedMessages(1, 0)).Returns(Task.Run(() =>
+            wrapperMock.Setup(m => m.MessageRepository.GetReceivedMessages(1, 0)).Returns(Task.Run(() =>
             {
                 return messages;
             }));
 
             mapperMock.Setup(m => m.Map<IEnumerable<MessageForReturnReceivedMessages>>(messages)).Returns(messagesForReturn);
 
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-              userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -183,8 +174,7 @@ namespace TaskManager.API_Test
         public async Task GetSendedMessagesUnauthorizedStatus()
         {
             //Arrange
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-              userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -208,15 +198,14 @@ namespace TaskManager.API_Test
                 new MessageForReturnSendedMessages {MessageId = 2}
             };
 
-            messageRepositoryMock.Setup(m => m.GetSendedMessages(1, 0)).Returns(Task.Run(() =>
+            wrapperMock.Setup(m => m.MessageRepository.GetSendedMessages(1, 0)).Returns(Task.Run(() =>
             {
                 return messages;
             }));
 
             mapperMock.Setup(m => m.Map<IEnumerable<MessageForReturnSendedMessages>>(messages)).Returns(messagesForReturn);
 
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-              userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -233,8 +222,7 @@ namespace TaskManager.API_Test
         public async Task GetMessageUnauthorizedStatus()
         {
             //Arrange
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-                userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -249,8 +237,9 @@ namespace TaskManager.API_Test
         public async Task GetMessageNotFoundStatus()
         {
             //Arrange           
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-                userRepositoryMock.Object, mapperMock.Object);
+            wrapperMock.Setup(w => w.MessageRepository.GetMessage(It.IsAny<int>())).Returns(Task.FromResult((Message)null));
+
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -269,15 +258,14 @@ namespace TaskManager.API_Test
             Message message = new Message() { MessageId = 1, Content = "test"};
             MessageForReturnDetailMessage messageForReturn = new MessageForReturnDetailMessage { Content = "test" };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
+            wrapperMock.Setup(m => m.MessageRepository.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
 
             mapperMock.Setup(m => m.Map<MessageForReturnDetailMessage>(message)).Returns(messageForReturn);
 
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-                userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -294,8 +282,7 @@ namespace TaskManager.API_Test
         public async Task DeleteMessageUnauthorizedStatus()
         {
             //Arrange
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-             userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -310,8 +297,9 @@ namespace TaskManager.API_Test
         public async Task DeleteMessageNotFoundStatus()
         {
             //Arrange
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-             userRepositoryMock.Object, mapperMock.Object);
+            wrapperMock.Setup(w => w.MessageRepository.GetMessage(It.IsAny<int>())).Returns(Task.FromResult((Message)null));
+
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -329,13 +317,12 @@ namespace TaskManager.API_Test
             //Arrange
             Message message = new Message { MessageId = 1, RecipientDeleted = false, SenderDeleted = false };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
+            wrapperMock.Setup(m => m.MessageRepository.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
 
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-             userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -354,13 +341,12 @@ namespace TaskManager.API_Test
             //Arrange
             Message message = new Message { MessageId = 1, RecipientDeleted = false, SenderDeleted = false };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
+            wrapperMock.Setup(m => m.MessageRepository.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
 
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-             userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -379,20 +365,19 @@ namespace TaskManager.API_Test
             //Arrange
             Message message = new Message { MessageId = 1, RecipientDeleted = true, SenderDeleted = true };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
+            wrapperMock.Setup(m => m.MessageRepository.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
 
-            mainRepositoryMock.Setup(m => m.Delete(message)).Verifiable();
+            wrapperMock.Setup(m => m.MessageRepository.Delete(message)).Verifiable();
 
-            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(Task.Run(() =>
-          {
+            wrapperMock.Setup(m => m.SaveAll()).Returns(Task.Run(() =>
+            {
               return true;
-          }));
+            }));
 
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-             userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 
@@ -411,20 +396,19 @@ namespace TaskManager.API_Test
             //Arrange
             Message message = new Message { MessageId = 1, RecipientDeleted = true, SenderDeleted = true };
 
-            messageRepositoryMock.Setup(m => m.GetMessage(1)).Returns(Task.Run(() =>
+            wrapperMock.Setup(m => m.MessageRepository.GetMessage(1)).Returns(Task.Run(() =>
             {
                 return message;
             }));
 
-            mainRepositoryMock.Setup(m => m.Delete(message)).Verifiable();
+            wrapperMock.Setup(m => m.MessageRepository.Delete(message)).Verifiable();
 
-            mainRepositoryMock.Setup(m => m.SaveAll()).Returns(Task.Run(() =>
+            wrapperMock.Setup(m => m.SaveAll()).Returns(Task.Run(() =>
             {
                 return false;
             }));
 
-            MessageController controller = new MessageController(mainRepositoryMock.Object, messageRepositoryMock.Object,
-             userRepositoryMock.Object, mapperMock.Object);
+            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
             TestIdentity.GetIdentity(controller);
 

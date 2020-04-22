@@ -3,15 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Model;
 
 namespace TaskManager.API.Data.Repository.TaskRepo
 {
-    public class TaskRepository : ITaskRepository
+    public class TaskRepository : MainRepository, ITaskRepository
     {
         private readonly DataContext dataContext;
 
-        public TaskRepository(DataContext dataContext)
+        public TaskRepository(DataContext dataContext) : base(dataContext)
         {
             this.dataContext = dataContext;
         }

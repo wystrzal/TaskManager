@@ -5,23 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.API.Model;
-using TaskManager.API_Test;
 
 namespace TaskManager.API.Data.Repository.UserRepo
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : MainRepository, IUserRepository
     {
         private readonly DataContext dataContext;
-        private TestDataContext context;
 
-        public UserRepository(DataContext dataContext)
+        public UserRepository(DataContext dataContext) : base(dataContext)
         {
             this.dataContext = dataContext;
-        }
-
-        public UserRepository(TestDataContext context)
-        {
-            this.context = context;
         }
 
         public async Task<User> GetLastUser()

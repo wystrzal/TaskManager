@@ -6,7 +6,7 @@ using TaskManager.API.Model;
 
 namespace TaskManager.API.Data.Repository.UserRepo
 {
-    public interface IUserRepository
+    public interface IUserRepository : IMainRepository
     {
         Task<User> GetUserByNick(string nick);
         Task<User> GetLastUser();

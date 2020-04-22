@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using TaskManager.API.Data.Repository;
 using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Dto;
 using TaskManager.API.Dto.User;
@@ -27,19 +28,18 @@ namespace TaskManager.API.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly IConfiguration config;
         private readonly IMapper mapper;
-        private readonly ITokenGenerator tokenGenerator;
-        private readonly IUserRepository userRepository;
+        private readonly IRepositoryWrapper repositoryWrapper;
         private Random random = new Random();
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config,
-            IMapper mapper, ITokenGenerator tokenGenerator, IUserRepository userRepository)
+
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager,
+            IConfiguration config, IMapper mapper, IRepositoryWrapper repositoryWrapper)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.config = config;
             this.mapper = mapper;
-            this.tokenGenerator = tokenGenerator;
-            this.userRepository = userRepository;
+            this.repositoryWrapper = repositoryWrapper;
         }
 
         [HttpPost("login")]
@@ -60,7 +60,7 @@ namespace TaskManager.API.Controllers
 
                 return Ok(new
                 {
-                    token = tokenGenerator.GenerateJwtToken(dbUser, config),
+                    token = TokenGenerator.GenerateJwtToken(dbUser, config),
                     user
                 });
             }
@@ -79,7 +79,7 @@ namespace TaskManager.API.Controllers
 
             var userToCreate = mapper.Map<User>(userForRegisterDto);
 
-            var lastUser = await userRepository.GetLastUser();
+            var lastUser = await repositoryWrapper.UserRepository.GetLastUser();
 
             if (lastUser == null)
             {

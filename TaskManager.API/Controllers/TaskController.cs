@@ -4,11 +4,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.Data.Repository;
-using TaskManager.API.Data.Repository.ProjectRepo;
-using TaskManager.API.Data.Repository.TaskRepo;
 using TaskManager.API.Dto.Task;
 using TaskManager.API.Model;
 
@@ -18,18 +15,13 @@ namespace TaskManager.API.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private readonly IMainRepository mainRepository;
-        private readonly IProjectRepository projectRepository;
         private readonly IMapper mapper;
-        private readonly ITaskRepository taskRepository;
+        private readonly IRepositoryWrapper repositoryWrapper;
 
-        public TaskController(IMainRepository mainRepository, IProjectRepository projectRepository, IMapper mapper, 
-            ITaskRepository taskRepository)
+        public TaskController(IMapper mapper, IRepositoryWrapper repositoryWrapper)
         {
-            this.mainRepository = mainRepository;
-            this.projectRepository = projectRepository;
             this.mapper = mapper;
-            this.taskRepository = taskRepository;
+            this.repositoryWrapper = repositoryWrapper;
         }
 
         [HttpGet]
@@ -40,7 +32,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var tasks = await taskRepository.GetTasks(projectId, skip);
+            var tasks = await repositoryWrapper.TaskRepository.GetTasks(projectId, skip);
 
             var tasksForReturn = mapper.Map<IEnumerable<TaskForReturn>>(tasks);
 
@@ -55,7 +47,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var importantTasks = await taskRepository.GetImportantTasks(userId, skip);
+            var importantTasks = await repositoryWrapper.TaskRepository.GetImportantTasks(userId, skip);
 
             var importantTasksForReturn = mapper.Map<IEnumerable<TaskForReturnImportant>>(importantTasks);
 
@@ -70,7 +62,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var task = await taskRepository.GetTask(taskId);
+            var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
 
             if (task == null)
             {
@@ -90,7 +82,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var project = await projectRepository.GetProject(projectId);
+            var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
             {
@@ -104,7 +96,7 @@ namespace TaskManager.API.Controllers
 
             project.PTasks.Add(taskToAdd);
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 var taskForReturn = mapper.Map<TaskForReturn>(taskToAdd);
                 return CreatedAtRoute("GetTask", new { userId, projectId, taskId = taskToAdd.PTaskId }, taskForReturn);
@@ -122,7 +114,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var task = await taskRepository.GetTask(taskId);
+            var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
 
             if (task == null)
             {
@@ -138,7 +130,7 @@ namespace TaskManager.API.Controllers
                 task.Priority = newStatPrior;
             }
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 return Ok();
             }
@@ -154,21 +146,48 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var task = await taskRepository.GetTask(taskId);
+            var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
 
             if (task == null)
             {
                 return NotFound("Could not find task.");
             }
 
-            mainRepository.Delete(task);
+            repositoryWrapper.TaskRepository.Delete(task);
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 return Ok();
             }
 
             return BadRequest("Could not delete task.");
+        }
+
+        [HttpPut("{taskId}/changeOwner/{newOwner}")]
+        public async Task<IActionResult> ChangeTaskOwner(int userId, int taskId, string newOwner)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
+
+            if (task == null)
+            {
+                return NotFound("Could not find task.");
+            }
+
+            var user = await repositoryWrapper.UserRepository.GetUserByNick(newOwner);
+
+            task.Owner = user.Id;
+
+            if (await repositoryWrapper.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Could not change task owner");
         }
     }
 }

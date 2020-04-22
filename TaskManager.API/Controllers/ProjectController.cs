@@ -18,17 +18,12 @@ namespace TaskManager.API.Controllers
     public class ProjectController : ControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IMainRepository mainRepository;
-        private readonly IProjectRepository projectRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IRepositoryWrapper repositoryWrapper;
 
-        public ProjectController(IMapper mapper, IMainRepository mainRepository,
-            IProjectRepository projectRepository, IUserRepository userRepository)
+        public ProjectController(IMapper mapper, IRepositoryWrapper repositoryWrapper)
         {
             this.mapper = mapper;
-            this.mainRepository = mainRepository;
-            this.projectRepository = projectRepository;
-            this.userRepository = userRepository;
+            this.repositoryWrapper = repositoryWrapper;
         }
 
         [HttpPost]
@@ -43,9 +38,9 @@ namespace TaskManager.API.Controllers
 
             projectToAdd.Owner = userId;
 
-            mainRepository.Add(projectToAdd);
+            repositoryWrapper.ProjectRepository.Add(projectToAdd);
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 var userProject = new UserProject
                 {
@@ -54,9 +49,9 @@ namespace TaskManager.API.Controllers
                     Status = "active"
                 };
 
-                mainRepository.Add(userProject);
+                repositoryWrapper.ProjectRepository.Add(userProject);
 
-                if (await mainRepository.SaveAll())
+                if (await repositoryWrapper.SaveAll())
                 {
                     var projectForReturn = mapper.Map<ProjectForReturnAdded>(projectToAdd);
                     return CreatedAtRoute("GetProject", new { userId, projectToAdd.ProjectId }, projectForReturn);
@@ -74,7 +69,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var project = await projectRepository.GetProject(projectId);
+            var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
             {
@@ -86,9 +81,9 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            mainRepository.Delete(project);
+            repositoryWrapper.ProjectRepository.Delete(project);
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 return Ok();
             }
@@ -104,7 +99,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var project = await projectRepository.GetProject(projectId);
+            var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
             {
@@ -124,7 +119,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var projects = await projectRepository.GetProjects(userId, type, skip);
+            var projects = await repositoryWrapper.ProjectRepository.GetProjects(userId, type, skip);
 
             var projectsForReturn = mapper.Map<IEnumerable<ProjectForReturn>>(projects);
 
@@ -139,7 +134,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var projects = await projectRepository.GetInvitationsToProject(userId);
+            var projects = await repositoryWrapper.ProjectRepository.GetInvitationsToProject(userId);
 
             var projectsForReturn = mapper.Map<IEnumerable<ProjectForReturnInvitations>>(projects);
 
@@ -154,14 +149,14 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var newUser = await userRepository.GetUserByNick(userNick.ToLower());
+            var newUser = await repositoryWrapper.UserRepository.GetUserByNick(userNick.ToLower());
 
             if (newUser == null)
             {
                 return NotFound("Could not find user.");
             }
   
-            var project = await projectRepository.GetProject(projectId);
+            var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
             {
@@ -193,9 +188,9 @@ namespace TaskManager.API.Controllers
                     Status = "invited"
                 };
 
-                mainRepository.Add(userProject);
+                repositoryWrapper.ProjectRepository.Add(userProject);
 
-                if (await mainRepository.SaveAll())
+                if (await repositoryWrapper.SaveAll())
                 {
                     return Ok();
                 }
@@ -212,7 +207,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var project = await projectRepository.GetProject(projectId);
+            var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
             {
@@ -231,7 +226,7 @@ namespace TaskManager.API.Controllers
                 joinUser.Status = "rejected";
             }
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 if (action == 1)
                 {
@@ -255,7 +250,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var project = await projectRepository.GetProject(projectId);
+            var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
             {
@@ -266,7 +261,7 @@ namespace TaskManager.API.Controllers
 
             userLeave.Status = "inactive";
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 return Ok();
             }        
@@ -282,7 +277,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var project = await projectRepository.GetProject(projectId);
+            var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
             {
@@ -292,7 +287,7 @@ namespace TaskManager.API.Controllers
 
             mapper.Map(projectForChangeName, project);
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 return Ok();
             }

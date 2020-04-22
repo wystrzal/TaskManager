@@ -18,17 +18,12 @@ namespace TaskManager.API.Controllers
     [ApiController]
     public class MessageController : ControllerBase
     {
-        private readonly IMainRepository mainRepository;
-        private readonly IMessageRepository messageRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IRepositoryWrapper repositoryWrapper;
         private readonly IMapper mapper;
 
-        public MessageController(IMainRepository mainRepository, IMessageRepository messageRepository,
-            IUserRepository userRepository, IMapper mapper)
+        public MessageController(IRepositoryWrapper repositoryWrapper, IMapper mapper)
         {
-            this.mainRepository = mainRepository;
-            this.messageRepository = messageRepository;
-            this.userRepository = userRepository;
+            this.repositoryWrapper = repositoryWrapper;
             this.mapper = mapper;
         }
 
@@ -40,7 +35,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
                
-            var recipient = await userRepository.GetUserByNick(recipientNick);
+            var recipient = await repositoryWrapper.UserRepository.GetUserByNick(recipientNick);
 
             if (recipient == null)
             {
@@ -52,9 +47,9 @@ namespace TaskManager.API.Controllers
             messageToAdd.SenderId = userId;
             messageToAdd.RecipientId = recipient.Id;
 
-            mainRepository.Add(messageToAdd);
+            repositoryWrapper.MessageRepository.Add(messageToAdd);
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 return Ok();
             }
@@ -70,7 +65,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }            
 
-            var receivedMessages = await messageRepository.GetReceivedMessages(userId, skip);
+            var receivedMessages = await repositoryWrapper.MessageRepository.GetReceivedMessages(userId, skip);
 
             var messageForReturn = mapper.Map<IEnumerable<MessageForReturnReceivedMessages>>(receivedMessages);
 
@@ -85,7 +80,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
               
-            var receivedMessages = await messageRepository.GetSendedMessages(userId, skip);
+            var receivedMessages = await repositoryWrapper.MessageRepository.GetSendedMessages(userId, skip);
 
             var messageForReturn = mapper.Map<IEnumerable<MessageForReturnSendedMessages>>(receivedMessages);
 
@@ -100,7 +95,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var message = await messageRepository.GetMessage(messageId);
+            var message = await repositoryWrapper.MessageRepository.GetMessage(messageId);
 
             if (message == null)
             {
@@ -120,7 +115,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var message = await messageRepository.GetMessage(messageId);
+            var message = await repositoryWrapper.MessageRepository.GetMessage(messageId);
 
             if (message == null)
             {
@@ -136,13 +131,13 @@ namespace TaskManager.API.Controllers
                 message.SenderDeleted = true;
             }
 
-            await mainRepository.SaveAll();
+            await repositoryWrapper.SaveAll();
 
             if(message.SenderDeleted == true && message.RecipientDeleted == true)
             {
-                mainRepository.Delete(message);
+                repositoryWrapper.MessageRepository.Delete(message);
 
-                if (await mainRepository.SaveAll())
+                if (await repositoryWrapper.SaveAll())
                     return Ok();
 
                 return BadRequest("Could not delete message.");

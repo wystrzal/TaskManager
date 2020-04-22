@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "MCND5ITSPhPjUBJiH6sOpysvTQqpoDZrGaeQ2sq0LmdKUAb1YMecnL0oG4hNvs16I/2J/rOJFBPRto5/iJc7Ug==",
+  "dgSpecHash": "vjBwb05H/TjgiT0UPk/S41xCZQStHMw1i1fvLla5afFXJmM4+2w9ZWipnu15VkJ9vloxb/3aEcqyrv20zWyazw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Patryk\\Desktop\\TaskManager\\TaskManager.API-Test\\TaskManager.API-Test.csproj",
   "expectedPackageFiles": [
@@ -30,6 +30,7 @@
     "C:\\Users\\Patryk\\.nuget\\packages\\microsoft.entityframeworkcore\\3.1.3\\microsoft.entityframeworkcore.3.1.3.nupkg.sha512",
     "C:\\Users\\Patryk\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\3.1.3\\microsoft.entityframeworkcore.abstractions.3.1.3.nupkg.sha512",
     "C:\\Users\\Patryk\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\3.1.3\\microsoft.entityframeworkcore.analyzers.3.1.3.nupkg.sha512",
+    "C:\\Users\\Patryk\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\3.1.3\\microsoft.entityframeworkcore.inmemory.3.1.3.nupkg.sha512",
     "C:\\Users\\Patryk\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\3.1.3\\microsoft.entityframeworkcore.relational.3.1.3.nupkg.sha512",
     "C:\\Users\\Patryk\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\3.1.2\\microsoft.entityframeworkcore.sqlserver.3.1.2.nupkg.sha512",
     "C:\\Users\\Patryk\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\3.1.3\\microsoft.extensions.caching.abstractions.3.1.3.nupkg.sha512",

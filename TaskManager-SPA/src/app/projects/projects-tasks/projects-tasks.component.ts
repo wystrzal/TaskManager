@@ -138,7 +138,7 @@ export class ProjectsTasksComponent implements OnInit {
     this.projectService
       .getProject(this.activatedRoute.snapshot.params.id)
       .subscribe(
-        (project: Project) => {
+        (project) => {
           this.project = project;
         },
         (error) => {

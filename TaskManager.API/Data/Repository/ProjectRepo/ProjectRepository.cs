@@ -5,13 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.API.Model;
 
+
 namespace TaskManager.API.Data.Repository.ProjectRepo
 {
-    public class ProjectRepository : IProjectRepository
+    public class ProjectRepository : MainRepository, IProjectRepository
     {
         private readonly DataContext dataContext;
 
-        public ProjectRepository(DataContext dataContext)
+        public ProjectRepository(DataContext dataContext) : base(dataContext)
         {
             this.dataContext = dataContext;
         }

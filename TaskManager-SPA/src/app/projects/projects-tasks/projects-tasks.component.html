@@ -7,7 +7,11 @@
       <h5 class="d-inline">Back</h5>
     </a>
     <div class="text-left ml-4 my-2">
-      <button class="btn new-btn" (click)="openTaskAddModal()">
+      <button
+        [disabled]="project?.owner != currentUser"
+        class="btn new-btn"
+        (click)="openTaskAddModal()"
+      >
         <i class="fa fa-plus-circle"> New</i>
       </button>
     </div>

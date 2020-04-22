@@ -18,16 +18,14 @@ namespace TaskManager.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository userRepository;
+        private readonly IRepositoryWrapper repositoryWrapper;
         private readonly IMapper mapper;
-        private readonly IMainRepository mainRepository;
         private readonly UserManager<User> userManager;
 
-        public UserController(IUserRepository userRepository, IMapper mapper, IMainRepository mainRepository, UserManager<User> userManager)
+        public UserController(IRepositoryWrapper repositoryWrapper, IMapper mapper, UserManager<User> userManager)
         {
-            this.userRepository = userRepository;
+            this.repositoryWrapper = repositoryWrapper;
             this.mapper = mapper;
-            this.mainRepository = mainRepository;
             this.userManager = userManager;
         }  
 
@@ -68,7 +66,7 @@ namespace TaskManager.API.Controllers
 
             user.PhotoId = photoId;
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 return Ok();
             }
@@ -91,7 +89,7 @@ namespace TaskManager.API.Controllers
                 return NotFound("Could not find user.");
             }
 
-            var checkNick = await userRepository.GetUserByNick(userForChangeNick.Nickname.ToLower());
+            var checkNick = await repositoryWrapper.UserRepository.GetUserByNick(userForChangeNick.Nickname.ToLower());
 
             if (checkNick != null)
             {
@@ -100,7 +98,7 @@ namespace TaskManager.API.Controllers
 
             getUser.Nickname = userForChangeNick.Nickname.ToLower();
 
-            if (await mainRepository.SaveAll())
+            if (await repositoryWrapper.SaveAll())
             {
                 var userForReturn = await userManager.FindByIdAsync(userId.ToString());
 

@@ -89,12 +89,7 @@ namespace TaskManager.API
 
             services.AddAutoMapper(typeof(Startup).Assembly);
 
-            services.AddScoped<IMainRepository, MainRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IProjectRepository, ProjectRepository>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
-            services.AddScoped<ITaskRepository, TaskRepository>();
-            services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

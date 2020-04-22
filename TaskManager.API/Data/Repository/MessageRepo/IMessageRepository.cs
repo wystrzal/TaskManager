@@ -6,7 +6,7 @@ using TaskManager.API.Model;
 
 namespace TaskManager.API.Data.Repository.MessageRepo
 {
-    public interface IMessageRepository
+    public interface IMessageRepository : IMainRepository
     {
         Task<IEnumerable<Message>> GetSendedMessages(int senderId, int skip);
         Task<IEnumerable<Message>> GetReceivedMessages(int recipientId, int skip);

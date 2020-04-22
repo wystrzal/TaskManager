@@ -6,7 +6,7 @@ using TaskManager.API.Model;
 
 namespace TaskManager.API.Data.Repository.ProjectRepo
 {
-    public interface IProjectRepository
+    public interface IProjectRepository : IMainRepository
     {
         Task<IEnumerable<Project>> GetProjects(int userId, string type, int skip);
         Task<IEnumerable<Project>> GetInvitationsToProject(int userId);

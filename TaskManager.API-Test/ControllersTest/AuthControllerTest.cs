@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TaskManager.API.Controllers;
+using TaskManager.API.Data.Repository;
 using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Dto;
 using TaskManager.API.Dto.User;
@@ -27,15 +28,13 @@ namespace TaskManager.API_Test
 
         private readonly Mock<IConfiguration> configMock;
         private readonly Mock<IMapper> mapperMock;
-        private readonly Mock<ITokenGenerator> tokenGeneratorMock;
-        private readonly Mock<IUserRepository> userRepositoryMock;
+        private readonly Mock<IRepositoryWrapper> wrapperMock;
 
         public AuthControllerTest()
         {
             configMock = new Mock<IConfiguration>();
             mapperMock = new Mock<IMapper>();
-            tokenGeneratorMock = new Mock<ITokenGenerator>();
-            userRepositoryMock = new Mock<IUserRepository>();
+            wrapperMock = new Mock<IRepositoryWrapper>();
         }
 
         [Fact]
@@ -47,7 +46,7 @@ namespace TaskManager.API_Test
 
             AuthController controller = new AuthController(userManager.Object,
                 MockIdentity.GetMockSignInManager().Object, configMock.Object, mapperMock.Object,
-                tokenGeneratorMock.Object, userRepositoryMock.Object);
+                wrapperMock.Object);
 
             userManager.Setup(um => um.FindByNameAsync("test"))
                 .Returns(Task.FromResult((User)null));
@@ -70,7 +69,7 @@ namespace TaskManager.API_Test
 
             AuthController controller = new AuthController(userManager.Object,
                 signInManager.Object, configMock.Object, mapperMock.Object,
-                tokenGeneratorMock.Object, userRepositoryMock.Object);
+                wrapperMock.Object);
 
             userManager.Setup(um => um.FindByNameAsync("test"))
                 .Returns(Task.FromResult(user)).Verifiable();
@@ -95,10 +94,13 @@ namespace TaskManager.API_Test
             var user = new User { UserName = "test", Nickname = "test", Id = 1 };
             var userManager = MockIdentity.GetMockUserManager();
             var signInManager = MockIdentity.GetMockSignInManager();
+            var configurationSection = new Mock<IConfigurationSection>();
 
             AuthController controller = new AuthController(userManager.Object,
                 signInManager.Object, configMock.Object, mapperMock.Object,
-                tokenGeneratorMock.Object, userRepositoryMock.Object);
+                wrapperMock.Object);
+
+            TestIdentity.GetIdentity(controller);
 
             userManager.Setup(um => um.FindByNameAsync(user.UserName))
                  .Returns(Task.FromResult(user));
@@ -109,7 +111,11 @@ namespace TaskManager.API_Test
             mapperMock.Setup(m => m.Map<UserForReturnNickname>(user))
                 .Returns(new UserForReturnNickname { Nickname = "test" });
 
-            tokenGeneratorMock.Setup(t => t.GenerateJwtToken(user, configMock.Object)).Returns("token");
+         
+            configurationSection.Setup(a => a.Value).Returns("VeryLongKeyForTest");
+            configMock.Setup(a => a.GetSection("AppSettings:Token")).Returns(configurationSection.Object);
+
+
 
             //Act
             var action = await controller.Login(userForLogin) as OkObjectResult;
@@ -128,7 +134,7 @@ namespace TaskManager.API_Test
 
             AuthController controller = new AuthController(MockIdentity.GetMockUserManager().Object,
                 MockIdentity.GetMockSignInManager().Object, configMock.Object, mapperMock.Object,
-                tokenGeneratorMock.Object, userRepositoryMock.Object);
+                wrapperMock.Object);
 
             //Act
             var action = await controller.Register(userForRegister) as BadRequestObjectResult;
@@ -148,14 +154,14 @@ namespace TaskManager.API_Test
             var user = new User { UserName = "test" };
 
             AuthController controller = new AuthController(userManager.Object,
-                signInManager.Object, configMock.Object, mapperMock.Object, tokenGeneratorMock.Object,
-                userRepositoryMock.Object);
+                signInManager.Object, configMock.Object, mapperMock.Object,
+                wrapperMock.Object);
 
 
             userManager.Setup(um => um.CreateAsync(user, "test"))
             .Returns(Task.FromResult(IdentityResult.Success));
 
-            userRepositoryMock.Setup(u => u.GetLastUser()).Returns(Task.FromResult((User)null));
+            wrapperMock.Setup(u => u.UserRepository.GetLastUser()).Returns(Task.FromResult(user));
 
             mapperMock.Setup(m => m.Map<User>(userForRegister)).Returns(user);
 
@@ -176,14 +182,15 @@ namespace TaskManager.API_Test
             var user = new User { UserName = "test" };
 
             AuthController controller = new AuthController(userManager.Object,
-                signInManager.Object, configMock.Object, mapperMock.Object, tokenGeneratorMock.Object,
-                userRepositoryMock.Object);
+                signInManager.Object, configMock.Object, mapperMock.Object,
+                wrapperMock.Object);
 
 
             userManager.Setup(um => um.CreateAsync(user, "test"))
             .Returns(Task.FromResult(IdentityResult.Failed()));
 
-            userRepositoryMock.Setup(u => u.GetLastUser()).Returns(Task.FromResult(new User { Id = 1}));
+            wrapperMock.Setup(u => u.UserRepository.GetLastUser())
+                .Returns(Task.FromResult(new User { Id = 1}));
 
             mapperMock.Setup(m => m.Map<User>(userForRegister)).Returns(user);
 

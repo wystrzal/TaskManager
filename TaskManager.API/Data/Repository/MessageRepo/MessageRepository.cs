@@ -5,13 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.API.Model;
 
+
 namespace TaskManager.API.Data.Repository.MessageRepo
 {
-    public class MessageRepository : IMessageRepository
+    public class MessageRepository : MainRepository, IMessageRepository
     {
         private readonly DataContext dataContext;
 
-        public MessageRepository(DataContext dataContext)
+        public MessageRepository(DataContext dataContext) : base(dataContext)
         {
             this.dataContext = dataContext;
         }

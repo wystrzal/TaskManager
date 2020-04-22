@@ -53,9 +53,7 @@ namespace TaskManager.API.Helpers
                  .ForMember(dest => dest.AnyUsers,
                  opt => opt.MapFrom(src => src.UserProjects.Where(up => up.Status == "active").ToList().Count > 1 ? true : false))
                  .ForMember(dest => dest.ProjectUsersNick,
-                 opt => opt.MapFrom(src => src.UserProjects.Select(up => up.User.Nickname)))
-                 .ForMember(dest => dest.ProjectUsersId,
-                 opt => opt.MapFrom(src => src.UserProjects.Select(up => up.User.Id)));
+                 opt => opt.MapFrom(src => src.UserProjects.Select(up => up.User.Nickname)));
 
             CreateMap<Project, ProjectForReturnInvitations>();
 

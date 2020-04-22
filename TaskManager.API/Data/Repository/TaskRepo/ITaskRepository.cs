@@ -6,11 +6,12 @@ using TaskManager.API.Model;
 
 namespace TaskManager.API.Data.Repository.TaskRepo
 {
-    public interface ITaskRepository
+    public interface ITaskRepository : IMainRepository
     {
         Task<PTask> GetTask(int id);
         Task<IEnumerable<PTask>> GetTasks(int projectId, int skip);
 
         Task<IEnumerable<PTask>> GetImportantTasks(int userId, int skip);
+        
     }
 }
