@@ -49,11 +49,13 @@ namespace TaskManager.API.Helpers
 
             CreateMap<Project, ProjectForReturnAdded>();
 
+            CreateMap<User, ProjectForReturnUsers>()
+                .ForMember(dest => dest.UserId,
+                opt => opt.MapFrom(src => src.Id));
+
             CreateMap<Project, ProjectForReturn>()
                  .ForMember(dest => dest.AnyUsers,
-                 opt => opt.MapFrom(src => src.UserProjects.Where(up => up.Status == "active").ToList().Count > 1 ? true : false))
-                 .ForMember(dest => dest.ProjectUsersNick,
-                 opt => opt.MapFrom(src => src.UserProjects.Select(up => up.User.Nickname)));
+                 opt => opt.MapFrom(src => src.UserProjects.Where(up => up.Status == "active").ToList().Count > 1 ? true : false));
 
             CreateMap<Project, ProjectForReturnInvitations>();
 
@@ -71,7 +73,20 @@ namespace TaskManager.API.Helpers
                 opt => opt.MapFrom(src => src.PTaskId))
                 .ForMember(dest => dest.TaskOwnerPhoto,
                 opt => opt.MapFrom(src => src.Project.UserProjects.Where(up => up.UserId == src.Owner)
-                    .Select(up => up.User.PhotoId).FirstOrDefault()));
+                    .Select(up => up.User.PhotoId).FirstOrDefault()))
+                .ForMember(dest => dest.TaskOwnerNick,
+                opt => opt.MapFrom(src => src.Project.UserProjects.Where(up => up.UserId == src.Owner)
+                    .Select(up => up.User.Nickname).FirstOrDefault()));
+
+            CreateMap<PTask, TaskForReturnChangePhotoInfo>()
+                .ForMember(dest => dest.TaskOwner,
+                opt => opt.MapFrom(src => src.Owner))
+                .ForMember(dest => dest.TaskOwnerPhoto,
+                opt => opt.MapFrom(src => src.Project.UserProjects.Where(up => up.UserId == src.Owner)
+                    .Select(up => up.User.PhotoId).FirstOrDefault()))
+                .ForMember(dest => dest.TaskOwnerNick,
+                opt => opt.MapFrom(src => src.Project.UserProjects.Where(up => up.UserId == src.Owner)
+                    .Select(up => up.User.Nickname).FirstOrDefault()));
 
             CreateMap<PTask, TaskForReturnImportant>()
                 .ForMember(dest => dest.TimeToEnd,

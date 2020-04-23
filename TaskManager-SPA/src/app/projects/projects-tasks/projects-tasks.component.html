@@ -44,11 +44,13 @@
               </div>
               <div class="border p-2">
                 <div class="row align-items-center">
-                  <div class="col-2" *ngIf="project?.type == 'group'">
+                  <div class="col-1" *ngIf="project?.type == 'group'">
                     <span dropdown>
                       <a
                         type="button"
                         id="basic-link"
+                        matTooltip="{{ task.taskOwnerNick | titlecase }}"
+                        [matTooltipPosition]="position"
                         dropdownToggle
                         aria-controls="basic-link-dropdown"
                       >
@@ -68,14 +70,20 @@
                         role="menu"
                         aria-labelledby="basic-link"
                       >
-                        <div
-                          *ngFor="let projectUser of project.projectUsersNick"
-                        >
+                        <div *ngFor="let projectUser of projectUsers">
                           <button
+                            *ngIf="task.taskOwnerNick != projectUser.nickname"
+                            (click)="
+                              changeTaskOwner(
+                                task.taskId,
+                                i,
+                                projectUser.nickname
+                              )
+                            "
                             class="dropdown-item"
                             [disabled]="project.owner != currentUser"
                           >
-                            {{ projectUser | titlecase }}
+                            {{ projectUser.nickname | titlecase }}
                           </button>
                         </div>
                       </ul>
@@ -104,7 +112,7 @@
                     <select
                       (change)="changePriority(task.taskId, i)"
                       *ngIf="priorityOpen[task.taskId]"
-                      class="custom-select mt-1"
+                      class="custom-select"
                       name="priority"
                       [(ngModel)]="priority"
                     >
@@ -142,7 +150,7 @@
                       <option value="To Do">To Do</option>
                     </select>
                   </div>
-                  <div class="col-1" *ngIf="project?.owner == currentUser">
+                  <div class="col-2" *ngIf="project?.owner == currentUser">
                     <button
                       class="btn btn-danger"
                       (click)="deleteTask(task.taskId, i)"
@@ -170,16 +178,22 @@
                 <div class="col-12 mt-2" *ngIf="project?.type == 'group'">
                   <span dropdown>
                     <a
+                      type="button"
                       id="basic-link"
+                      matTooltip="{{ task.taskOwnerNick | titlecase }}"
+                      [matTooltipPosition]="position"
                       dropdownToggle
                       aria-controls="basic-link-dropdown"
                     >
                       <img
-                        src="../../../assets/images/user-2.jpg"
+                        src="../../../assets/images/user-{{
+                          task.taskOwnerPhoto
+                        }}.jpg"
                         class="img-responsive rounded-circle"
-                        alt="Bear"
+                        alt="Photo"
                       />
                     </a>
+
                     <ul
                       id="basic-link-dropdown"
                       *dropdownMenu
@@ -187,12 +201,27 @@
                       role="menu"
                       aria-labelledby="basic-link"
                     >
-                      <a class="dropdown-item" href="#">Wystrzal8365</a>
+                      <div *ngFor="let projectUser of projectUsers">
+                        <button
+                          *ngIf="task.taskOwnerNick != projectUser.nickname"
+                          (click)="
+                            changeTaskOwner(
+                              task.taskId,
+                              i,
+                              projectUser.nickname
+                            )
+                          "
+                          class="dropdown-item"
+                          [disabled]="project.owner != currentUser"
+                        >
+                          {{ projectUser.nickname | titlecase }}
+                        </button>
+                      </div>
                     </ul>
                   </span>
                 </div>
-                <div class="col-12 mt-2 task-name">
-                  {{ task.name }}
+                <div class="col-12 task-name mt-4">
+                  <h6>{{ task.name }}</h6>
                 </div>
                 <div class="col-12 mt-2">
                   <button
@@ -212,9 +241,11 @@
                     >
                   </button>
                   <select
-                    (change)="changePriority(task.taskId)"
+                    (change)="changePriority(task.taskId, i)"
                     *ngIf="priorityOpen[task.taskId]"
                     class="custom-select"
+                    name="priority"
+                    [(ngModel)]="priority"
                   >
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -239,16 +270,21 @@
                     >
                   </button>
                   <select
-                    (change)="changeStatus(task.taskId)"
+                    (change)="changeStatus(task.taskId, i)"
                     *ngIf="statusOpen[task.taskId]"
                     class="custom-select"
+                    name="status"
+                    [(ngModel)]="status"
                   >
                     <option value="Done">Done</option>
                     <option value="In Progress">In Progress</option>
                     <option value="To Do">To Do</option>
                   </select>
                 </div>
-                <div class="col-12 mt-2" *ngIf="project?.owner == currentUser">
+                <div
+                  class="col-12 mt-3 mb-4"
+                  *ngIf="project?.owner == currentUser"
+                >
                   <button
                     class="btn btn-danger"
                     (click)="deleteTask(task.taskId, i)"

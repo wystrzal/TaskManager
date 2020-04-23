@@ -27,6 +27,9 @@ namespace TaskManager.API.Data.Repository.UserRepo
             return await dataContext.Users.Where(u => u.Nickname == nick).FirstOrDefaultAsync();
         }
 
-  
+        public async Task<IEnumerable<User>> GetProjectUsers(int projectId)
+        {
+            return await dataContext.UserProjects.Where(up => up.ProjectId == projectId).Select(up => up.User).ToListAsync();
+        }
     }
 }

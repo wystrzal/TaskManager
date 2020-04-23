@@ -3,21 +3,22 @@
     <h4 class="mt-3">Users:</h4>
     <div class="row mb-1">
       <div
+        *ngFor="let user of users"
         class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mt-4 user-col d-flex justify-content-center"
       >
         <div class="position-absolute">
           <img
             class="img-responsive"
-            src="../../../../assets/images/bear.jpg"
+            src="../../../../assets/images/user-{{ user.photoId }}.jpg"
             alt="user"
           />
           <div class="user-info">
             <div class="user-text">
-              Wystrzal
+              {{ user.nickname | titlecase }}
             </div>
             <div
               class="text-center user-delete"
-              *ngIf="project?.owner == userId"
+              *ngIf="project.owner != user.userId && userId == project.owner"
             >
               <button class="btn-danger btn">
                 <i class="fa fa-trash"></i>
@@ -28,7 +29,7 @@
       </div>
     </div>
   </div>
-  <div class="my-4" *ngIf="project?.owner == userId">
+  <div class="my-4" *ngIf="project.owner == userId">
     <form
       class="my-2"
       #inviteUser="ngForm"

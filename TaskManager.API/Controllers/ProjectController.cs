@@ -57,12 +57,12 @@ namespace TaskManager.API.Controllers
                     return CreatedAtRoute("GetProject", new { userId, projectToAdd.ProjectId }, projectForReturn);
                 }
             }
-        
+
             return BadRequest("Could not add project.");
         }
 
         [HttpDelete("{projectId}")]
-        public async Task<IActionResult> DeleteProject(int userId ,int projectId)
+        public async Task<IActionResult> DeleteProject(int userId, int projectId)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
             {
@@ -105,10 +105,25 @@ namespace TaskManager.API.Controllers
             {
                 return NotFound("Could not find project");
             }
- 
+
             var projectForReturn = mapper.Map<ProjectForReturn>(project);
 
             return Ok(projectForReturn);
+        }
+
+        [HttpGet("{projectId}/users")]
+        public async Task<IActionResult> GetProjectUsers(int userId, int projectId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var users = await repositoryWrapper.UserRepository.GetProjectUsers(projectId);
+
+            var usersToReturn = mapper.Map<IEnumerable<ProjectForReturnUsers>>(users);
+
+            return Ok(usersToReturn);
         }
 
         [HttpGet]

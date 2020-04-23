@@ -10,5 +10,6 @@ namespace TaskManager.API.Data.Repository.UserRepo
     {
         Task<User> GetUserByNick(string nick);
         Task<User> GetLastUser();
+        Task<IEnumerable<User>> GetProjectUsers(int projectId);
     }
 }

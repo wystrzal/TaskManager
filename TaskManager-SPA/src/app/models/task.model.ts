@@ -5,7 +5,6 @@ export interface Task {
   priority: string;
   timeToEnd: number;
   taskOwner: number;
-  projectId: number;
-  projectName: string;
   taskOwnerPhoto: number;
+  taskOwnerNick: string;
 }

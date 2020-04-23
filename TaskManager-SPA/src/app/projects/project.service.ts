@@ -4,6 +4,7 @@ import { environment } from "src/environments/environment";
 import { AuthService } from "../shared/services/auth.service";
 import { Observable } from "rxjs";
 import { Project } from "../models/project.model";
+import { User } from "../models/user.model";
 
 @Injectable({
   providedIn: "root",
@@ -44,6 +45,17 @@ export class ProjectService {
         this.authService.decodedToken.nameid +
         "/project/" +
         projectId
+    );
+  }
+
+  getProjectUsers(projectId: number): Observable<User> {
+    return this.http.get<User>(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project/" +
+        projectId +
+        "/users"
     );
   }
 

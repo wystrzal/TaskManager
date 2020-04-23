@@ -9,6 +9,8 @@ import { TaskService } from "../../shared/services/task.service";
 import { ErrorService } from "src/app/core/helpers/error.service";
 import { ProjectService } from "../project.service";
 import { Project } from "src/app/models/project.model";
+import { TooltipPosition } from "@angular/material/tooltip";
+import { User } from "src/app/models/user.model";
 
 @Component({
   selector: "app-projects-tasks",
@@ -16,15 +18,17 @@ import { Project } from "src/app/models/project.model";
   styleUrls: ["./projects-tasks.component.css"],
 })
 export class ProjectsTasksComponent implements OnInit {
+  position: TooltipPosition = "right";
   currentUser: number;
   priorityOpen: boolean[] = [];
+  priority: string;
   statusOpen: boolean[] = [];
+  status: string;
   bsModalRef: BsModalRef;
   tasks: Task[];
   project: Project;
-  priority: string;
-  status: string;
   skip = 0;
+  projectUsers: User;
 
   constructor(
     private location: Location,
@@ -58,15 +62,15 @@ export class ProjectsTasksComponent implements OnInit {
     this.location.back();
   }
 
-  changePriority(id: number, taskIndex: number) {
-    if (!this.priorityOpen[id]) {
-      this.priorityOpen[id] = true;
+  changePriority(taskId: number, taskIndex: number) {
+    if (!this.priorityOpen[taskId]) {
+      this.priorityOpen[taskId] = true;
     } else {
       if (this.tasks[taskIndex].priority === this.priority) {
-        this.priorityOpen[id] = false;
+        this.priorityOpen[taskId] = false;
       } else {
         this.taskService
-          .changeStatusPriority(id, "priority", this.priority)
+          .changeStatusPriority(taskId, "priority", this.priority)
           .subscribe(
             () => {
               this.tasks[taskIndex].priority = this.priority;
@@ -75,20 +79,20 @@ export class ProjectsTasksComponent implements OnInit {
               this.errorService.newError(error);
             }
           );
-        this.priorityOpen[id] = false;
+        this.priorityOpen[taskId] = false;
       }
     }
   }
 
-  changeStatus(id: number, taskIndex: number) {
-    if (!this.statusOpen[id]) {
-      this.statusOpen[id] = true;
+  changeStatus(taskId: number, taskIndex: number) {
+    if (!this.statusOpen[taskId]) {
+      this.statusOpen[taskId] = true;
     } else {
       if (this.tasks[taskIndex].status === this.status) {
-        this.statusOpen[id] = false;
+        this.statusOpen[taskId] = false;
       } else {
         this.taskService
-          .changeStatusPriority(id, "status", this.status)
+          .changeStatusPriority(taskId, "status", this.status)
           .subscribe(
             () => {
               this.tasks[taskIndex].status = this.status;
@@ -97,9 +101,22 @@ export class ProjectsTasksComponent implements OnInit {
               this.errorService.newError(error);
             }
           );
-        this.statusOpen[id] = false;
+        this.statusOpen[taskId] = false;
       }
     }
+  }
+
+  changeTaskOwner(taskId: number, taskIndex: number, newOwner: string) {
+    this.taskService.changeTaskOwner(taskId, newOwner).subscribe(
+      (task: Task) => {
+        this.tasks[taskIndex].taskOwnerPhoto = task.taskOwnerPhoto;
+        this.tasks[taskIndex].taskOwnerNick = task.taskOwnerNick;
+        this.tasks[taskIndex].taskOwner = task.taskOwner;
+      },
+      (error) => {
+        this.errorService.newError(error);
+      }
+    );
   }
 
   getTasks() {
@@ -126,6 +143,15 @@ export class ProjectsTasksComponent implements OnInit {
       .subscribe(
         (project) => {
           this.project = project;
+
+          this.projectService.getProjectUsers(this.project.projectId).subscribe(
+            (user) => {
+              this.projectUsers = user;
+            },
+            (error) => {
+              this.errorService.newError(error);
+            }
+          );
         },
         (error) => {
           this.errorService.newError(error);

@@ -10,7 +10,7 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(106, 141, 115, 0.8);
+  background: rgba(106, 141, 115, 0.95);
   transition: all 200ms ease-in;
 }
 
@@ -22,7 +22,9 @@ img {
   position: absolute;
   top: 10%;
   left: 50%;
+  font-size: 25px;
   transform: translateX(-50%);
+  color: #f4fdd9;
 }
 .user-delete {
   position: absolute;

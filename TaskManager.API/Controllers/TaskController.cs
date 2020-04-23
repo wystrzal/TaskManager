@@ -180,11 +180,17 @@ namespace TaskManager.API.Controllers
 
             var user = await repositoryWrapper.UserRepository.GetUserByNick(newOwner);
 
+            if (task.Owner == user.Id)
+            {
+                return BadRequest("Selected user is currently owner of this task.");
+            }
+
             task.Owner = user.Id;
 
             if (await repositoryWrapper.SaveAll())
             {
-                return Ok();
+                var taskForReturn = mapper.Map<TaskForReturnChangePhotoInfo>(task);
+                return CreatedAtRoute("GetTask", new { userId, projectId = 0, taskId}, taskForReturn);
             }
 
             return BadRequest("Could not change task owner");

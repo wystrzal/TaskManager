@@ -4,5 +4,4 @@ export interface Project {
   type: string;
   owner: number;
   anyUsers: boolean;
-  projectUsersNick: string[];
 }

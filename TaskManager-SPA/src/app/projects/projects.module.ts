@@ -11,6 +11,7 @@ import { ProjectsGroupInvitationsComponent } from "./projects-group/projects-gro
 import { ProjectsManageUsersComponent } from "./projects-manage/projects-manage-detail/projects-manage-users/projects-manage-users.component";
 import { ProjectsTasksComponent } from "./projects-tasks/projects-tasks.component";
 import { ProjectsTasksAddComponent } from "./projects-tasks/projects-tasks-add/projects-tasks-add.component";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { ProjectsTasksAddComponent } from "./projects-tasks/projects-tasks-add/p
     ProjectsTasksComponent,
     ProjectsTasksAddComponent,
   ],
-  imports: [SharedModule, ProjectsRoutes],
+  imports: [SharedModule, ProjectsRoutes, MatTooltipModule],
   entryComponents: [ProjectsManageAddComponent, ProjectsTasksAddComponent],
 })
 export class ProjectsModule {}

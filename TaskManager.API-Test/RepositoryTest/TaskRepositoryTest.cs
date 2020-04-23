@@ -49,9 +49,7 @@ namespace TaskManager.API_Test.RepositoryTest
             {
                 var time = DateTime.Now.AddDays(1);
                 var user1 = new User { Id = 1 };
-                var user2 = new User { Id = 2 };
                 var userProject1 = new List<UserProject>() { new UserProject { ProjectId = 1, User = user1 } };
-                var userProject2 = new List<UserProject>() { new UserProject { ProjectId = 2, User = user2 } };
                 var project = new Project { ProjectId = 1, UserProjects = userProject1 };
                 context.Add(new PTask { Name = "test", PTaskId = 1, Project = project, TimeToEnd = time });
                 context.Add(new PTask { Name = "test", PTaskId = 2, Project = project, TimeToEnd = time });

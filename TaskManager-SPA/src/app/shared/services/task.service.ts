@@ -38,7 +38,7 @@ export class TaskService {
     params = params.append("skip", skip.toString());
 
     return this.http.get<Task[]>(
-      this.url(this.authService.decodedToken.nameid, 0) + "/important",
+      this.url(this.authService.decodedToken.nameid, null) + "/important",
       {
         params,
       }
@@ -57,6 +57,17 @@ export class TaskService {
         taskId,
       {},
       { params }
+    );
+  }
+
+  changeTaskOwner(taskId: number, newOwner: string) {
+    return this.http.put(
+      this.url(this.authService.decodedToken.nameid, null) +
+        "/" +
+        taskId +
+        "/changeOwner/" +
+        newOwner,
+      {}
     );
   }
 

@@ -19,8 +19,9 @@ namespace TaskManager.API.Data.Repository.TaskRepo
 
         public async Task<PTask> GetTask(int id)
         {
-            return await dataContext.PTasks.Where(t => t.PTaskId == id)
-                .FirstOrDefaultAsync();
+            return await dataContext.PTasks.Include(t => t.Project)
+                .ThenInclude(p => p.UserProjects).ThenInclude(up => up.User)
+                .Where(t => t.PTaskId == id).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<PTask>> GetTasks(int projectId, int skip)
