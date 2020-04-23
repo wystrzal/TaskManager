@@ -21,7 +21,7 @@ using TaskManager.API.Helpers.GenerateToken;
 using TaskManager.API.Model;
 using Xunit;
 
-namespace TaskManager.API_Test
+namespace TaskManager.API_Test.ControllersTest
 {
     public class AuthControllerTest
     {

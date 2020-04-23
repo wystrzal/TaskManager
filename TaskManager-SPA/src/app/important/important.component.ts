@@ -34,12 +34,7 @@ export class ImportantComponent implements OnInit {
         this.statusOpen[id] = false;
       } else {
         this.taskService
-          .changeStatusPriority(
-            this.authService.decodedToken.nameid,
-            id,
-            "status",
-            this.status
-          )
+          .changeStatusPriority(id, "status", this.status)
           .subscribe(
             () => {
               this.importantTasks[taskIndex].status = this.status;
@@ -54,21 +49,19 @@ export class ImportantComponent implements OnInit {
   }
 
   getImportantTasks() {
-    this.taskService
-      .getImportantTasks(this.authService.decodedToken.nameid, this.skip)
-      .subscribe(
-        (task) => {
-          if (this.importantTasks == null) {
-            this.importantTasks = task;
-          } else {
-            this.importantTasks.push(...task);
-          }
-          this.currentUser = this.authService.decodedToken.nameid;
-        },
-        (error) => {
-          this.errorService.newError(error);
+    this.taskService.getImportantTasks(this.skip).subscribe(
+      (task) => {
+        if (this.importantTasks == null) {
+          this.importantTasks = task;
+        } else {
+          this.importantTasks.push(...task);
         }
-      );
+        this.currentUser = this.authService.decodedToken.nameid;
+      },
+      (error) => {
+        this.errorService.newError(error);
+      }
+    );
   }
 
   onScroll() {

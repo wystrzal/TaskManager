@@ -28,7 +28,7 @@ export class AccountComponent implements OnInit {
   }
 
   getUser() {
-    this.userService.getUser(this.authService.decodedToken.nameid).subscribe(
+    this.userService.getUser().subscribe(
       (user: User) => {
         this.user = user;
       },
@@ -43,46 +43,40 @@ export class AccountComponent implements OnInit {
   }
 
   changePhoto(photoId: number) {
-    this.userService
-      .changePhoto(this.authService.decodedToken.nameid, photoId)
-      .subscribe(
-        () => {
-          this.user.photoId = photoId;
-          this.selectPhoto = false;
-        },
-        (error) => {
-          this.errorService.newError(error);
-        }
-      );
+    this.userService.changePhoto(photoId).subscribe(
+      () => {
+        this.user.photoId = photoId;
+        this.selectPhoto = false;
+      },
+      (error) => {
+        this.errorService.newError(error);
+      }
+    );
   }
 
   changeNick(form: any) {
-    this.userService
-      .changeNick(this.authService.decodedToken.nameid, this.nickModel)
-      .subscribe(
-        (user: any) => {
-          this.user.nickname = this.nickModel.nickname;
-          form.reset();
-          this.authService.user.next(this.user);
-          localStorage.removeItem("user");
-          localStorage.setItem("user", JSON.stringify(user.user));
-        },
-        (error) => {
-          this.errorService.newError(error);
-        }
-      );
+    this.userService.changeNick(this.nickModel).subscribe(
+      (user: any) => {
+        this.user.nickname = this.nickModel.nickname;
+        form.reset();
+        this.authService.user.next(this.user);
+        localStorage.removeItem("user");
+        localStorage.setItem("user", JSON.stringify(user.user));
+      },
+      (error) => {
+        this.errorService.newError(error);
+      }
+    );
   }
 
   changePassword() {
-    this.userService
-      .changePassword(this.authService.decodedToken.nameid, this.passwordModel)
-      .subscribe(
-        () => {
-          this.authService.logout();
-        },
-        (error) => {
-          this.errorService.newError(error);
-        }
-      );
+    this.userService.changePassword(this.passwordModel).subscribe(
+      () => {
+        this.authService.logout();
+      },
+      (error) => {
+        this.errorService.newError(error);
+      }
+    );
   }
 }

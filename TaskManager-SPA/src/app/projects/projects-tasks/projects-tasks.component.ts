@@ -29,8 +29,8 @@ export class ProjectsTasksComponent implements OnInit {
   constructor(
     private location: Location,
     private modalService: BsModalService,
-    private authService: AuthService,
     private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
     private taskService: TaskService,
     private errorService: ErrorService,
     private projectService: ProjectService
@@ -66,12 +66,7 @@ export class ProjectsTasksComponent implements OnInit {
         this.priorityOpen[id] = false;
       } else {
         this.taskService
-          .changeStatusPriority(
-            this.authService.decodedToken.nameid,
-            id,
-            "priority",
-            this.priority
-          )
+          .changeStatusPriority(id, "priority", this.priority)
           .subscribe(
             () => {
               this.tasks[taskIndex].priority = this.priority;
@@ -93,12 +88,7 @@ export class ProjectsTasksComponent implements OnInit {
         this.statusOpen[id] = false;
       } else {
         this.taskService
-          .changeStatusPriority(
-            this.authService.decodedToken.nameid,
-            id,
-            "status",
-            this.status
-          )
+          .changeStatusPriority(id, "status", this.status)
           .subscribe(
             () => {
               this.tasks[taskIndex].status = this.status;
@@ -114,11 +104,7 @@ export class ProjectsTasksComponent implements OnInit {
 
   getTasks() {
     this.taskService
-      .getTasks(
-        this.authService.decodedToken.nameid,
-        this.activatedRoute.snapshot.params.id,
-        this.skip
-      )
+      .getTasks(this.activatedRoute.snapshot.params.id, this.skip)
       .subscribe(
         (task) => {
           if (this.tasks == null) {
@@ -154,16 +140,14 @@ export class ProjectsTasksComponent implements OnInit {
 
   deleteTask(id: number, taskIndex: number) {
     this.errorService.confirm("Are you sure you want delete?", () => {
-      this.taskService
-        .deleteTask(this.authService.decodedToken.nameid, id)
-        .subscribe(
-          () => {
-            this.tasks.splice(taskIndex, 1);
-          },
-          (error) => {
-            this.errorService.newError(error);
-          }
-        );
+      this.taskService.deleteTask(id).subscribe(
+        () => {
+          this.tasks.splice(taskIndex, 1);
+        },
+        (error) => {
+          this.errorService.newError(error);
+        }
+      );
     });
   }
 }

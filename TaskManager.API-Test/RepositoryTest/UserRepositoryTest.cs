@@ -10,14 +10,14 @@ using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Model;
 using Xunit;
 
-namespace TaskManager.API_Test
+namespace TaskManager.API_Test.RepositoryTest
 {
 
     //To start test change in UserRepository (TestDataContext context to TestDataContext dataContext);
     public class UserRepositoryTest
     {
         [Fact]
-        public async Task GetLastUser()
+        public async Task GetLastUserTest()
         {
             //Arrange
             var options = new DbContextOptionsBuilder<DataContext>()
@@ -42,7 +42,7 @@ namespace TaskManager.API_Test
         }
 
         [Fact]
-        public async Task GetUserByNick()
+        public async Task GetUserByNickTest()
         {
             //Arrange
             var options = new DbContextOptionsBuilder<DataContext>()
