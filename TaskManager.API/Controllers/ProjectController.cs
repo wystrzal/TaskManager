@@ -34,17 +34,17 @@ namespace TaskManager.API.Controllers
                 return Unauthorized();
             }
 
-            var projectToAdd = mapper.Map<Project>(projectForAddDto);
+            var projectForAdd = mapper.Map<Project>(projectForAddDto);
 
-            projectToAdd.Owner = userId;
+            projectForAdd.Owner = userId;
 
-            repositoryWrapper.ProjectRepository.Add(projectToAdd);
+            repositoryWrapper.ProjectRepository.Add(projectForAdd);
 
             if (await repositoryWrapper.SaveAll())
             {
                 var userProject = new UserProject
                 {
-                    ProjectId = projectToAdd.ProjectId,
+                    ProjectId = projectForAdd.ProjectId,
                     UserId = userId,
                     Status = "active"
                 };
@@ -53,8 +53,8 @@ namespace TaskManager.API.Controllers
 
                 if (await repositoryWrapper.SaveAll())
                 {
-                    var projectForReturn = mapper.Map<ProjectForReturnAdded>(projectToAdd);
-                    return CreatedAtRoute("GetProject", new { userId, projectToAdd.ProjectId }, projectForReturn);
+                    var projectForReturn = mapper.Map<ProjectForReturnAdded>(projectForAdd);
+                    return CreatedAtRoute("GetProject", new { userId, projectForAdd.ProjectId }, projectForReturn);
                 }
             }
 

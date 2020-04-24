@@ -100,7 +100,7 @@ namespace TaskManager.API_Test.ControllersTest
                 signInManager.Object, configMock.Object, mapperMock.Object,
                 wrapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             userManager.Setup(um => um.FindByNameAsync(user.UserName))
                  .Returns(Task.FromResult(user));

@@ -10,8 +10,6 @@ namespace TaskManager.API_Test
 {
      static class MockIdentity
     {
-
-
         public static Mock<UserManager<User>> GetMockUserManager()
         {
             var store = new Mock<IUserStore<User>>();

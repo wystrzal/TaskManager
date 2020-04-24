@@ -42,6 +42,32 @@ namespace TaskManager.API_Test.RepositoryTest
         }
 
         [Fact]
+        public async Task GetProjectUsersTest()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<DataContext>()
+                .UseInMemoryDatabase(databaseName: "GetProjectUsers")
+                .Options;
+
+            using (var context = new DataContext(options))
+            {
+                var user1 = new User { Id = 1 };
+                var user2 = new User { Id = 2 };
+                context.UserProjects.Add(new UserProject { ProjectId = 1, User = user1 });
+                context.UserProjects.Add(new UserProject { ProjectId = 1,  User = user2 });
+                context.SaveChanges();
+
+                var repository = new UserRepository(context);
+
+                //Act
+                var action = await repository.GetProjectUsers(1);
+
+                //Assert
+                Assert.Equal(2, action.Count());
+            }
+        }
+
+        [Fact]
         public async Task GetUserByNickTest()
         {
             //Arrange

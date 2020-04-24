@@ -38,7 +38,7 @@ namespace TaskManager.API_Test.ControllersTest
             //Arrange
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.AddMessage(2, It.IsAny<string>(), It.IsAny<MessageForAdd>()) as UnauthorizedResult;
@@ -56,7 +56,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.AddMessage(1, It.IsAny<string>(), It.IsAny<MessageForAdd>()) as NotFoundObjectResult;
@@ -84,7 +84,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.AddMessage(1, nick, It.IsAny<MessageForAdd>()) as BadRequestObjectResult; ;
@@ -113,7 +113,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.AddMessage(1, nick, It.IsAny<MessageForAdd>()) as OkResult; ;
@@ -128,7 +128,7 @@ namespace TaskManager.API_Test.ControllersTest
             //Arrange
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act 
             var action = await controller.GetReceivedMessages(2, 0) as UnauthorizedResult;
@@ -159,7 +159,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act 
             var action = await controller.GetReceivedMessages(1, 0) as OkObjectResult;
@@ -176,7 +176,7 @@ namespace TaskManager.API_Test.ControllersTest
             //Arrange
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act 
             var action = await controller.GetSendedMessages(2, 0) as UnauthorizedResult;
@@ -189,8 +189,10 @@ namespace TaskManager.API_Test.ControllersTest
         public async Task GetSendedMessagesOkStatus()
         {
             //Arrange
-            IEnumerable<Message> messages = new List<Message> { new Message { MessageId = 1, RecipientId = 1},
-                new Message { MessageId = 2, RecipientId = 1} };
+            IEnumerable<Message> messages = new List<Message> {
+                new Message { MessageId = 1, RecipientId = 1},
+                new Message { MessageId = 2, RecipientId = 1}
+            };
 
             IEnumerable<MessageForReturnSendedMessages> messagesForReturn = new List<MessageForReturnSendedMessages>
             {
@@ -207,7 +209,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act 
             var action = await controller.GetSendedMessages(1, 0) as OkObjectResult;
@@ -224,7 +226,7 @@ namespace TaskManager.API_Test.ControllersTest
             //Arrange
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.GetMessage(1, 2) as UnauthorizedResult;
@@ -241,7 +243,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.GetMessage(1, 1) as NotFoundObjectResult;
@@ -267,7 +269,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.GetMessage(1, 1) as OkObjectResult;
@@ -284,7 +286,7 @@ namespace TaskManager.API_Test.ControllersTest
             //Arrange
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.DeleteMessage(1, 2, "test") as UnauthorizedResult;
@@ -301,7 +303,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.DeleteMessage(1, 1, "test") as NotFoundObjectResult;
@@ -324,7 +326,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.DeleteMessage(1, 1, "recipient") as NoContentResult;
@@ -348,7 +350,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.DeleteMessage(1, 1, "sender") as NoContentResult;
@@ -379,12 +381,13 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.DeleteMessage(1, 1, "any") as OkResult;
 
             //Assert
+            wrapperMock.Verify(w => w.MessageRepository.Delete(message), Times.Once);
             Assert.Equal(200, action.StatusCode);
             Assert.True(message.RecipientDeleted);
             Assert.True(message.SenderDeleted);
@@ -410,7 +413,7 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            TestIdentity.GetIdentity(controller);
+            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.DeleteMessage(1, 1, "any") as BadRequestObjectResult;
