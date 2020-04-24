@@ -28,7 +28,7 @@ export class ProjectsTasksComponent implements OnInit {
   tasks: Task[];
   project: Project;
   skip = 0;
-  projectUsers: User;
+  projectUsers: User[];
 
   constructor(
     private location: Location,

@@ -48,8 +48,8 @@ export class ProjectService {
     );
   }
 
-  getProjectUsers(projectId: number): Observable<User> {
-    return this.http.get<User>(
+  getProjectUsers(projectId: number): Observable<User[]> {
+    return this.http.get<User[]>(
       this.baseUrl +
         "user/" +
         this.authService.decodedToken.nameid +
@@ -117,6 +117,18 @@ export class ProjectService {
         "leave/" +
         projectId,
       {}
+    );
+  }
+
+  deleteFromProject(projectId: number, userToDelete: number) {
+    return this.http.delete(
+      this.baseUrl +
+        "user/" +
+        this.authService.decodedToken.nameid +
+        "/project/" +
+        projectId +
+        "/delete/" +
+        userToDelete
     );
   }
 

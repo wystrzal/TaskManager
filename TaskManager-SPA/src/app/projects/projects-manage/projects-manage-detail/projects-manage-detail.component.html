@@ -35,7 +35,7 @@
     class="my-2"
     #changeNick="ngForm"
     *ngIf="project?.owner == userId"
-    (ngSubmit)="changeProjectName()"
+    (ngSubmit)="changeProjectName(changeNick)"
   >
     <label for="change-name">Change Name</label>
     <input

@@ -71,12 +71,13 @@ export class ProjectsManageDetailComponent implements OnInit {
     });
   }
 
-  changeProjectName() {
+  changeProjectName(form: any) {
     this.projectService
       .changeProjectName(this.activatedRoute.snapshot.params.id, this.model)
       .subscribe(
         () => {
           this.project.name = this.model.name;
+          form.reset();
         },
         (error) => {
           this.errorService.newError(error);

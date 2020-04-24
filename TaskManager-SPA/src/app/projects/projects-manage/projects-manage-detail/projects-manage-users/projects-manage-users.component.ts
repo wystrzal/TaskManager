@@ -15,7 +15,7 @@ export class ProjectsManageUsersComponent implements OnInit {
   @Input() userId: number;
   model: any = {};
   sended = false;
-  users: User;
+  users: User[];
 
   constructor(
     private projectService: ProjectService,
@@ -56,6 +56,19 @@ export class ProjectsManageUsersComponent implements OnInit {
           setTimeout(() => {
             this.sended = false;
           }, 3000);
+        }
+      );
+  }
+
+  deleteFromProject(userToDelete: number, userIndex: number) {
+    this.projectService
+      .deleteFromProject(this.project.projectId, userToDelete)
+      .subscribe(
+        () => {
+          this.users.splice(userIndex, 1);
+        },
+        (error) => {
+          this.errorService.newError(error);
         }
       );
   }

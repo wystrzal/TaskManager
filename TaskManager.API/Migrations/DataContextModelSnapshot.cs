@@ -385,7 +385,8 @@ namespace TaskManager.API.Migrations
                 {
                     b.HasOne("TaskManager.API.Model.Project", "Project")
                         .WithMany("PTasks")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TaskManager.API.Model.UserProject", b =>

@@ -55,9 +55,16 @@
                         aria-controls="basic-link-dropdown"
                       >
                         <img
+                          *ngIf="task.taskOwnerPhoto != 0"
                           src="../../../assets/images/user-{{
                             task.taskOwnerPhoto
                           }}.jpg"
+                          class="img-responsive rounded-circle"
+                          alt="Photo"
+                        />
+                        <img
+                          *ngIf="task.taskOwnerPhoto == 0"
+                          src="../../../assets/images/user-0.jpg"
                           class="img-responsive rounded-circle"
                           alt="Photo"
                         />
@@ -186,9 +193,16 @@
                       aria-controls="basic-link-dropdown"
                     >
                       <img
+                        *ngIf="task.taskOwnerPhoto != 0"
                         src="../../../assets/images/user-{{
                           task.taskOwnerPhoto
                         }}.jpg"
+                        class="img-responsive rounded-circle"
+                        alt="Photo"
+                      />
+                      <img
+                        *ngIf="task.taskOwnerPhoto == 0"
+                        src="../../../assets/images/user-0.jpg"
                         class="img-responsive rounded-circle"
                         alt="Photo"
                       />

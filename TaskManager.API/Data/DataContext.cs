@@ -53,6 +53,13 @@ namespace TaskManager.API.Data
                    .IsRequired();
             });
 
+            builder.Entity<Project>(project =>
+            {
+                project.HasMany(p => p.PTasks)
+                    .WithOne(p => p.Project)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+                
 
             builder.Entity<Message>(message =>
            {

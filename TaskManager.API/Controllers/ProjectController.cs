@@ -214,6 +214,38 @@ namespace TaskManager.API.Controllers
             }
         }
 
+        [HttpDelete("{projectId}/delete/{userToDelete}")]
+        public async Task<IActionResult> DeleteFromProject(int userId, int projectId, int userToDelete)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
+
+            if (project == null)
+            {
+                return NotFound("Could not find project.");
+            }
+
+            var deleteFromProject = project.UserProjects.Where(up => up.UserId == userToDelete).FirstOrDefault();
+
+            if (deleteFromProject == null)
+            {
+                return NotFound("This user does not belong to project.");
+            }
+
+            repositoryWrapper.ProjectRepository.Delete(deleteFromProject);
+
+            if (await repositoryWrapper.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Could not delete user from project.");
+        }
+
         [HttpPost("join/{projectId}")]
         public async Task<IActionResult> JoinToProject(int userId, int projectId, [FromQuery]int action)
         {

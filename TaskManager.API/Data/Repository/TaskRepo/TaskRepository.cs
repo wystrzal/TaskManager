@@ -33,10 +33,13 @@ namespace TaskManager.API.Data.Repository.TaskRepo
         }
         public async Task<IEnumerable<PTask>> GetImportantTasks(int userId, int skip)
         {
-            return await dataContext.PTasks.Include(t => t.Project)
-                .Where(t => t.Owner == userId || t.Project.Owner == userId
-                    && t.Priority == "High" && t.TimeToEnd > DateTime.Today)
-                .OrderBy(t => t.TimeToEnd).Skip(skip).Take(15).ToListAsync();
+            var importantTasks = await dataContext.PTasks.Include(t => t.Project)
+                .Where(t => t.Owner == userId || t.Project.Owner == userId).Skip(skip).Take(15).ToListAsync();
+
+            return importantTasks.Where(t => t.Priority == "High" && t.TimeToEnd > DateTime.Today
+                    && t.Status != "Done").OrderBy(t => t.TimeToEnd);
+
+                
         }
     }
 }
