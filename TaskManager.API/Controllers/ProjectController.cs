@@ -229,14 +229,14 @@ namespace TaskManager.API.Controllers
                 return NotFound("Could not find project.");
             }
 
-            var deleteFromProject = project.UserProjects.Where(up => up.UserId == userToDelete).FirstOrDefault();
+            var user = project.UserProjects.Where(up => up.UserId == userToDelete).FirstOrDefault();
 
-            if (deleteFromProject == null)
+            if (user == null)
             {
                 return NotFound("This user does not belong to project.");
             }
 
-            repositoryWrapper.ProjectRepository.Delete(deleteFromProject);
+            repositoryWrapper.ProjectRepository.Delete(user);
 
             if (await repositoryWrapper.SaveAll())
             {

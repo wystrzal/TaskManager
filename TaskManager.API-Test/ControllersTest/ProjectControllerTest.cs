@@ -597,6 +597,111 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
+        public async Task DeleteFromProjectUnauthorizedStatus()
+        {
+            //Arrange
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            //Act
+            var action = await controller.DeleteFromProject(2, It.IsAny<int>(), It.IsAny<int>()) as UnauthorizedResult;
+
+            //Assert
+            Assert.Equal(401, action.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteFromProjectNotFoundProjectStatus()
+        {
+            //Arrange
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(It.IsAny<int>())).Returns(Task.FromResult((Project)null));
+
+            //Act
+            var action = await controller.DeleteFromProject(1, It.IsAny<int>(), It.IsAny<int>()) as NotFoundObjectResult;
+
+            //Assert
+            Assert.Equal(404, action.StatusCode);
+            Assert.NotNull(action.Value);
+        }
+
+        [Fact]
+        public async Task DeleteFromProjectNotFoundUserStatus()
+        {
+            //Arrange
+            var userProjects = new List<UserProject>() { new UserProject { UserId = 2 } };
+            var project = new Project { ProjectId = 1, UserProjects = userProjects };
+
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            //Act
+            var action = await controller.DeleteFromProject(1, 1, 1) as NotFoundObjectResult;
+
+            //Assert
+            Assert.Equal(404, action.StatusCode);
+            Assert.NotNull(action.Value);
+        }
+
+        [Fact]
+        public async Task DeleteFromProjectBadRequestStatus()
+        {
+            //Arrange
+            var userProjects = new List<UserProject>() { new UserProject { UserId = 2 } };
+            var project = new Project { ProjectId = 1, UserProjects = userProjects };
+
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            wrapperMock.Setup(w => w.ProjectRepository.Delete(userProjects[0])).Verifiable();
+
+            wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(false));
+
+            //Act
+            var action = await controller.DeleteFromProject(1, 1, 2) as BadRequestObjectResult;
+
+            //Assert
+            Assert.Equal(400, action.StatusCode);
+            Assert.NotNull(action.Value);
+            wrapperMock.Verify(w => w.ProjectRepository.Delete(userProjects[0]), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteFromProjectOkStatus()
+        {
+            //Arrange
+            var userProjects = new List<UserProject>() { new UserProject { UserId = 2 } };
+            var project = new Project { ProjectId = 1, UserProjects = userProjects };
+
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            wrapperMock.Setup(w => w.ProjectRepository.Delete(userProjects[0])).Verifiable();
+
+            wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(true));
+
+            //Act
+            var action = await controller.DeleteFromProject(1, 1, 2) as OkResult;
+
+            //Assert
+            Assert.Equal(200, action.StatusCode);
+            wrapperMock.Verify(w => w.ProjectRepository.Delete(userProjects[0]), Times.Once);
+        }
+
+        [Fact]
         public async Task JoinToProjectUnauthorizedStatus()
         {
             //Arrange
@@ -629,9 +734,239 @@ namespace TaskManager.API_Test.ControllersTest
             Assert.NotNull(action.Value);
         }
 
+        [Fact]
+        public async Task JoinToProjectBadRequestStatus()
+        {
+            //Arrange
+            var userProjects = new List<UserProject>() { new UserProject { UserId = 1, ProjectId = 1 } };
+            var project = new Project { ProjectId = 1, UserProjects = userProjects };
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(false));
+
+            //Act
+            var action = await controller.JoinToProject(1, 1, 1) as BadRequestObjectResult;
+
+            //Assert
+            Assert.Equal(400, action.StatusCode);
+            Assert.NotNull(action.Value);
+        }
+
+        [Fact]
+        public async Task JoinToProjectOkStatus()
+        {
+            //Arrange
+            var userProjects = new List<UserProject>() { new UserProject { UserId = 1, ProjectId = 1 } };
+            var project = new Project { ProjectId = 1, UserProjects = userProjects };
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(true));
+
+            //Act
+            var action = await controller.JoinToProject(1, 1, 2) as OkResult;
+
+            //Assert
+            Assert.Equal(200, action.StatusCode);
+        }
+
+        [Fact]
+        public async Task JoinToProjectOkObjectStatus()
+        {
+            //Arrange
+            var userProjects = new List<UserProject>() { new UserProject { UserId = 1, ProjectId = 1 } };
+            var project = new Project { ProjectId = 1, UserProjects = userProjects };
+
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(true));
+
+            mapperMock.Setup(m => m.Map<ProjectForReturn>(project)).Returns(new ProjectForReturn { ProjectId = 1 });
+
+            //Act
+            var action = await controller.JoinToProject(1, 1, 1) as OkObjectResult;
+            var item = action.Value as ProjectForReturn;
+
+            //Assert
+            Assert.Equal(200, action.StatusCode);
+            Assert.Equal(1, item.ProjectId);
+        }
+
+        [Fact]
+        public async Task LeaveProjectUnauthorizedStatus()
+        {
+            //Arrange
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            //Act
+            var action = await controller.LeaveProject(2, It.IsAny<int>()) as UnauthorizedResult;
+
+            //Assert
+            Assert.Equal(401, action.StatusCode);
+        }
+
+        [Fact]
+        public async Task LeaveProjectNotFoundStatus()
+        {
+            //Arrange
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult((Project)null));
+
+            //Act
+            var action = await controller.LeaveProject(1, It.IsAny<int>()) as NotFoundObjectResult;
+
+            //Assert
+            Assert.Equal(404, action.StatusCode);
+            Assert.NotNull(action.Value);
+        }
+
+        [Fact]
+        public async Task LeaveProjectBadRequestStatus()
+        {
+            //Arrange
+            var userProjects = new List<UserProject>() { new UserProject {ProjectId = 1, UserId = 1 } };
+            var project = new Project { ProjectId = 1, UserProjects = userProjects };
+
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(false));
+
+            //Act
+            var action = await controller.LeaveProject(1, 1) as BadRequestObjectResult;
+
+            //Assert
+            Assert.Equal(400, action.StatusCode);
+            Assert.NotNull(action.Value);
+        }
+
+        [Fact]
+        public async Task LeaveProjectOkStatus()
+        {
+            //Arrange
+            var userProjects = new List<UserProject>() { new UserProject { ProjectId = 1, UserId = 1 } };
+            var project = new Project { ProjectId = 1, UserProjects = userProjects };
+
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(true));
+
+            //Act
+            var action = await controller.LeaveProject(1, 1) as OkResult;
+
+            //Assert
+            Assert.Equal(200, action.StatusCode);
+            Assert.Equal("inactive", project.UserProjects.First().Status);
+        }
 
 
+        [Fact]
+        public async Task ChangeProjectNameUnauthorizedStatus()
+        {
+            //Arrange
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
+            Authorization.GetIdentity(controller);
+
+            //Act
+            var action = await controller.ChangeProjectName(2, It.IsAny<int>(), It.IsAny<ProjectForChangeName>()) as UnauthorizedResult;
+
+            //Assert
+            Assert.Equal(401, action.StatusCode);
+        }
+
+        [Fact]
+        public async Task ChangeProjectNameNotFoundStatus()
+        {
+            //Arrange
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult((Project)null));
+
+            //Act
+            var action = await controller.ChangeProjectName(1, 1, It.IsAny<ProjectForChangeName>()) as NotFoundObjectResult;
+
+            //Assert
+            Assert.Equal(404, action.StatusCode);
+            Assert.NotNull(action.Value);
+        }
+
+        [Fact]
+        public async Task ChangeProjectNameBadRequestStatus()
+        {
+            //Arrange
+            var projectForChangeName = new ProjectForChangeName { Name = "newTest" };
+            var project = new Project { ProjectId = 1, Name = "test"};
+
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            mapperMock.Setup(m => m.Map(projectForChangeName, project)).Verifiable();
+
+            wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(false));
+
+            //Act
+            var action = await controller.ChangeProjectName(1, 1, projectForChangeName) as BadRequestObjectResult;
+
+            //Assert
+            Assert.Equal(400, action.StatusCode);
+            Assert.NotNull(action.Value);
+            mapperMock.Verify(m => m.Map(projectForChangeName, project), Times.Once());
+        }
+
+
+        [Fact]
+        public async Task ChangeProjectNameOkStatus()
+        {
+            //Arrange
+            var projectForChangeName = new ProjectForChangeName { Name = "newTest" };
+            var project = new Project { ProjectId = 1, Name = "test" };
+
+            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
+
+            Authorization.GetIdentity(controller);
+
+            wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
+
+            mapperMock.Setup(m => m.Map(projectForChangeName, project)).Verifiable();
+
+            wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(true));
+
+            //Act
+            var action = await controller.ChangeProjectName(1, 1, projectForChangeName) as OkResult;
+
+            //Assert
+            Assert.Equal(200, action.StatusCode);
+            mapperMock.Verify(m => m.Map(projectForChangeName, project), Times.Once());
+        }
     }
 }
 
