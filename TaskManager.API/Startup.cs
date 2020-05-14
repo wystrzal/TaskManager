@@ -85,8 +85,6 @@ namespace TaskManager.API
 
             services.AddCors();
 
-            services.Configure<CludinarySettings>(Configuration.GetSection("CloudinarySettings"));
-
             services.AddAutoMapper(typeof(Startup).Assembly);
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();

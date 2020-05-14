@@ -18,6 +18,7 @@
 
 .back-btn {
   color: #28a745;
+  -webkit-transition: all 200ms linear;
   transition: all 200ms linear;
 }
 .back-btn:hover {
@@ -39,6 +40,7 @@ h6 {
 
 .new-btn {
   background-color: #28a745;
+  -webkit-transition: all 200ms linear;
   transition: all 200ms linear;
   color: #fff;
 }
