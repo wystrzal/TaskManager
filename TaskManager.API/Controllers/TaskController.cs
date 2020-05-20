@@ -7,10 +7,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.Data.Repository;
 using TaskManager.API.Dto.Task;
+using TaskManager.API.Helpers.Filters;
 using TaskManager.API.Model;
 
 namespace TaskManager.API.Controllers
 {
+    [UserAuthorizationFilter]
     [Route("api/user/{userId}/project/{projectId}/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
@@ -27,11 +29,6 @@ namespace TaskManager.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTasks(int userId, int projectId, [FromQuery]int skip)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var tasks = await repositoryWrapper.TaskRepository.GetTasks(projectId, skip);
 
             var tasksForReturn = mapper.Map<IEnumerable<TaskForReturn>>(tasks);
@@ -42,11 +39,6 @@ namespace TaskManager.API.Controllers
         [HttpGet("important")]
         public async Task<IActionResult> GetImportantTasks(int userId, [FromQuery]int skip)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var importantTasks = await repositoryWrapper.TaskRepository.GetImportantTasks(userId, skip);
 
             var importantTasksForReturn = mapper.Map<IEnumerable<TaskForReturnImportant>>(importantTasks);
@@ -57,11 +49,6 @@ namespace TaskManager.API.Controllers
         [HttpGet("{taskId}", Name = "GetTask")]
         public async Task<IActionResult> GetTask(int userId, int taskId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
 
             if (task == null)
@@ -77,11 +64,6 @@ namespace TaskManager.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(int userId, int projectId, TaskForAdd taskForAdd)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
@@ -109,11 +91,6 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> ChangeStatusPriority(int userId, int taskId, [FromQuery]string action,
             [FromQuery]string newStatPrior)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
 
             if (task == null)
@@ -141,11 +118,6 @@ namespace TaskManager.API.Controllers
         [HttpDelete("{taskId}")]
         public async Task<IActionResult> DeleteTask(int userId, int taskId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
 
             if (task == null)
@@ -166,11 +138,6 @@ namespace TaskManager.API.Controllers
         [HttpPut("{taskId}/changeOwner/{newOwner}")]
         public async Task<IActionResult> ChangeTaskOwner(int userId, int taskId, string newOwner)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
 
             if (task == null)

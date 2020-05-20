@@ -10,10 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.Data.Repository;
 using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Dto.User;
+using TaskManager.API.Helpers.Filters;
 using TaskManager.API.Model;
 
 namespace TaskManager.API.Controllers
 {
+    [UserAuthorizationFilter]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -32,11 +34,6 @@ namespace TaskManager.API.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUser(int userId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var user = await userManager.FindByIdAsync(userId.ToString());
 
             if (user == null)
@@ -52,11 +49,6 @@ namespace TaskManager.API.Controllers
         [HttpPut("{userId}/photo/{photoId}")]
         public async Task<IActionResult> ChangePhoto(int userId, int photoId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var user = await userManager.FindByIdAsync(userId.ToString());
 
             if (user == null)
@@ -77,11 +69,6 @@ namespace TaskManager.API.Controllers
         [HttpPut("{userId}/changeNick")]
         public async Task<IActionResult> ChangeNick(int userId, UserForChangeNick userForChangeNick)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var getUser = await userManager.FindByIdAsync(userId.ToString());
 
             if (getUser == null)
@@ -116,11 +103,6 @@ namespace TaskManager.API.Controllers
         [HttpPut("{userId}/changePassword")]
         public async Task<IActionResult> ChangePassword(int userId, UserForChangePassword userForChangePassword)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var user = await userManager.FindByIdAsync(userId.ToString());
 
             if (user == null)

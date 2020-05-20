@@ -24,24 +24,6 @@ namespace TaskManager.API_Test.ControllersTest
             mapperMock = new Mock<IMapper>();
         }
 
-
-        [Fact]
-        public async Task GetUserUnauthorizedStatus()
-        {
-            //Arrange
-            UserController controller = new UserController(wrapperMock.Object, mapperMock.Object,
-                MockIdentity.GetMockUserManager().Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.GetUser(2) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-
         [Fact]
         public async Task GetUserNotFoundStatus()
         {
@@ -50,8 +32,6 @@ namespace TaskManager.API_Test.ControllersTest
             
             UserController controller = new UserController(wrapperMock.Object, mapperMock.Object,
                 userManager.Object);
-
-            Authorization.GetIdentity(controller);
 
             userManager.Setup(um => um.FindByIdAsync("1")).Returns(Task.FromResult((User)null));
 
@@ -74,8 +54,6 @@ namespace TaskManager.API_Test.ControllersTest
             UserController controller = new UserController(wrapperMock.Object, mapperMock.Object,
                 userManager.Object);
 
-            Authorization.GetIdentity(controller);
-
             userManager.Setup(um => um.FindByIdAsync("1")).Returns(Task.FromResult(user));
 
             mapperMock.Setup(m => m.Map<UserForReturn>(user)).Returns(userForReturn);
@@ -90,22 +68,6 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task ChangePhotoUnauthorizedStatus()
-        {
-            //Arrange
-            UserController controller = new UserController(wrapperMock.Object, mapperMock.Object,
-                MockIdentity.GetMockUserManager().Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.ChangePhoto(2, 1) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task ChangePhotoNotFoundStatus()
         {
             //Arrange
@@ -113,8 +75,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             UserController controller = new UserController(wrapperMock.Object, mapperMock.Object,
                 userManager.Object);
-
-            Authorization.GetIdentity(controller);
 
             userManager.Setup(um => um.FindByIdAsync("1")).Returns(Task.FromResult((User)null));
 

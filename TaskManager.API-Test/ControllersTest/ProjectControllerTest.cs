@@ -26,21 +26,6 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task AddProjectUnauthorizedStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.AddProject(It.IsAny<ProjectForAdd>(), 2) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task AddProjectBadRequestStatus()
         {
             //Arrange
@@ -48,8 +33,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { Name = "test", ProjectId = 1 };
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             mapperMock.Setup(m => m.Map<Project>(projectForAdd)).Returns(project);
 
@@ -76,8 +59,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             mapperMock.Setup(m => m.Map<Project>(projectForAdd)).Returns(project);
 
             wrapperMock.Setup(w => w.ProjectRepository.Add(project));
@@ -100,27 +81,10 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task DeleteProjectUnauthorizedUserStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.DeleteProject(2, It.IsAny<int>()) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task DeleteProjectNotFoundStatus()
         {
             //Arrange
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult((Project)null));
 
@@ -140,8 +104,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
             //Act
@@ -158,8 +120,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { Owner = 1, ProjectId = 1 };
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
@@ -184,8 +144,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
             wrapperMock.Setup(w => w.ProjectRepository.Delete(project)).Verifiable();
@@ -201,27 +159,10 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task GetProjectUnauthorizedStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.GetProject(2, It.IsAny<int>()) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task GetProjectNotFoundStatus()
         {
             //Arrange
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult((Project)null));
 
@@ -241,8 +182,6 @@ namespace TaskManager.API_Test.ControllersTest
             var projectForReturn = new ProjectForReturn { ProjectId = 1, Name = "test"};
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
             var mapper = mapperMock.Setup(m => m.Map<ProjectForReturn>(project)).Returns(projectForReturn);
@@ -255,22 +194,6 @@ namespace TaskManager.API_Test.ControllersTest
             Assert.Equal(200, action.StatusCode);
             Assert.Equal("test", projectForReturn.Name);
         }
-
-        [Fact]
-        public async Task GetProjectUsersUnauthorizedStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.GetProjectUsers(2, It.IsAny<int>()) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
 
         [Fact]
         public async Task GetProjectUsersOkStatus()
@@ -290,8 +213,6 @@ namespace TaskManager.API_Test.ControllersTest
             
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.UserRepository.GetProjectUsers(1)).Returns(Task.FromResult(user));
 
             mapperMock.Setup(m => m.Map<IEnumerable<ProjectForReturnUsers>>(user)).Returns(projectForReturnUsers);
@@ -303,21 +224,6 @@ namespace TaskManager.API_Test.ControllersTest
             //Assert
             Assert.Equal(200, action.StatusCode);
             Assert.Equal(2, item.Count());
-        }
-
-        [Fact]
-        public async Task GetProjectsUnauthorizedStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.GetProjects(2, It.IsAny<string>(), It.IsAny<int>()) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
         }
 
         [Fact]
@@ -338,8 +244,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetProjects(1, "all", 0)).Returns(Task.FromResult(project));
 
             mapperMock.Setup(m => m.Map<IEnumerable<ProjectForReturn>>(project)).Returns(projectForReturn);
@@ -351,21 +255,6 @@ namespace TaskManager.API_Test.ControllersTest
             //Assert
             Assert.Equal(200, action.StatusCode);
             Assert.Equal(2, item.Count());
-        }
-
-        [Fact]
-        public async Task GetInvitationsUnauthorizedStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.GetInvitations(2) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
         }
 
         [Fact]
@@ -386,8 +275,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetInvitationsToProject(1)).Returns(Task.FromResult(project));
 
             mapperMock.Setup(m => m.Map<IEnumerable<ProjectForReturnInvitations>>(project)).Returns(projectForReturn);
@@ -402,28 +289,10 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task AddToProjectUnauthorizedUserStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.AddToProject(2, It.IsAny<int>(), It.IsAny<string>()) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-
-        [Fact]
         public async Task AddToProjectNotFoundUserStatus()
         {
             //Arrange
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.UserRepository.GetUserByNick("test")).Returns(Task.FromResult((User)null));
 
@@ -442,8 +311,6 @@ namespace TaskManager.API_Test.ControllersTest
             var user = new User { Id = 1, Nickname = "test" };
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.UserRepository.GetUserByNick("test")).Returns(Task.FromResult(user));
 
@@ -465,8 +332,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { ProjectId = 1, Owner = 2 };
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.UserRepository.GetUserByNick("test")).Returns(Task.FromResult(user));
 
@@ -491,8 +356,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { ProjectId = 1, Owner = 1, UserProjects = userProject };
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.UserRepository.GetUserByNick("test")).Returns(Task.FromResult(user));
 
@@ -519,8 +382,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.UserRepository.GetUserByNick("test")).Returns(Task.FromResult(user));
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
@@ -546,8 +407,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { ProjectId = 1, Owner = 1, UserProjects = userProject };
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.UserRepository.GetUserByNick("test")).Returns(Task.FromResult(user));
 
@@ -579,8 +438,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.UserRepository.GetUserByNick("test")).Returns(Task.FromResult(user));
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
@@ -597,27 +454,10 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task DeleteFromProjectUnauthorizedStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.DeleteFromProject(2, It.IsAny<int>(), It.IsAny<int>()) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task DeleteFromProjectNotFoundProjectStatus()
         {
             //Arrange
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(It.IsAny<int>())).Returns(Task.FromResult((Project)null));
 
@@ -638,8 +478,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
             //Act
@@ -658,8 +496,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { ProjectId = 1, UserProjects = userProjects };
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
@@ -685,8 +521,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
             wrapperMock.Setup(w => w.ProjectRepository.Delete(userProjects[0])).Verifiable();
@@ -702,27 +536,10 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task JoinToProjectUnauthorizedStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.JoinToProject(2, It.IsAny<int>(), It.IsAny<int>()) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task JoinToProjectNotFoundStatus()
         {
             //Arrange
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult((Project)null));
 
@@ -741,8 +558,6 @@ namespace TaskManager.API_Test.ControllersTest
             var userProjects = new List<UserProject>() { new UserProject { UserId = 1, ProjectId = 1 } };
             var project = new Project { ProjectId = 1, UserProjects = userProjects };
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
@@ -764,8 +579,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { ProjectId = 1, UserProjects = userProjects };
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
             wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(true));
@@ -786,8 +599,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
             wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(true));
@@ -804,27 +615,10 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task LeaveProjectUnauthorizedStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.LeaveProject(2, It.IsAny<int>()) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task LeaveProjectNotFoundStatus()
         {
             //Arrange
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult((Project)null));
 
@@ -844,8 +638,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { ProjectId = 1, UserProjects = userProjects };
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
@@ -868,8 +660,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
             wrapperMock.Setup(w => w.SaveAll()).Returns(Task.FromResult(true));
@@ -882,29 +672,11 @@ namespace TaskManager.API_Test.ControllersTest
             Assert.Equal("inactive", project.UserProjects.First().Status);
         }
 
-
-        [Fact]
-        public async Task ChangeProjectNameUnauthorizedStatus()
-        {
-            //Arrange
-            ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.ChangeProjectName(2, It.IsAny<int>(), It.IsAny<ProjectForChangeName>()) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
         [Fact]
         public async Task ChangeProjectNameNotFoundStatus()
         {
             //Arrange
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult((Project)null));
 
@@ -924,8 +696,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { ProjectId = 1, Name = "test"};
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 
@@ -951,8 +721,6 @@ namespace TaskManager.API_Test.ControllersTest
             var project = new Project { ProjectId = 1, Name = "test" };
 
             ProjectController controller = new ProjectController(mapperMock.Object, wrapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             wrapperMock.Setup(w => w.ProjectRepository.GetProject(1)).Returns(Task.FromResult(project));
 

@@ -10,10 +10,12 @@ using TaskManager.API.Data.Repository;
 using TaskManager.API.Data.Repository.MessageRepo;
 using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Dto.Message;
+using TaskManager.API.Helpers.Filters;
 using TaskManager.API.Model;
 
 namespace TaskManager.API.Controllers
 {
+    [UserAuthorizationFilter]
     [Route("api/user/{userId}/[controller]")]
     [ApiController]
     public class MessageController : ControllerBase
@@ -29,12 +31,7 @@ namespace TaskManager.API.Controllers
 
         [HttpPost("send")]
         public async Task<IActionResult> AddMessage(int userId, [FromQuery]string recipientNick, MessageForAdd messageForAddDto)
-        {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-               
+        {               
             var recipient = await repositoryWrapper.UserRepository.GetUserByNick(recipientNick);
 
             if (recipient == null)
@@ -60,11 +57,6 @@ namespace TaskManager.API.Controllers
         [HttpGet("received")]
         public async Task<IActionResult> GetReceivedMessages(int userId, [FromQuery]int skip)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }            
-
             var receivedMessages = await repositoryWrapper.MessageRepository.GetReceivedMessages(userId, skip);
 
             var messageForReturn = mapper.Map<IEnumerable<MessageForReturnReceivedMessages>>(receivedMessages);
@@ -74,12 +66,7 @@ namespace TaskManager.API.Controllers
 
         [HttpGet("sended")]
         public async Task<IActionResult> GetSendedMessages(int userId, [FromQuery]int skip)
-        {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-              
+        {              
             var receivedMessages = await repositoryWrapper.MessageRepository.GetSendedMessages(userId, skip);
 
             var messageForReturn = mapper.Map<IEnumerable<MessageForReturnSendedMessages>>(receivedMessages);
@@ -90,11 +77,6 @@ namespace TaskManager.API.Controllers
         [HttpGet("{messageId}")]
         public async Task<IActionResult> GetMessage(int messageId, int userId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var message = await repositoryWrapper.MessageRepository.GetMessage(messageId);
 
             if (message == null)
@@ -110,11 +92,6 @@ namespace TaskManager.API.Controllers
         [HttpPost("delete/{messageId}")]
         public async Task<IActionResult> DeleteMessage(int messageId, int userId, [FromQuery]string userType)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var message = await repositoryWrapper.MessageRepository.GetMessage(messageId);
 
             if (message == null)

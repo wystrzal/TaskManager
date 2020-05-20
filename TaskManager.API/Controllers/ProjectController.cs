@@ -9,10 +9,12 @@ using TaskManager.API.Data.Repository;
 using TaskManager.API.Data.Repository.ProjectRepo;
 using TaskManager.API.Data.Repository.UserRepo;
 using TaskManager.API.Dto.Project;
+using TaskManager.API.Helpers.Filters;
 using TaskManager.API.Model;
 
 namespace TaskManager.API.Controllers
 {
+    [UserAuthorizationFilter]
     [Route("api/user/{userId}/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
@@ -29,11 +31,6 @@ namespace TaskManager.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProject(ProjectForAdd projectForAddDto, int userId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var projectForAdd = mapper.Map<Project>(projectForAddDto);
 
             projectForAdd.Owner = userId;
@@ -64,11 +61,6 @@ namespace TaskManager.API.Controllers
         [HttpDelete("{projectId}")]
         public async Task<IActionResult> DeleteProject(int userId, int projectId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
@@ -94,11 +86,6 @@ namespace TaskManager.API.Controllers
         [HttpGet("{projectId}", Name = "GetProject")]
         public async Task<IActionResult> GetProject(int userId, int projectId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
@@ -114,11 +101,6 @@ namespace TaskManager.API.Controllers
         [HttpGet("{projectId}/users")]
         public async Task<IActionResult> GetProjectUsers(int userId, int projectId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var users = await repositoryWrapper.UserRepository.GetProjectUsers(projectId);
 
             var usersToReturn = mapper.Map<IEnumerable<ProjectForReturnUsers>>(users);
@@ -129,11 +111,6 @@ namespace TaskManager.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProjects(int userId, [FromQuery]string type, [FromQuery]int skip)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var projects = await repositoryWrapper.ProjectRepository.GetProjects(userId, type, skip);
 
             var projectsForReturn = mapper.Map<IEnumerable<ProjectForReturn>>(projects);
@@ -144,11 +121,6 @@ namespace TaskManager.API.Controllers
         [HttpGet("invitations")]
         public async Task<IActionResult> GetInvitations(int userId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var projects = await repositoryWrapper.ProjectRepository.GetInvitationsToProject(userId);
 
             var projectsForReturn = mapper.Map<IEnumerable<ProjectForReturnInvitations>>(projects);
@@ -159,11 +131,6 @@ namespace TaskManager.API.Controllers
         [HttpPost("{projectId}/new/{userNick}")]
         public async Task<IActionResult> AddToProject(int userId, int projectId, string userNick)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var newUser = await repositoryWrapper.UserRepository.GetUserByNick(userNick.ToLower());
 
             if (newUser == null)
@@ -217,11 +184,6 @@ namespace TaskManager.API.Controllers
         [HttpDelete("{projectId}/delete/{userToDelete}")]
         public async Task<IActionResult> DeleteFromProject(int userId, int projectId, int userToDelete)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
@@ -249,11 +211,6 @@ namespace TaskManager.API.Controllers
         [HttpPost("join/{projectId}")]
         public async Task<IActionResult> JoinToProject(int userId, int projectId, [FromQuery]int action)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
@@ -292,11 +249,6 @@ namespace TaskManager.API.Controllers
         [HttpPost("leave/{projectId}")]
         public async Task<IActionResult> LeaveProject(int userId, int projectId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
@@ -319,18 +271,12 @@ namespace TaskManager.API.Controllers
         [HttpPut("change/{projectId}")]
         public async Task<IActionResult> ChangeProjectName(int userId, int projectId, ProjectForChangeName projectForChangeName)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            {
-                return Unauthorized();
-            }
-
             var project = await repositoryWrapper.ProjectRepository.GetProject(projectId);
 
             if (project == null)
             {
                 return NotFound("Could not find project.");
             }
-
 
             mapper.Map(projectForChangeName, project);
 

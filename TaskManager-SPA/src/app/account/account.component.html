@@ -8,7 +8,8 @@
         <div class="border-bottom"></div>
         <a type="button" (click)="openPhotoChooser()">
           <img
-            src="../../assets/images/user-{{ user.photoId }}.jpg"
+            *ngIf="user != null"
+            src="../../assets/images/user-{{ user?.photoId }}.jpg"
             class="img-responsive my-3"
             alt="userImg"
           />

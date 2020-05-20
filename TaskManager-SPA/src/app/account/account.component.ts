@@ -12,7 +12,7 @@ import { ErrorService } from "../core/helpers/error.service";
 export class AccountComponent implements OnInit {
   userPhotos: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   selectPhoto = false;
-  user: User = { nickname: "", photoId: 0, userId: 0 };
+  user: User;
   nickModel: any = {};
   passwordModel: any = {};
 
@@ -23,7 +23,6 @@ export class AccountComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.user.photoId = 1;
     this.getUser();
   }
 

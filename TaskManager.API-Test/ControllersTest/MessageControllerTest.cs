@@ -33,30 +33,12 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task AddMessageUnauthorizedStatus()
-        {
-            //Arrange
-            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.AddMessage(2, It.IsAny<string>(), It.IsAny<MessageForAdd>()) as UnauthorizedResult;
-                
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task AddMessageNotFoundStatus()
         {
             //Arrange
             wrapperMock.Setup(w => w.UserRepository.GetUserByNick("test")).Returns(Task.FromResult((User)null));
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.AddMessage(1, It.IsAny<string>(), It.IsAny<MessageForAdd>()) as NotFoundObjectResult;
@@ -83,8 +65,6 @@ namespace TaskManager.API_Test.ControllersTest
             wrapperMock.Setup(m => m.SaveAll()).Returns(Task.Run(() => { return false; }));
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.AddMessage(1, nick, It.IsAny<MessageForAdd>()) as BadRequestObjectResult; ;
@@ -113,28 +93,11 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             //Act
             var action = await controller.AddMessage(1, nick, It.IsAny<MessageForAdd>()) as OkResult; ;
 
             //Assert
             Assert.Equal(200, action.StatusCode);
-        }
-
-        [Fact]
-        public async Task GetReceivedMessagesUnauthorizedStatus()
-        {
-            //Arrange
-            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act 
-            var action = await controller.GetReceivedMessages(2, 0) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
         }
 
         [Fact]
@@ -159,8 +122,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             //Act 
             var action = await controller.GetReceivedMessages(1, 0) as OkObjectResult;
             var items = action.Value as IEnumerable<MessageForReturnReceivedMessages>;
@@ -168,21 +129,6 @@ namespace TaskManager.API_Test.ControllersTest
             //Assert
             Assert.Equal(200, action.StatusCode);
             Assert.Equal(2, items.Count());
-        }
-
-        [Fact]
-        public async Task GetSendedMessagesUnauthorizedStatus()
-        {
-            //Arrange
-            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act 
-            var action = await controller.GetSendedMessages(2, 0) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
         }
 
         [Fact]
@@ -209,8 +155,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             //Act 
             var action = await controller.GetSendedMessages(1, 0) as OkObjectResult;
             var items = action.Value as IEnumerable<MessageForReturnSendedMessages>;
@@ -221,29 +165,12 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task GetMessageUnauthorizedStatus()
-        {
-            //Arrange
-            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.GetMessage(1, 2) as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task GetMessageNotFoundStatus()
         {
             //Arrange           
             wrapperMock.Setup(w => w.MessageRepository.GetMessage(It.IsAny<int>())).Returns(Task.FromResult((Message)null));
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.GetMessage(1, 1) as NotFoundObjectResult;
@@ -269,8 +196,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             //Act
             var action = await controller.GetMessage(1, 1) as OkObjectResult;
             var item = action.Value as MessageForReturnDetailMessage;
@@ -281,29 +206,12 @@ namespace TaskManager.API_Test.ControllersTest
         }
 
         [Fact]
-        public async Task DeleteMessageUnauthorizedStatus()
-        {
-            //Arrange
-            MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
-
-            //Act
-            var action = await controller.DeleteMessage(1, 2, "test") as UnauthorizedResult;
-
-            //Assert
-            Assert.Equal(401, action.StatusCode);
-        }
-
-        [Fact]
         public async Task DeleteMessageNotFoundStatus()
         {
             //Arrange
             wrapperMock.Setup(w => w.MessageRepository.GetMessage(It.IsAny<int>())).Returns(Task.FromResult((Message)null));
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.DeleteMessage(1, 1, "test") as NotFoundObjectResult;
@@ -326,8 +234,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             //Act
             var action = await controller.DeleteMessage(1, 1, "recipient") as NoContentResult;
 
@@ -349,8 +255,6 @@ namespace TaskManager.API_Test.ControllersTest
             }));
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.DeleteMessage(1, 1, "sender") as NoContentResult;
@@ -381,8 +285,6 @@ namespace TaskManager.API_Test.ControllersTest
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
 
-            Authorization.GetIdentity(controller);
-
             //Act
             var action = await controller.DeleteMessage(1, 1, "any") as OkResult;
 
@@ -412,8 +314,6 @@ namespace TaskManager.API_Test.ControllersTest
             }));
 
             MessageController controller = new MessageController(wrapperMock.Object, mapperMock.Object);
-
-            Authorization.GetIdentity(controller);
 
             //Act
             var action = await controller.DeleteMessage(1, 1, "any") as BadRequestObjectResult;
