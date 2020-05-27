@@ -21,13 +21,14 @@ Todo list with additional features.
 ## Technologies
 * ASP.NET Core API.
 * Angular.
+* SQL Server.
 
 ## Setup
 To run API open TaskManager.API.sln with Visual Studio,
 change from IIS Express to TaskManager.API and press F5.
 
 To run SPA open TaskManager folder with Visual Studio Code and
-`cd TaskManager-SPA
- npm install
- ng serve`
+`cd TaskManager-SPA`
+`npm install`
+`ng serve`
 Open http://localhost:4200
