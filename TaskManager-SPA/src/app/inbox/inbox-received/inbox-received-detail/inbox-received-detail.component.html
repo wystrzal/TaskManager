@@ -8,14 +8,14 @@
     <div class="message-from text-left ml-3 mt-2">
       From: {{ message?.from }}
     </div>
-    <div class="message-title text-center mb-4">
+    <div class="message-title text-center pb-4">
       Title: {{ message?.title }}
     </div>
   </div>
   <div class="border p-5">
     {{ message?.content }}
   </div>
-  <button (click)="deleteMessage()" class="btn btn-danger mt-2 ml-2 px-5">
+  <button (click)="deleteMessage()" class="btn btn-danger mt-2 ml-2">
     Delete
   </button>
 </div>

@@ -1,12 +1,21 @@
 <div class="task-bg">
   <div class="task-overlay"></div>
 
-  <div class="top-content">
-    <a type="button" (click)="backClicked()" class="ml-4 mb-2 mt-4 back-btn">
-      <i class="fa fa-arrow-left d-inline mr-1" aria-hidden="true"></i>
-      <h5 class="d-inline">Back</h5>
-    </a>
-    <div class="text-left ml-4 my-2">
+  <div
+    class="container-fluid content-scroll position-relative pt-3"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll()"
+    [scrollWindow]="false"
+  >
+    <div>
+      <a type="button" (click)="backClicked()" class="ml-2 back-btn">
+        <i class="fa fa-arrow-left d-inline mr-1" aria-hidden="true"></i>
+        <h5 class="d-inline">Back</h5>
+      </a>
+    </div>
+    <div class="text-left ml-2 pt-2">
       <button
         [disabled]="project?.owner != currentUser"
         class="btn new-btn"
@@ -15,17 +24,8 @@
         <i class="fa fa-plus-circle"> New</i>
       </button>
     </div>
-  </div>
 
-  <div
-    class="container-fluid content-scroll"
-    infiniteScroll
-    [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50"
-    (scrolled)="onScroll()"
-    [scrollWindow]="false"
-  >
-    <div class="row">
+    <div class="row pb-3">
       <div class="col-12 text-center">
         <h2 class="mb-5">{{ project?.name | titlecase }}</h2>
         <div *ngFor="let task of tasks; let i = index">

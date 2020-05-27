@@ -6,6 +6,10 @@
   position: fixed;
 }
 
+.content-scroll {
+  height: 95vh;
+}
+
 .task-overlay {
   background-color: rgba(0, 0, 0, 0.85);
   min-width: 100%;

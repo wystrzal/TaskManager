@@ -7,7 +7,7 @@
 }
 
 .left-menu {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 25%;
@@ -59,7 +59,6 @@ a:hover {
   color: #ffe8c2;
   right: 0%;
   top: 5%;
-  -webkit-transition: all 200ms linear;
   transition: all 200ms linear;
 }
 

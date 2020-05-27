@@ -1,6 +1,7 @@
 .task-bg {
   background: url(../../../assets/images/task-bg.jpg) no-repeat;
   background-size: cover;
+  padding-top: 50px;
 }
 
 .task-overlay {
@@ -10,15 +11,12 @@
   position: fixed;
 }
 
-.top-content {
-  position: relative;
-  min-width: 100%;
-  min-height: 100%;
+.content-scroll {
+  height: 91vh;
 }
 
 .back-btn {
   color: #28a745;
-  -webkit-transition: all 200ms linear;
   transition: all 200ms linear;
 }
 .back-btn:hover {
@@ -40,7 +38,6 @@ h6 {
 
 .new-btn {
   background-color: #28a745;
-  -webkit-transition: all 200ms linear;
   transition: all 200ms linear;
   color: #fff;
 }
@@ -72,10 +69,6 @@ img {
 
 .task-name {
   overflow: hidden;
-}
-
-.content-scroll {
-  height: 82vh;
 }
 
 .warning {

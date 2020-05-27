@@ -27,7 +27,7 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTasks(int userId, int projectId, [FromQuery]int skip)
+        public async Task<IActionResult> GetTasks(int projectId, [FromQuery]int skip)
         {
             var tasks = await repositoryWrapper.TaskRepository.GetTasks(projectId, skip);
 
@@ -47,7 +47,7 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet("{taskId}", Name = "GetTask")]
-        public async Task<IActionResult> GetTask(int userId, int taskId)
+        public async Task<IActionResult> GetTask(int taskId)
         {
             var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
 
@@ -88,7 +88,7 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPut("change/{taskId}")]
-        public async Task<IActionResult> ChangeStatusPriority(int userId, int taskId, [FromQuery]string action,
+        public async Task<IActionResult> ChangeStatusPriority(int taskId, [FromQuery]string action,
             [FromQuery]string newStatPrior)
         {
             var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
@@ -116,7 +116,7 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpDelete("{taskId}")]
-        public async Task<IActionResult> DeleteTask(int userId, int taskId)
+        public async Task<IActionResult> DeleteTask(int taskId)
         {
             var task = await repositoryWrapper.TaskRepository.GetTask(taskId);
 
