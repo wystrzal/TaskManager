@@ -31,4 +31,5 @@ To run SPA open TaskManager folder with Visual Studio Code and
 `cd TaskManager-SPA`
 `npm install`
 `ng serve`
+
 Open http://localhost:4200
