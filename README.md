@@ -24,10 +24,13 @@ Todo list with additional features.
 * SQL Server.
 
 ## Setup
+Requirements:
+* Microsoft SQL Server
+
 To run API open TaskManager.API.sln with Visual Studio,
 change from IIS Express to TaskManager.API and press F5.
 
-To run SPA open TaskManager folder with Visual Studio Code and
+To run SPA open TaskManager folder in command-line or Visual Studio Code and
 `cd TaskManager-SPA`
 `npm install`
 `ng serve`
