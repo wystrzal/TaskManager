@@ -26,6 +26,8 @@ Todo list with additional features.
 ## Setup
 Requirements:
 * Microsoft SQL Server
+* Node.js
+* Angular CLI
 
 To run API open TaskManager.API.sln with Visual Studio,
 change from IIS Express to TaskManager.API and press F5.
