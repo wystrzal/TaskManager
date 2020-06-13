@@ -25,6 +25,7 @@ Todo list with additional features.
 
 ## Setup
 Requirements:
+* SQL Server Management Studio
 * Microsoft SQL Server
 * Node.js
 * Angular CLI
